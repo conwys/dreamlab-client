@@ -1,0 +1,40 @@
+<div class="room-uploader-container">
+  <h1>Upload Your Room Walls</h1>
+  <p>Upload photos of all four walls in your room to get started.</p>
+  
+  <div class="walls-grid">
+    <div class="wall-upload">
+      <h3>North Wall</h3>
+      <input type="file" accept="image/*" (change)="onFileSelected($event, 'north')" />
+      <div class="preview" *ngIf="wallImages['north']">
+        <img [src]="wallImages['north']" alt="North wall preview" />
+      </div>
+    </div>
+
+    <div class="wall-upload">
+      <h3>South Wall</h3>
+      <input type="file" accept="image/*" (change)="onFileSelected($event, 'south')" />
+      <div class="preview" *ngIf="wallImages['south']">
+        <img [src]="wallImages['south']" alt="South wall preview" />
+      </div>
+    </div>
+
+    <div class="wall-upload">
+      <h3>East Wall</h3>
+      <input type="file" accept="image/*" (change)="onFileSelected($event, 'east')" />
+      <div class="preview" *ngIf="wallImages['east']">
+        <img [src]="wallImages['east']" alt="East wall preview" />
+      </div>
+    </div>
+
+    <div class="wall-upload">
+      <h3>West Wall</h3>
+      <input type="file" accept="image/*" (change)="onFileSelected($event, 'west')" />
+      <div class="preview" *ngIf="wallImages['west']">
+        <img [src]="wallImages['west']" alt="West wall preview" />
+      </div>
+    </div>
+  </div>
+
+  <button (click)="onUpload()">Upload All Images</button>
+</div>

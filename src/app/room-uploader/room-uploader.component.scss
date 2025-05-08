@@ -1,0 +1,99 @@
+.room-uploader-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Albert Sans', sans-serif;
+  color: white;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #888;
+    margin-bottom: 2rem;
+  }
+}
+
+.walls-grid {
+  display: flex;
+  flex-flow: row;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.wall-upload {
+  background: #2a2d2e;
+  padding: 1.5rem;
+  padding-right: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  h3 {
+    margin-bottom: 1rem;
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #888;
+    background: transparent;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    &::-webkit-file-upload-button {
+      background: #363839;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      color: white;
+      margin-right: 1rem;
+      cursor: pointer;
+    }
+  }
+
+  .preview {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 2px solid #363839;
+    background: #2a2d2e;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  background-color: #BE9DF4;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  font-family: 'Albert Sans', sans-serif;
+
+  &:hover {
+    background-color: #A0CAFB;
+  }
+
+  &:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+  }
+}
