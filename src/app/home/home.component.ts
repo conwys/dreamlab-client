@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
       <div class="video-overlay"></div>
       <div class="web-content">
         <h1>Build your <span class="gradient-text">dream</span>.</h1>
-        <a class="btn" routerLink="/plan">Get Started</a>
+        <a class="btn" routerLink="/plan">Get started</a>
       </div>
     </div>
   `,
