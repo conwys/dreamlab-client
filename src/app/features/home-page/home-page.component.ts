@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-home-page',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  template: './home.component.ts',
-  styles: ['./home.component.scss'],
+  template: './home-page.component.ts',
+  styles: ['./home-page.component.scss'],
 })
-export class HomeComponent {}
+export class HomePageComponent {}
