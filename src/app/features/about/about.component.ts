@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-about',
   standalone: true,
   imports: [CommonModule],
-  template: './about.component.html',
-  styles: ['./about.component.scss'],
+  templateUrl: './about.component.html',
+  styleUrl: './about.component.scss',
 })
 export class AboutComponent {}
