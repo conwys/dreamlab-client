@@ -7,6 +7,6 @@ import { RoomUploaderComponent } from '../room-uploader/room-uploader.component'
   standalone: true,
   imports: [CommonModule, RoomUploaderComponent],
   templateUrl: './plan.component.html',
-  styleUrls: ['./plan.component.scss']
+  styleUrls: ['./plan.component.scss'],
 })
 export class PlanComponent {}

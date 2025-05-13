@@ -2,7 +2,12 @@
   <div class="web-header">
     <nav class="navbar">
       <div class="nav-logo">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><img src="logo-final.svg"></a>
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ><img src="logo-final.svg"
+        /></a>
       </div>
       <div class="nav-links">
         <a routerLink="/about" routerLinkActive="active">About</a>
@@ -12,7 +17,4 @@
     </nav>
   </div>
   <router-outlet></router-outlet>
-  <div class="web-footer">
-    <p>&copy; 2023 My Web App</p>
-  </div>
 </div>

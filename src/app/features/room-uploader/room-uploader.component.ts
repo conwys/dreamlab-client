@@ -6,21 +6,21 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './room-uploader.component.html',
   styleUrl: './room-uploader.component.scss',
-  standalone: true
+  standalone: true,
 })
 export class RoomUploaderComponent {
   wallImages: { [key: string]: string | null } = {
     north: null,
     south: null,
     east: null,
-    west: null
+    west: null,
   };
 
   selectedFiles: { [key: string]: File | null } = {
     north: null,
     south: null,
     east: null,
-    west: null
+    west: null,
   };
 
   onFileSelected(event: Event, wall: string): void {
@@ -38,7 +38,9 @@ export class RoomUploaderComponent {
 
   onUpload(): void {
     // Check if all walls have images
-    const hasAllImages = Object.values(this.selectedFiles).every(file => file !== null);
+    const hasAllImages = Object.values(this.selectedFiles).every(
+      (file) => file !== null
+    );
     if (hasAllImages) {
       // Implement the file upload logic here
       console.log('Uploading files:', this.selectedFiles);
