@@ -1,3 +1,7 @@
+@use "src/assets/styles/base/colours";
+@use "src/assets/styles/base/variables";
+@use "src/assets/styles/globals/globals";
+
 .hero-section {
   position: fixed; // Changed from absolute to fixed
   top: 0;
@@ -37,17 +41,16 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  font-family: "Albert Sans", sans-serif;
   padding-top: 0;
 
-  h1 {
+  .title {
     font-size: 10rem;
-    color: #ffffff;
+    color: colours.$white;
     margin-bottom: 2rem;
     text-align: center;
 
     .gradient-text {
-      background: linear-gradient(45deg, #be9df4, #a0cafb);
+      background: variables.$styled-gradient;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -55,22 +58,8 @@
     }
   }
 
-  .btn {
+  a.btn {
     margin-top: 2rem;
-    padding: 1rem 3rem;
-    background-color: #be9df4;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: 600;
     text-decoration: none;
-
-    &:hover {
-      background-color: #a0cafb;
-      transition: background-color 0.3s ease;
-    }
   }
 }
