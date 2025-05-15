@@ -1,0 +1,27 @@
+@use "../../../assets/styles/base/colours";
+
+.edit-area {
+  width: 100%;
+  height: 90vh;
+  margin-top: 30px;
+  display: flex;
+  flex-flow: row;
+  justify-content: start;
+  align-items: stretch;
+  align-content: center;
+
+  .object-selection-pane {
+    width: 300px;
+    background-color: colours.$dark-grey;
+  }
+
+  .canvas-container {
+    flex: 1;
+
+    #edit-room-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+}
