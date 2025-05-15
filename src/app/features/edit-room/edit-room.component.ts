@@ -39,25 +39,47 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         1000
       );
 
-      const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+      this.camera.position.x = 5;
+      this.camera.position.y = 3;
+      this.camera.position.z = 5;
 
-      const greenMaterial = new THREE.MeshPhongMaterial({
-        color: new THREE.Color(0, 1, 0),
+      const geometary = new THREE.PlaneGeometry(3, 3);
+
+      const wallMaterial = new THREE.MeshPhongMaterial({
+        color: new THREE.Color('Cornsilk'),
+        side: THREE.DoubleSide,
       });
 
-      const greenCube = new THREE.Mesh(cubeGeometry, greenMaterial);
+      const floorMaterial = new THREE.MeshPhongMaterial({
+        color: new THREE.Color('Sienna'),
+        side: THREE.DoubleSide,
+      });
 
-      this.scene.add(greenCube);
+      const xyPlane = new THREE.Mesh(geometary, wallMaterial);
+      xyPlane.translateX(1.5).translateY(1.5);
+      this.scene.add(xyPlane);
 
-      this.camera.position.z = 7;
+      const zyPlane = new THREE.Mesh(geometary, wallMaterial);
+      zyPlane.translateZ(1.5).translateY(1.5).rotateY(this.degToRad(90));
+      this.scene.add(zyPlane);
+
+      const xzPlane = new THREE.Mesh(geometary, floorMaterial);
+      xzPlane.translateX(1.5).translateZ(1.5).rotateX(this.degToRad(90));
+      this.scene.add(xzPlane);
 
       // Create a light
       const light = new THREE.DirectionalLight(new THREE.Color(), 3);
-      light.position.set(-1, 2, 4);
+      light.position.set(3, 5, 5);
       this.scene.add(light);
 
       const controls = new OrbitControls(this.camera, canvas);
       controls.target.set(0, 0, 0);
+      controls.enablePan = false;
+      controls.maxDistance = 10;
+      controls.minDistance = 5;
+      controls.maxPolarAngle = Math.PI / 2;
+      controls.maxAzimuthAngle = Math.PI / 2;
+      controls.minAzimuthAngle = 0;
       controls.update();
 
       this.renderer.setAnimationLoop(() => {
@@ -90,5 +112,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
 
     return false;
+  }
+
+  private degToRad(deg: number): number {
+    return deg * (Math.PI / 180.0);
   }
 }
