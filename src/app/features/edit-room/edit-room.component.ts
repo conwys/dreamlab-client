@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { ObjectSelectionPaneComponent } from '../object-selection-pane/object-selection-pane.component';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [],
+  imports: [ObjectSelectionPaneComponent],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
