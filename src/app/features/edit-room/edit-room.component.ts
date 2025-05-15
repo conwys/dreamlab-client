@@ -20,7 +20,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.canvas = document.getElementById('edit-room-canvas');
+    if (typeof document !== 'undefined') {
+      this.canvas = document.getElementById('edit-room-canvas');
+    }
 
     if (this.canvas) {
       const canvas = this.canvas;
