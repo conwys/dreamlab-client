@@ -27,7 +27,11 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     if (this.canvas) {
       const canvas = this.canvas;
-      this.renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+      this.renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        canvas,
+        alpha: true,
+      });
       console.log(this.renderer);
 
       this.scene = new THREE.Scene();
