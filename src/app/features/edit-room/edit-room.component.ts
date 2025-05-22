@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ObjectSelectionPaneComponent } from '../object-selection-pane/object-selection-pane.component';
-import { RoomObject } from './room-object';
+import { RoomObject } from '../../models/room-object';
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
 
 @Component({
@@ -50,9 +50,12 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         1000
       );
 
-      this.camera.position.x = 5;
-      this.camera.position.y = 3;
-      this.camera.position.z = 5;
+      this.camera.position.set(5, 3, 5);
+
+      // Create a light
+      const light = new THREE.DirectionalLight(new THREE.Color(), 3);
+      light.position.set(3, 5, 5);
+      this.scene.add(light);
 
       this.setUpRoomDimensions();
 
@@ -79,11 +82,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         { x: 2.5, z: 1.5 },
         this.scene
       );
-
-      // Create a light
-      const light = new THREE.DirectionalLight(new THREE.Color(), 3);
-      light.position.set(3, 5, 5);
-      this.scene.add(light);
 
       this.setUpOrbitControls();
       this.setUpDragControls([cylinderA, cylinderB]);
