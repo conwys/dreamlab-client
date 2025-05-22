@@ -1,1 +1,44 @@
+@use "src/assets/styles/base/colours";
+@use "src/assets/styles/base/variables";
+@use "src/assets/styles/globals/globals";
+
+.plan-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 12vh;
+
+  .section-content {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    background: linear-gradient(135deg, colours.$lilac 0%, colours.$sky-blue 100%);
+    padding: 10rem;
+    border-radius: 100px;
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: colours.$white;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      color: colours.$white;
+      font-weight: 500;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+  }
+}
 
