@@ -12,45 +12,114 @@
   z-index: 1; // Add z-index lower than navbar
 }
 
-.background-video {
+.background-gradient {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  filter: grayscale(100%);
+  top: -60vh;
+  left: -25vw;
+  width: 150vw;
+  height: 100vh;
+  transform: rotate(-12.5deg);
+  background: variables.$styled-gradient;
+  opacity: 0.55;
+  z-index: -1;
 }
 
-.video-overlay {
+.background-gradient-shadow {
+  position: absolute;
+  top: 31vh;
+  left: -25vw;
+  width: 150vw;
+  height: 10vh;
+  transform: rotate(-12.5deg);
+  background: variables.$gradient-shadow;
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.background-gradient-ease {
   position: absolute;
   top: 0;
   left: 0;
+  width: 150vw;
+  height: 15vh;
+  // transform: rotate(-12.5deg);
+  background: variables.$gradient-ease;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.cloud-behind-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 23vh;
+  left: 1.75vw;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.75);
-  z-index: 2;
+  max-width: 50vw;
+  height: 40vh;
+  z-index: -1;
+  pointer-events: none;
+
+  .cloud-layer1 {
+    background-color: colours.$white;
+    width: 50%;
+    height: 40%;
+    border-radius: 100px;
+    margin-bottom: -5vh;
+    margin-left: 5vw;
+  }
+
+  .cloud-layer2 {
+    background-color: colours.$white;
+    width: 90%;
+    height: 40%;
+    border-radius: 100px;
+    margin-bottom: -5vh;
+  }
+
+  .cloud-layer3 {
+    background-color: colours.$white;
+    width: 100%;
+    height: 55%;
+    border-radius: 140px;
+  }
+}
+
+.web-information {
+  position: relative;
+  z-index: 1;
 }
 
 .web-content {
   position: relative;
   z-index: 2;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding-top: 0;
+  gap: 10%;
+
+  p.description {
+    font-size: 1.5rem;
+    color: colours.$dark-grey;
+    margin-bottom: 2rem;
+    text-align: left;
+    line-height: 90%;
+    max-width: 600px;
+  }
 
   .title {
-    font-size: 10rem;
-    color: colours.$white;
+    font-size: 12rem;
+    color: colours.$very-dark-grey;
     margin-bottom: 2rem;
-    text-align: center;
+    text-align: left;
+    line-height: 90%;
 
     .gradient-text {
-      background: variables.$styled-gradient;
+      background: variables.$text-gradient;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -61,5 +130,35 @@
   a.btn {
     margin-top: 2rem;
     text-decoration: none;
+    max-width: 20%;
+    text-align: center;
+    margin-top: 5rem;
+    background: variables.$text-gradient;
+    color: colours.$very-dark-grey;
+    font-weight: 700;
+  }
+
+  .btn {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn:hover {
+    filter: brightness(0.8);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .web-image {
+    position: relative;
+    width: 100%;
+    max-width: 40%;
+    height: auto;
+    z-index: 2;
+    margin-left: -5rem;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+    }
   }
 }
