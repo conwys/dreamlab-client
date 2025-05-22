@@ -1,20 +1,34 @@
 <div class="web-container">
   <div class="web-header">
-    <nav class="navbar">
-      <div class="nav-logo">
-        <a
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          ><img src="logo-final.svg"
-        /></a>
-      </div>
-      <div class="nav-links">
-        <a routerLink="/about" routerLinkActive="active">About</a>
-        <a routerLink="/plan" routerLinkActive="active">Plan your room</a>
-        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+    <nav class="navbar" [class.scrolled]="isScrolled">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="scrollToTop($event)"
+          ><img src="logo-final.svg" alt="DreamLab Logo"
+          /></a>
+        </div>
+        <div class="nav-links">
+          <a (click)="scrollToSection('about')" class="nav-link">
+            <fa-icon [icon]="faInfo"></fa-icon>
+            <span>About</span>
+          </a>
+          <a routerLink="/plan" routerLinkActive="active" class="nav-link">
+            <fa-icon [icon]="faTools"></fa-icon>
+            <span>Plan your room</span>
+          </a>
+          <a (click)="scrollToSection('contact')" class="nav-link">
+            <fa-icon [icon]="faEnvelope"></fa-icon>
+            <span>Contact</span>
+          </a>
+        </div>
       </div>
     </nav>
   </div>
-  <router-outlet></router-outlet>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 </div>

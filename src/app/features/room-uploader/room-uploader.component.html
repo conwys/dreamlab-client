@@ -1,56 +1,53 @@
 <div class="room-uploader-container">
-  <h1>Upload Your Room Walls</h1>
-  <p>Upload photos of all four walls in your room to get started.</p>
-
   <div class="walls-grid">
     <div class="wall-upload">
-      <h3>North Wall</h3>
+      <div class="wall-header">
+        <fa-icon [icon]="faNorth"></fa-icon>
+        <span>North Wall</span>
+      </div>
       <input
         type="file"
         accept="image/*"
         (change)="onFileSelected($event, 'north')"
       />
-      <div class="preview" *ngIf="wallImages['north']">
-        <img [src]="wallImages['north']" alt="North wall preview" />
-      </div>
     </div>
 
     <div class="wall-upload">
-      <h3>South Wall</h3>
+      <div class="wall-header">
+        <fa-icon [icon]="faSouth"></fa-icon>
+        <span>South Wall</span>
+      </div>
       <input
         type="file"
         accept="image/*"
         (change)="onFileSelected($event, 'south')"
       />
-      <div class="preview" *ngIf="wallImages['south']">
-        <img [src]="wallImages['south']" alt="South wall preview" />
-      </div>
     </div>
 
     <div class="wall-upload">
-      <h3>East Wall</h3>
+      <div class="wall-header">
+        <fa-icon [icon]="faEast"></fa-icon>
+        <span>East Wall</span>
+      </div>
       <input
         type="file"
         accept="image/*"
         (change)="onFileSelected($event, 'east')"
       />
-      <div class="preview" *ngIf="wallImages['east']">
-        <img [src]="wallImages['east']" alt="East wall preview" />
-      </div>
     </div>
 
     <div class="wall-upload">
-      <h3>West Wall</h3>
+      <div class="wall-header">
+        <fa-icon [icon]="faWest"></fa-icon>
+        <span>West Wall</span>
+      </div>
       <input
         type="file"
         accept="image/*"
         (change)="onFileSelected($event, 'west')"
       />
-      <div class="preview" *ngIf="wallImages['west']">
-        <img [src]="wallImages['west']" alt="West wall preview" />
-      </div>
     </div>
   </div>
 
-  <button class="btn" (click)="onUpload()">Upload All Images</button>
+  <button class="btn" (click)="onUpload()">Generate 3D Room</button>
 </div>
