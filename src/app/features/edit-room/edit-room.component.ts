@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ObjectSelectionPaneComponent } from '../object-selection-pane/object-selection-pane.component';
+import { RoomObject } from './room-object';
+import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
 
 @Component({
   selector: 'app-edit-room',
@@ -12,9 +14,16 @@ import { ObjectSelectionPaneComponent } from '../object-selection-pane/object-se
 })
 export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private canvas?: HTMLElement | null;
-  private renderer?: THREE.WebGLRenderer;
-  private scene?: THREE.Scene;
-  private camera?: THREE.PerspectiveCamera;
+  private renderer = new THREE.WebGLRenderer();
+  private scene = new THREE.Scene();
+  private camera = new THREE.PerspectiveCamera();
+
+  private roomLength = 3; // X -axis
+  private roomHeight = 3; // Y-axis
+  private roomWidth = 3; // Z-axis
+
+  private dragControls?: DragControls;
+  private orbitControls?: OrbitControls;
 
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
@@ -27,14 +36,12 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     if (this.canvas) {
       const canvas = this.canvas;
+
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         canvas,
         alpha: true,
       });
-      console.log(this.renderer);
-
-      this.scene = new THREE.Scene();
 
       this.camera = new THREE.PerspectiveCamera(
         75,
@@ -47,44 +54,39 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.camera.position.y = 3;
       this.camera.position.z = 5;
 
-      const geometary = new THREE.PlaneGeometry(3, 3);
+      this.setUpRoomDimensions();
 
-      const wallMaterial = new THREE.MeshPhongMaterial({
-        color: new THREE.Color('Cornsilk'),
-        side: THREE.DoubleSide,
-      });
+      const cylinderA = new RoomObject(
+        new THREE.Mesh(
+          new THREE.CylinderGeometry(0.25, 0.25, 1),
+          new THREE.MeshPhongMaterial({ color: new THREE.Color('Red') })
+        ),
+        0.5,
+        1,
+        0.5,
+        { x: 1.5, z: 1.5 },
+        this.scene
+      );
 
-      const floorMaterial = new THREE.MeshPhongMaterial({
-        color: new THREE.Color('Sienna'),
-        side: THREE.DoubleSide,
-      });
-
-      const xyPlane = new THREE.Mesh(geometary, wallMaterial);
-      xyPlane.translateX(1.5).translateY(1.5);
-      this.scene.add(xyPlane);
-
-      const zyPlane = new THREE.Mesh(geometary, wallMaterial);
-      zyPlane.translateZ(1.5).translateY(1.5).rotateY(this.degToRad(90));
-      this.scene.add(zyPlane);
-
-      const xzPlane = new THREE.Mesh(geometary, floorMaterial);
-      xzPlane.translateX(1.5).translateZ(1.5).rotateX(this.degToRad(90));
-      this.scene.add(xzPlane);
+      const cylinderB = new RoomObject(
+        new THREE.Mesh(
+          new THREE.CylinderGeometry(0.25, 0.25, 1),
+          new THREE.MeshPhongMaterial({ color: new THREE.Color('Green') })
+        ),
+        0.5,
+        1,
+        0.5,
+        { x: 2.5, z: 1.5 },
+        this.scene
+      );
 
       // Create a light
       const light = new THREE.DirectionalLight(new THREE.Color(), 3);
       light.position.set(3, 5, 5);
       this.scene.add(light);
 
-      const controls = new OrbitControls(this.camera, canvas);
-      controls.target.set(0, 0, 0);
-      controls.enablePan = false;
-      controls.maxDistance = 10;
-      controls.minDistance = 5;
-      controls.maxPolarAngle = Math.PI / 2;
-      controls.maxAzimuthAngle = Math.PI / 2;
-      controls.minAzimuthAngle = 0;
-      controls.update();
+      this.setUpOrbitControls();
+      this.setUpDragControls([cylinderA, cylinderB]);
 
       this.renderer.setAnimationLoop(() => {
         if (this.renderer && this.camera && this.scene) {
@@ -116,6 +118,83 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
 
     return false;
+  }
+
+  private setUpRoomDimensions(): void {
+    const x = this.roomLength;
+    const y = this.roomHeight;
+    const z = this.roomWidth;
+
+    const wallMaterial = new THREE.MeshPhongMaterial({
+      color: new THREE.Color('Cornsilk'),
+      side: THREE.DoubleSide,
+    });
+
+    const floorMaterial = new THREE.MeshPhongMaterial({
+      color: new THREE.Color('Sienna'),
+      side: THREE.DoubleSide,
+    });
+
+    const xyPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, y), wallMaterial);
+    xyPlane.translateX(x / 2).translateY(y / 2);
+    this.scene?.add(xyPlane);
+
+    const zyPlane = new THREE.Mesh(new THREE.PlaneGeometry(z, y), wallMaterial);
+    zyPlane
+      .translateZ(z / 2)
+      .translateY(y / 2)
+      .rotateY(this.degToRad(90));
+    this.scene?.add(zyPlane);
+
+    const xzPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(x, z),
+      floorMaterial
+    );
+    xzPlane
+      .translateX(x / 2)
+      .translateZ(z / 2)
+      .rotateX(this.degToRad(90));
+    this.scene?.add(xzPlane);
+  }
+
+  private setUpOrbitControls(): void {
+    this.orbitControls = new OrbitControls(this.camera, this.canvas);
+    this.orbitControls.target.set(0, 0, 0);
+    this.orbitControls.enablePan = false;
+    this.orbitControls.maxDistance = 10;
+    this.orbitControls.minDistance = 5;
+    this.orbitControls.maxPolarAngle = Math.PI / 2;
+    this.orbitControls.maxAzimuthAngle = Math.PI / 2;
+    this.orbitControls.minAzimuthAngle = 0;
+    this.orbitControls.update();
+  }
+
+  private setUpDragControls(controlledObjects: RoomObject[]): void {
+    this.dragControls = new DragControls(
+      controlledObjects.map((roomObject) => roomObject.object),
+      this.camera,
+      this.renderer.domElement
+    );
+
+    this.dragControls.addEventListener('dragstart', () => {
+      if (this.orbitControls) {
+        this.orbitControls.enabled = false;
+      }
+    });
+
+    this.dragControls.addEventListener('drag', (event) => {
+      controlledObjects.forEach((roomObject) => {
+        if (event.object == roomObject.object) {
+          roomObject.repositionWithinBounds(3, 3);
+        }
+      });
+    });
+
+    this.dragControls.addEventListener('dragend', () => {
+      if (this.orbitControls) {
+        this.orbitControls.enabled = true;
+      }
+    });
   }
 
   private degToRad(deg: number): number {
