@@ -3,29 +3,28 @@
 @use "src/assets/styles/globals/globals";
 
 nav {
-  background-color: #000000c4;
   display: flex;
-  justify-content: space-between;
+  flex-flow: row;
+  justify-content: space-around;
   align-items: center;
-  padding: 1rem 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10; // Ensure navbar is above everything
+  gap: 50rem;
+  padding: 2rem 2rem;
+  height: 10vh;
+  text-decoration: none;
 
   .nav-logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: colours.$white;
-    text-decoration: none;
+    width: 20%;
+    height: 100%;
 
     img {
-      width: 35%;
-      height: 50%;
-      transition: ease 0.3s;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      transition: transform 0.3s ease-out;
 
       &:hover {
         transform: scale(1.05);
-        transition: transform 0.3s ease out;
+        transition: transform 0.3s ease-out;
         cursor: pointer;
       }
     }
@@ -33,14 +32,15 @@ nav {
 
   .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 2.5rem;
 
     a {
-      color: colours.$white;
+      color: colours.$very-dark-grey;
       text-decoration: none;
-      font-weight: 400;
+      font-weight: 700;
       transition: color 0.3s ease;
       position: relative;
+      font-size: 1.5rem;
 
       &:hover {
         color: colours.$lilac;
@@ -71,7 +71,7 @@ nav {
 
 .web-header {
   position: relative;
-  z-index: 3; // Ensure nav stays above video
+  z-index: 3;
 }
 
 .hero-section {
@@ -81,32 +81,6 @@ nav {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-
-  .background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    filter: grayscale(100%);
-  }
-
-  .video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(
-      0,
-      0,
-      0,
-      0.75
-    ); /* Increased opacity from 0.5 to 0.75 */
-    z-index: 2;
-  }
 
   .web-content {
     position: relative;
