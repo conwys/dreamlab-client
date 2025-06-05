@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import * as THREE from 'three';
 import { RoomObject } from '../../models/room-object';
 import { CommonModule } from '@angular/common';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 @Component({
   selector: 'app-object-selection-pane',
@@ -40,5 +41,32 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
     );
 
     this.objects.push(cylinderB);
+
+    this.loadObjectFromFile('assets/img/white_mesh.glb');
+  }
+
+  private loadObjectFromFile(fileUrl: string): void {
+    const loader = new GLTFLoader();
+
+    loader.load(
+      fileUrl,
+      // called when the resource is loaded
+      (gltf) => {
+        const newObject = gltf.scene.children[0];
+
+        const objectSize = new THREE.Vector3();
+        new THREE.Box3().setFromObject(newObject).getSize(objectSize);
+
+        this.objects.push(
+          new RoomObject(newObject, objectSize.x, objectSize.y, objectSize.z)
+        );
+      },
+      // called while loading is progressing
+      () => {},
+      // called when loading has errors
+      function (error) {
+        console.log('An error occured loading the model');
+      }
+    );
   }
 }
