@@ -39,6 +39,7 @@ export class RoomObject {
     scene.add(this.object);
 
     this.displayedInScene = true;
+    this.object.visible = true;
   }
 
   public repositionWithinBounds(floorLength: number, floorWidth: number): void {

@@ -18,9 +18,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera();
 
-  private roomLength = 3; // X -axis
-  private roomHeight = 3; // Y-axis
-  private roomWidth = 3; // Z-axis
+  private roomLength = 6; // X -axis
+  private roomHeight = 6; // Y-axis
+  private roomWidth = 6; // Z-axis
 
   private dragControls?: DragControls;
   private orbitControls?: OrbitControls;
@@ -52,11 +52,11 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         1000
       );
 
-      this.camera.position.set(5, 3, 5);
+      this.camera.position.set(10, 6, 10);
 
       // Create a light
       const light = new THREE.DirectionalLight(new THREE.Color(), 3);
-      light.position.set(3, 5, 5);
+      light.position.set(6, 10, 10);
       this.scene.add(light);
 
       this.setUpRoomDimensions();
@@ -99,6 +99,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.objectsWithinRoom.filter((obj) => {
         if (obj.object.id == id) {
           obj.displayedInScene = false;
+          obj.object.visible = false;
 
           return false;
         }
@@ -169,7 +170,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.orbitControls = new OrbitControls(this.camera, this.canvas);
     this.orbitControls.target.set(0, 0, 0);
     this.orbitControls.enablePan = false;
-    this.orbitControls.maxDistance = 10;
+    this.orbitControls.maxDistance = 20;
     this.orbitControls.minDistance = 5;
     this.orbitControls.maxPolarAngle = Math.PI / 2;
     this.orbitControls.maxAzimuthAngle = Math.PI / 2;
