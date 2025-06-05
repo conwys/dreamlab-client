@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ObjectSelectionPaneComponent } from '../object-selection-pane/object-selection-pane.component';
 import { RoomObject } from '../../models/room-object';
-import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
 @Component({
   selector: 'app-edit-room',
@@ -22,8 +22,8 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private roomHeight = 6; // Y-axis
   private roomWidth = 6; // Z-axis
 
-  private dragControls?: DragControls;
   private orbitControls?: OrbitControls;
+  private transformControls?: TransformControls;
 
   private objectsWithinRoom: RoomObject[] = [];
 
@@ -62,6 +62,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.setUpRoomDimensions();
 
       this.setUpOrbitControls();
+      this.setUpTransformControls();
 
       this.renderer.setAnimationLoop(() => {
         if (this.renderer && this.camera && this.scene) {
@@ -88,8 +89,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     roomObject.addToScene(floorCentre, this.scene);
 
     this.objectsWithinRoom.push(roomObject);
-
-    this.setUpDragControls();
   }
 
   removeObjectFromRoom(id: number): void {
@@ -108,8 +107,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       });
 
       this.scene.remove(object);
-
-      this.setUpDragControls();
     }
   }
 
@@ -178,32 +175,51 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.orbitControls.update();
   }
 
-  private setUpDragControls(): void {
-    this.dragControls = new DragControls(
-      this.objectsWithinRoom.map((roomObject) => roomObject.object),
+  private setUpTransformControls(): void {
+    this.transformControls = new TransformControls(
       this.camera,
       this.renderer.domElement
     );
 
-    this.dragControls.addEventListener('dragstart', () => {
+    this.scene.add(this.transformControls.getHelper());
+
+    this.transformControls.addEventListener('mouseDown', () => {
       if (this.orbitControls) {
         this.orbitControls.enabled = false;
       }
     });
 
-    this.dragControls.addEventListener('drag', (event) => {
-      this.objectsWithinRoom.forEach((roomObject) => {
-        if (event.object == roomObject.object) {
-          roomObject.repositionWithinBounds(this.roomLength, this.roomWidth);
-        }
-      });
-    });
-
-    this.dragControls.addEventListener('dragend', () => {
+    this.transformControls.addEventListener('mouseUp', () => {
       if (this.orbitControls) {
         this.orbitControls.enabled = true;
       }
     });
+
+    this.transformControls.showY = false;
+    this.transformControls.size = 0.5;
+  }
+
+  public attachObjectToTransformControls(roomObject: RoomObject): void {
+    if (this.transformControls?.object?.id == roomObject.object.id) {
+      this.transformControls.detach();
+
+      return;
+    }
+
+    if (
+      this.objectsWithinRoom.find(
+        (object) => object.object.id == roomObject.object.id
+      ) &&
+      this.transformControls
+    ) {
+      this.transformControls.attach(roomObject.object);
+
+      roomObject.setTransformationLimits(
+        this.transformControls,
+        this.roomLength,
+        this.roomWidth
+      );
+    }
   }
 
   private degToRad(deg: number): number {

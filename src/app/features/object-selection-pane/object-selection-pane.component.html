@@ -1,13 +1,21 @@
 <div
-  *ngFor="let object of objects"
+  *ngFor="let object of objectsCurrentlyInRoom"
   id="{{ object.object.id }}"
   class="object-block"
 >
+  <button
+    class="transform-button"
+    (click)="selectObjectToTransform.emit(object)"
+  >
+    Move
+  </button>
+
   <p>{{ object.object.id }}</p>
+
   <button
     *ngIf="!object.displayedInScene"
     class="add-object-button"
-    (click)="selectObject.emit(object)"
+    (click)="addObject.emit(object)"
   >
     +
   </button>

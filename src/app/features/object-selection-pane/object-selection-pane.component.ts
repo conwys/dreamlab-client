@@ -11,10 +11,12 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   styleUrl: './object-selection-pane.component.scss',
 })
 export class ObjectSelectionPaneComponent implements AfterViewInit {
-  @Output() selectObject = new EventEmitter<RoomObject>();
+  @Output() addObject = new EventEmitter<RoomObject>();
   @Output() removeObject = new EventEmitter<number>();
 
-  objects: RoomObject[] = [];
+  @Output() selectObjectToTransform = new EventEmitter<RoomObject>();
+
+  objectsCurrentlyInRoom: RoomObject[] = [];
 
   ngAfterViewInit(): void {
     // Test Objects
@@ -28,7 +30,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
       0.5
     );
 
-    this.objects.push(cylinderA);
+    this.objectsCurrentlyInRoom.push(cylinderA);
 
     const cylinderB = new RoomObject(
       new THREE.Mesh(
@@ -40,7 +42,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
       0.5
     );
 
-    this.objects.push(cylinderB);
+    this.objectsCurrentlyInRoom.push(cylinderB);
 
     this.loadObjectFromFile('assets/img/white_mesh.glb');
   }
@@ -57,7 +59,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
         const objectSize = new THREE.Vector3();
         new THREE.Box3().setFromObject(newObject).getSize(objectSize);
 
-        this.objects.push(
+        this.objectsCurrentlyInRoom.push(
           new RoomObject(newObject, objectSize.x, objectSize.y, objectSize.z)
         );
       },

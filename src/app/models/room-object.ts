@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { DragControls } from 'three/addons/controls/DragControls.js';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
 export class RoomObject {
   private _object: THREE.Object3D;
@@ -42,21 +42,15 @@ export class RoomObject {
     this.object.visible = true;
   }
 
-  public repositionWithinBounds(floorLength: number, floorWidth: number): void {
-    this.position.y = this.height / 2;
+  public setTransformationLimits(
+    controls: TransformControls,
+    floorLength: number,
+    floorWidth: number
+  ): void {
+    controls.minx = 0 + this.length / 2;
+    controls.maxX = floorLength - this.length / 2;
 
-    if (this.position.x + this.length / 2 > floorLength) {
-      this.position.x = floorLength - this.length / 2;
-    }
-    if (this.position.x - this.length / 2 < 0) {
-      this.position.x = 0 + this.length / 2;
-    }
-
-    if (this.position.z + this.width / 2 > floorWidth) {
-      this.position.z = floorWidth - this.width / 2;
-    }
-    if (this.position.z - this.width / 2 < 0) {
-      this.position.z = 0 + this.width / 2;
-    }
+    controls.minZ = 0 + this.width / 2;
+    controls.maxZ = floorWidth - this.width / 2;
   }
 }
