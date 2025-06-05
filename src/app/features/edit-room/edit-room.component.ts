@@ -93,6 +93,26 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.setUpDragControls();
   }
 
+  removeObjectFromRoom(id: number): void {
+    const object = this.scene.getObjectById(id);
+
+    if (object) {
+      this.objectsWithinRoom.filter((obj) => {
+        if (obj.object.id == id) {
+          obj.displayedInScene = false;
+
+          return false;
+        }
+
+        return true;
+      });
+
+      this.setUpDragControls();
+
+      this.scene.remove(object);
+    }
+  }
+
   private resizeRendererToDisplaySize() {
     if (this.renderer) {
       const canvas = this.renderer.domElement;

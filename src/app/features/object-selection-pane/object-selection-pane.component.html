@@ -1,1 +1,21 @@
-<p>object-selection-pane works!</p>
+<div
+  *ngFor="let object of objects"
+  id="{{ object.object.id }}"
+  class="object-block"
+>
+  <p>{{ object.object.id }}</p>
+  <button
+    *ngIf="!object.displayedInScene"
+    class="add-object-button"
+    (click)="selectObject.emit(object)"
+  >
+    +
+  </button>
+  <button
+    *ngIf="object.displayedInScene"
+    class="remove-object-button"
+    (click)="removeObject.emit(object.object.id)"
+  >
+    -
+  </button>
+</div>

@@ -1,17 +1,22 @@
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import * as THREE from 'three';
 import { RoomObject } from '../../models/room-object';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-object-selection-pane',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './object-selection-pane.component.html',
   styleUrl: './object-selection-pane.component.scss',
 })
 export class ObjectSelectionPaneComponent implements AfterViewInit {
-  @Output() selectObject = new EventEmitter<any>();
+  @Output() selectObject = new EventEmitter<RoomObject>();
+  @Output() removeObject = new EventEmitter<number>();
+
+  objects: RoomObject[] = [];
 
   ngAfterViewInit(): void {
+    // Test Objects
     const cylinderA = new RoomObject(
       new THREE.Mesh(
         new THREE.CylinderGeometry(0.25, 0.25, 1),
@@ -22,7 +27,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
       0.5
     );
 
-    this.selectObject.emit(cylinderA);
+    this.objects.push(cylinderA);
 
     const cylinderB = new RoomObject(
       new THREE.Mesh(
@@ -34,6 +39,6 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
       0.5
     );
 
-    this.selectObject.emit(cylinderB);
+    this.objects.push(cylinderB);
   }
 }

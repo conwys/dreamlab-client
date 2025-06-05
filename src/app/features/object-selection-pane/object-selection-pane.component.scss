@@ -1,6 +1,17 @@
 @use "../../../assets/styles/base/colours";
 
+:host {
+  padding: 10px;
+  overflow-y: scroll;
+}
+
 p {
-  width: 100%;
-  color: colours.$black;
+  color: white;
+}
+
+.object-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }

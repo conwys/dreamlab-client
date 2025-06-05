@@ -6,9 +6,9 @@ export class RoomObject {
 
   private height: number; // Y-axis
   private length: number; // X-axis
-  private width: number; // Z-azids
+  private width: number; // Z-axis
 
-  private _dragControls?: DragControls;
+  public displayedInScene: boolean = false;
 
   constructor(
     mesh: THREE.Object3D,
@@ -30,10 +30,6 @@ export class RoomObject {
     return this.object.position;
   }
 
-  get dragControls(): DragControls | undefined {
-    return this._dragControls;
-  }
-
   public addToScene(
     startPosition: { x: number; z: number },
     scene: THREE.Scene
@@ -41,13 +37,8 @@ export class RoomObject {
     this.object.position.set(startPosition.x, this.height / 2, startPosition.z);
 
     scene.add(this.object);
-  }
 
-  public setUpDragControls(
-    camera: THREE.Camera,
-    domElement: HTMLElement
-  ): void {
-    this._dragControls = new DragControls([this.object], camera, domElement);
+    this.displayedInScene = true;
   }
 
   public repositionWithinBounds(floorLength: number, floorWidth: number): void {
