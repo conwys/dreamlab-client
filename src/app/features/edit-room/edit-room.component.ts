@@ -25,6 +25,8 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private dragControls?: DragControls;
   private orbitControls?: OrbitControls;
 
+  private objectsWithinRoom: RoomObject[] = [];
+
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
   }
@@ -59,32 +61,8 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
       this.setUpRoomDimensions();
 
-      const cylinderA = new RoomObject(
-        new THREE.Mesh(
-          new THREE.CylinderGeometry(0.25, 0.25, 1),
-          new THREE.MeshPhongMaterial({ color: new THREE.Color('Red') })
-        ),
-        0.5,
-        1,
-        0.5,
-        { x: 1.5, z: 1.5 },
-        this.scene
-      );
-
-      const cylinderB = new RoomObject(
-        new THREE.Mesh(
-          new THREE.CylinderGeometry(0.25, 0.25, 1),
-          new THREE.MeshPhongMaterial({ color: new THREE.Color('Green') })
-        ),
-        0.5,
-        1,
-        0.5,
-        { x: 2.5, z: 1.5 },
-        this.scene
-      );
-
+      this.setUpDragControls();
       this.setUpOrbitControls();
-      this.setUpDragControls([cylinderA, cylinderB]);
 
       this.renderer.setAnimationLoop(() => {
         if (this.renderer && this.camera && this.scene) {
@@ -100,6 +78,19 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         }
       });
     }
+  }
+
+  addObjectToRoom(object: RoomObject): void {
+    const floorCentre = {
+      x: this.roomLength / 2,
+      z: this.roomWidth / 2,
+    };
+
+    object.addToScene(floorCentre, this.scene);
+
+    this.objectsWithinRoom.push(object);
+
+    this.setUpDragControls();
   }
 
   private resizeRendererToDisplaySize() {
@@ -167,9 +158,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.orbitControls.update();
   }
 
-  private setUpDragControls(controlledObjects: RoomObject[]): void {
+  private setUpDragControls(): void {
     this.dragControls = new DragControls(
-      controlledObjects.map((roomObject) => roomObject.object),
+      this.objectsWithinRoom.map((roomObject) => roomObject.object),
       this.camera,
       this.renderer.domElement
     );
@@ -181,9 +172,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     });
 
     this.dragControls.addEventListener('drag', (event) => {
-      controlledObjects.forEach((roomObject) => {
+      this.objectsWithinRoom.forEach((roomObject) => {
         if (event.object == roomObject.object) {
-          roomObject.repositionWithinBounds(3, 3);
+          roomObject.repositionWithinBounds(this.roomLength, this.roomWidth);
         }
       });
     });

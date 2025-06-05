@@ -14,18 +14,12 @@ export class RoomObject {
     mesh: THREE.Object3D,
     length: number,
     height: number,
-    width: number,
-    startPosition: { x: number; z: number },
-    scene: THREE.Scene
+    width: number
   ) {
     this._object = mesh;
     this.length = length;
     this.height = height;
     this.width = width;
-
-    this.object.position.set(startPosition.x, this.height / 2, startPosition.z);
-
-    scene.add(this.object);
   }
 
   get object(): THREE.Object3D {
@@ -38,6 +32,15 @@ export class RoomObject {
 
   get dragControls(): DragControls | undefined {
     return this._dragControls;
+  }
+
+  public addToScene(
+    startPosition: { x: number; z: number },
+    scene: THREE.Scene
+  ): void {
+    this.object.position.set(startPosition.x, this.height / 2, startPosition.z);
+
+    scene.add(this.object);
   }
 
   public setUpDragControls(
