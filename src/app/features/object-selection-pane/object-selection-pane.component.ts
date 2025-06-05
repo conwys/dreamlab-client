@@ -52,7 +52,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
       fileUrl,
       // called when the resource is loaded
       (gltf) => {
-        const newObject = gltf.scene.children[0];
+        const newObject = gltf.scene.children[0].children[0];
 
         const objectSize = new THREE.Vector3();
         new THREE.Box3().setFromObject(newObject).getSize(objectSize);

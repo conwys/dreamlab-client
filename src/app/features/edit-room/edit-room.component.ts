@@ -61,7 +61,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
       this.setUpRoomDimensions();
 
-      this.setUpDragControls();
       this.setUpOrbitControls();
 
       this.renderer.setAnimationLoop(() => {
@@ -80,15 +79,15 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  addObjectToRoom(object: RoomObject): void {
+  addObjectToRoom(roomObject: RoomObject): void {
     const floorCentre = {
       x: this.roomLength / 2,
       z: this.roomWidth / 2,
     };
 
-    object.addToScene(floorCentre, this.scene);
+    roomObject.addToScene(floorCentre, this.scene);
 
-    this.objectsWithinRoom.push(object);
+    this.objectsWithinRoom.push(roomObject);
 
     this.setUpDragControls();
   }
@@ -107,9 +106,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         return true;
       });
 
-      this.setUpDragControls();
-
       this.scene.remove(object);
+
+      this.setUpDragControls();
     }
   }
 
