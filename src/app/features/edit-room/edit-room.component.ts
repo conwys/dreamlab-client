@@ -95,18 +95,22 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const object = this.scene.getObjectById(id);
 
     if (object) {
-      this.objectsWithinRoom.filter((obj) => {
-        if (obj.object.id == id) {
-          obj.displayedInScene = false;
-          obj.object.visible = false;
-
-          return false;
-        }
-
-        return true;
-      });
-
       this.scene.remove(object);
+    }
+
+    this.objectsWithinRoom.filter((obj) => {
+      if (obj.object.id == id) {
+        obj.displayedInScene = false;
+        obj.object.visible = false;
+
+        return false;
+      }
+
+      return true;
+    });
+
+    if (this.transformControls?.object?.id == id) {
+      this.transformControls?.detach();
     }
   }
 
@@ -196,7 +200,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     });
 
     this.transformControls.showY = false;
-    this.transformControls.size = 0.5;
+    this.transformControls.setSize(0.5);
   }
 
   public attachObjectToTransformControls(roomObject: RoomObject): void {
@@ -206,12 +210,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (
-      this.objectsWithinRoom.find(
-        (object) => object.object.id == roomObject.object.id
-      ) &&
-      this.transformControls
-    ) {
+    if (roomObject.displayedInScene && this.transformControls) {
       this.transformControls.attach(roomObject.object);
 
       roomObject.setTransformationLimits(

@@ -47,10 +47,13 @@ export class RoomObject {
     floorLength: number,
     floorWidth: number
   ): void {
+    console.log('setTransformationLimits');
     controls.minx = 0 + this.length / 2;
     controls.maxX = floorLength - this.length / 2;
 
     controls.minZ = 0 + this.width / 2;
     controls.maxZ = floorWidth - this.width / 2;
+
+    console.log(controls);
   }
 }
