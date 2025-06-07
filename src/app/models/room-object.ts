@@ -47,13 +47,16 @@ export class RoomObject {
     floorLength: number,
     floorWidth: number
   ): void {
-    console.log('setTransformationLimits');
-    controls.minx = 0 + this.length / 2;
-    controls.maxX = floorLength - this.length / 2;
+    const minX = 0 + this.length / 2;
+    const maxX = floorLength - this.length / 2;
+    const minZ = 0 + this.width / 2;
+    const maxZ = floorWidth - this.width / 2;
 
-    controls.minZ = 0 + this.width / 2;
-    controls.maxZ = floorWidth - this.width / 2;
+    const object = this.object;
 
-    console.log(controls);
+    controls.addEventListener('objectChange', () => {
+      object.position.x = Math.max(minX, Math.min(maxX, object.position.x));
+      object.position.z = Math.max(minZ, Math.min(maxZ, object.position.z));
+    });
   }
 }
