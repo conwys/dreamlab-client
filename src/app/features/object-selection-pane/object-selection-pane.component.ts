@@ -17,6 +17,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   @Output() removeObject = new EventEmitter<number>();
 
   @Output() selectObjectToTransform = new EventEmitter<RoomObject>();
+  @Output() rotateObject = new EventEmitter<RoomObject>();
 
   objectsCurrentlyInRoom: RoomObject[] = [];
 

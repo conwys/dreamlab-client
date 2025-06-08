@@ -62,7 +62,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.setUpRoomDimensions();
 
       this.setUpOrbitControls();
-      this.setUpTransformControls();
 
       this.renderer.setAnimationLoop(() => {
         if (this.renderer && this.camera && this.scene) {
@@ -203,15 +202,23 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.transformControls.setSize(0.5);
   }
 
-  public attachObjectToTransformControls(roomObject: RoomObject): void {
-    if (this.transformControls?.object?.id == roomObject.object.id) {
-      this.transformControls.detach();
+  public attachObjectToTransformControls(roomObject: RoomObject, rotate: boolean = false): void {
+    const isCurrentlyAttached = this.transformControls?.object?.id == roomObject.object.id;
 
+    if (!isCurrentlyAttached && rotate) {
       return;
     }
 
-    if (roomObject.displayedInScene && this.transformControls) {
-      this.transformControls.attach(roomObject.object);
+    this.transformControls?.detach().dispose();
+
+    if (isCurrentlyAttached && !rotate) {
+      return;
+    }
+
+    this.setUpTransformControls();
+
+    if (roomObject.displayedInScene && this.transformControls) {      
+      this.transformControls?.attach(roomObject.object);
 
       roomObject.setTransformationLimits(
         this.transformControls,
@@ -219,6 +226,13 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         this.roomWidth
       );
     }
+  }
+
+  public rotateObjectInRoom(object: RoomObject): void {
+    object.object.rotateY(this.degToRad(90));
+    object.updateDimensionsOnYRotation();
+
+    this.attachObjectToTransformControls(object, true);
   }
 
   private degToRad(deg: number): number {

@@ -10,6 +10,13 @@
     Move
   </button>
 
+    <button
+    class="transform-button"
+    (click)="rotateObject.emit(object)"
+  >
+    Rotate
+  </button>
+
   <p *ngIf="!object.filePath">{{ object.object.id }}</p>
   <model-viewer *ngIf="object.filePath" [src]="object.filePath" camera-controls disable-pan></model-viewer>
 

@@ -63,4 +63,12 @@ export class RoomObject {
       object.position.z = Math.max(minZ, Math.min(maxZ, object.position.z));
     });
   }
+
+  public updateDimensionsOnYRotation(): void {
+    const inialLength = this.length;
+    const initialWidth = this.width;
+
+    this.length = initialWidth;
+    this.width = inialLength;
+  }
 }
