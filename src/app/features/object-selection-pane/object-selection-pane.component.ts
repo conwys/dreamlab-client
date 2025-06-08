@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output } from '@angular/core';
 import * as THREE from 'three';
 import { RoomObject } from '../../models/room-object';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,8 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   imports: [CommonModule],
   templateUrl: './object-selection-pane.component.html',
   styleUrl: './object-selection-pane.component.scss',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ObjectSelectionPaneComponent implements AfterViewInit {
   @Output() addObject = new EventEmitter<RoomObject>();
@@ -18,7 +20,9 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
 
   objectsCurrentlyInRoom: RoomObject[] = [];
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+    await import('@google/model-viewer');
+
     // Test Objects
     const cylinderA = new RoomObject(
       new THREE.Mesh(
@@ -60,7 +64,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
         new THREE.Box3().setFromObject(newObject).getSize(objectSize);
 
         this.objectsCurrentlyInRoom.push(
-          new RoomObject(newObject, objectSize.x, objectSize.y, objectSize.z)
+          new RoomObject(newObject, objectSize.x, objectSize.y, objectSize.z, fileUrl)
         );
       },
       // called while loading is progressing

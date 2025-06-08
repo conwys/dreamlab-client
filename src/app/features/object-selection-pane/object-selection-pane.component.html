@@ -10,7 +10,8 @@
     Move
   </button>
 
-  <p>{{ object.object.id }}</p>
+  <p *ngIf="!object.filePath">{{ object.object.id }}</p>
+  <model-viewer *ngIf="object.filePath" [src]="object.filePath" camera-controls disable-pan></model-viewer>
 
   <button
     *ngIf="!object.displayedInScene"

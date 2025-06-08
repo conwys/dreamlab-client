@@ -8,18 +8,22 @@ export class RoomObject {
   private length: number; // X-axis
   private width: number; // Z-axis
 
+  public filePath?: string;
   public displayedInScene: boolean = false;
 
   constructor(
     mesh: THREE.Object3D,
     length: number,
     height: number,
-    width: number
+    width: number,
+    filePath?: string,
   ) {
     this._object = mesh;
     this.length = length;
     this.height = height;
     this.width = width;
+
+    this.filePath = filePath ? filePath : undefined;
   }
 
   get object(): THREE.Object3D {
