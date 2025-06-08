@@ -24,31 +24,6 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     await import('@google/model-viewer');
 
-    // Test Objects
-    const cylinderA = new RoomObject(
-      new THREE.Mesh(
-        new THREE.CylinderGeometry(0.25, 0.25, 1),
-        new THREE.MeshPhongMaterial({ color: new THREE.Color('Red') })
-      ),
-      0.5,
-      1,
-      0.5
-    );
-
-    this.objectsCurrentlyInRoom.push(cylinderA);
-
-    const cylinderB = new RoomObject(
-      new THREE.Mesh(
-        new THREE.CylinderGeometry(0.25, 0.25, 1),
-        new THREE.MeshPhongMaterial({ color: new THREE.Color('Green') })
-      ),
-      0.5,
-      1,
-      0.5
-    );
-
-    this.objectsCurrentlyInRoom.push(cylinderB);
-
     this.loadObjectFromFile('assets/img/white_mesh.glb');
   }
 
