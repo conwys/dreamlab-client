@@ -1,1 +1,37 @@
-<p>object-selection-pane works!</p>
+<div
+  *ngFor="let object of objectsCurrentlyInRoom"
+  id="{{ object.object.id }}"
+  class="object-block"
+>
+  <button
+    class="transform-button"
+    (click)="selectObjectToTransform.emit(object)"
+  >
+    Move
+  </button>
+
+    <button
+    class="transform-button"
+    (click)="rotateObject.emit(object)"
+  >
+    Rotate
+  </button>
+
+  <p *ngIf="!object.filePath">{{ object.object.id }}</p>
+  <model-viewer *ngIf="object.filePath" [src]="object.filePath" camera-controls disable-pan></model-viewer>
+
+  <button
+    *ngIf="!object.displayedInScene"
+    class="add-object-button"
+    (click)="addObject.emit(object)"
+  >
+    +
+  </button>
+  <button
+    *ngIf="object.displayedInScene"
+    class="remove-object-button"
+    (click)="removeObject.emit(object.object.id)"
+  >
+    -
+  </button>
+</div>
