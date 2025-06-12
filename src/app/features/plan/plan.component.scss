@@ -3,6 +3,5 @@
 @use "src/assets/styles/globals/globals";
 
 .plan-container {
-  @include variables.gradient-section-container;
+  @include globals.gradient-section-container;
 }
-

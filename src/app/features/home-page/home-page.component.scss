@@ -115,10 +115,9 @@
     line-height: 140%;
     max-width: 600px;
   }
-
   a.btn {
     display: inline-block;
-    @include variables.button-base(variables.$text-gradient, colours.$white);
+    @include globals.button-base(variables.$text-gradient, colours.$white);
   }
 
   .title {
@@ -157,20 +156,19 @@
   background: colours.$white;
   margin-top: 4rem;
   text-align: center;
-  
+
   .section-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 4rem 2rem;
     text-align: center;
   }
-
   h1 {
-    @include variables.section-heading;
+    @include globals.section-heading;
   }
   
   h2 {
-    @include variables.section-subheading;
+    @include globals.section-subheading;
   }
 
   .features {
@@ -239,14 +237,12 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 4rem 2rem;
-    text-align: center;
-
-    h1 {
-      @include variables.section-heading(colours.$white);
+    text-align: center;    h1 {
+      @include globals.section-heading(colours.$white);
     }    
     
     h2 {
-      @include variables.section-subheading(colours.$white);
+      @include globals.section-subheading(colours.$white);
     }
   }
 
@@ -273,10 +269,8 @@
     textarea {
       min-height: 150px;
       resize: vertical;
-    }
-
-    .btn {
-      @include variables.button-base();
+    }    .btn {
+      @include globals.button-base();
     }
   }
 }
