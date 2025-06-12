@@ -4,3 +4,16 @@ $styled-gradient: linear-gradient(-35deg, colours.$dark-lilac 0%, colours.$dark-
 $gradient-shadow: linear-gradient(0deg, #156EB6 0%, #156eb600 50%);
 $gradient-ease: linear-gradient(0deg, #ffffff00 0%, #ffffff 50%);
 $text-gradient: linear-gradient(-35deg, colours.$lilac, colours.$sky-blue);
+
+@mixin button-base {
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
