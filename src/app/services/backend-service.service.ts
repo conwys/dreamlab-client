@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
-const BASE_API_URL = process.env['BASE_API_URL'] || '';
-
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +12,19 @@ export class BackendServiceService {
     (async () => {
       try {
         this.sessionId = await this.generateSessionId();
-      } catch {
+        console.log('Session ID set in constructor:', this.sessionId);
+      } catch (err) {
+        console.error('Error generating session ID:', err);
         this.sessionId = null;
       }
     })();
   }
-
+  
 
   // Generate a session ID for the user when the page loads.
   // Session IDs expire after 1hr.
   async generateSessionId(): Promise<string> {
-    const response = await fetch(`${BASE_API_URL}/api/generate_session_id`, {
+    const response = await fetch(`${environment.BASE_API_URL}/api/generate_session_id`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -34,6 +34,7 @@ export class BackendServiceService {
       throw new Error('Failed to generate session ID');
     }
     const data = await response.json();
+    console.log('Generated session ID:', data.session_id);
     return data.session_id;
   }
 
@@ -41,7 +42,8 @@ export class BackendServiceService {
   // Send 1-4 images to the backend for processing.
   // At least a 'front' image is always required.
   async processFurnitureImages(
-    images: { front?: File; left?: File; right?: File; back?: File }
+    images: { front?: File; left?: File; right?: File; back?: File },
+    caption?: string
   ): Promise<{ message: string; session_id: string; filename: string; model_url?: string }> {
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
@@ -54,8 +56,9 @@ export class BackendServiceService {
     if (images.left) formData.append('left', images.left);
     if (images.right) formData.append('right', images.right);
     if (images.back) formData.append('back', images.back);
+    if (caption) formData.append('caption', caption);
 
-    const response = await fetch(`${BASE_API_URL}/api/process_furniture_image/${this.sessionId}`, {
+    const response = await fetch(`${environment.BASE_API_URL}/api/process_furniture_image/${this.sessionId}`, {
       method: 'POST',
       body: formData
     });
@@ -68,12 +71,12 @@ export class BackendServiceService {
   }
 
 
-  // Service to get list of model file names.
-  async getSessionModels(): Promise<{ session_id: string; models: string[] }> {
+  // Service to get list of model file names as URLs.
+  async getSessionModels(): Promise<string[]> {
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
     }
-    const response = await fetch(`${BASE_API_URL}/api/session_models/${this.sessionId}`, {
+    const response = await fetch(`${environment.BASE_API_URL}/api/session_models/${this.sessionId}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -84,16 +87,12 @@ export class BackendServiceService {
       throw new Error('Failed to fetch session models');
     }
 
-    return await response.json();
-  }
-
-
-  // Service to get individual model files.
-  async fetchModelFile(url: string): Promise<Blob> {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch model file');
-    }
-    return await response.blob();
+    const data = await response.json();
+    // Convert file names to URLs
+    const models = (data.models || []).map(
+      (fileName: string) =>
+        `${environment.BASE_API_URL}/sessions/${this.sessionId}/models/${fileName}`
+    );
+    return models;
   }
 }
