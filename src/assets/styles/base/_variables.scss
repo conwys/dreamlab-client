@@ -4,3 +4,77 @@ $styled-gradient: linear-gradient(-35deg, colours.$dark-lilac 0%, colours.$dark-
 $gradient-shadow: linear-gradient(0deg, #156EB6 0%, #156eb600 50%);
 $gradient-ease: linear-gradient(0deg, #ffffff00 0%, #ffffff 50%);
 $text-gradient: linear-gradient(-35deg, colours.$lilac, colours.$sky-blue);
+$gradient-transparent: linear-gradient(-35deg, colours.$lilac-transparent colours.$sky-blue-transparent);
+
+// Border Radius
+$border-radius-sm: 0.5rem;
+$border-radius-md: 0.75rem;
+$border-radius-lg: 1rem;
+$border-radius-xl: 1.2rem;
+$border-radius-circle: 50%;
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 0.75rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+
+// Shadows
+$shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+// Transitions
+$transition-fast: all 0.2s ease;
+$transition-base: all 0.3s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin hover-scale($scale: 1.02) {
+  transition: $transition-base;
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+@mixin card-base {
+  background: colours.$white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-md;
+  transition: $transition-base;
+}
+
+@mixin icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-md;
+  border-radius: $border-radius-circle;
+  transition: $transition-base;
+  @include flex-center;
+}
+
+@mixin input-base {
+  padding: $spacing-md $spacing-lg;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: 1.1rem;
+  transition: $transition-base;
+  
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { PlanComponent } from './features/plan/plan.component';
+import { RoomUploaderComponent } from './features/room-uploader/room-uploader.component';
 import { HomePageComponent } from './features/home-page/home-page.component';
 import { EditRoomComponent } from './features/edit-room/edit-room.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
-  { path: 'plan', component: PlanComponent },
+  { path: 'plan', component: RoomUploaderComponent },
   { path: 'edit', component: EditRoomComponent },
 ];

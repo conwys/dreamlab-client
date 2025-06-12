@@ -1,7 +1,0 @@
-@use "src/assets/styles/base/colours";
-@use "src/assets/styles/base/variables";
-@use "src/assets/styles/globals/globals";
-
-.plan-container {
-  @include globals.gradient-section-container;
-}
