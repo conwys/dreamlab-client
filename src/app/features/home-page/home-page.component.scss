@@ -117,6 +117,7 @@
   }
   a.btn {
     display: inline-block;
+    font-size: 1.3rem;
     @include globals.button-base(variables.$text-gradient, colours.$white);
   }
 
