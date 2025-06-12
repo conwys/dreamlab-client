@@ -12,9 +12,7 @@ export class BackendServiceService {
     (async () => {
       try {
         this.sessionId = await this.generateSessionId();
-        console.log('Session ID set in constructor:', this.sessionId);
       } catch (err) {
-        console.error('Error generating session ID:', err);
         this.sessionId = null;
       }
     })();
@@ -52,10 +50,10 @@ export class BackendServiceService {
       throw new Error('The front image is required.');
     }
     const formData = new FormData();
-    formData.append('front', images.front);
-    if (images.left) formData.append('left', images.left);
-    if (images.right) formData.append('right', images.right);
-    if (images.back) formData.append('back', images.back);
+    if (images.front) formData.append('front_image', images.front);
+    if (images.left) formData.append('left_image', images.left);
+    if (images.right) formData.append('right_image', images.right);
+    if (images.back) formData.append('back_image', images.back);
     if (caption) formData.append('caption', caption);
 
     const response = await fetch(`${environment.BASE_API_URL}/api/process_furniture_image/${this.sessionId}`, {
