@@ -17,6 +17,8 @@
     Rotate
   </button>
 
+  <input [(colorPicker)]="object.colour" [cpOutputFormat]="'rgba'" [style.background]="object.colour" [style.width]="'10px'"/>
+
   <p *ngIf="!object.filePath">{{ object.object.id }}</p>
   <model-viewer *ngIf="object.filePath" [src]="object.filePath" camera-controls disable-pan></model-viewer>
 
