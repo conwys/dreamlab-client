@@ -1,19 +1,70 @@
-<div class="hero-section">
-  <video
-    #bgVideo
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="auto"
-    crossorigin="anonymous"
-    class="background-video"
-  >
-    <source src="assets/img/room-3d.mp4" type="video/mp4" />
-  </video>
-  <div class="video-overlay"></div>
-  <div class="web-content">
-    <h1 class="title">Build your <span class="gradient-text">dream</span>.</h1>
-    <a class="btn" routerLink="/plan">Get started</a>
-  </div>
+<div class="main-container">
+  <section id="home" class="section hero-section">
+    <div class="background-gradient"></div>
+    <div class="background-gradient-shadow"></div>
+    <div class="background-gradient-ease"></div>
+    <div class="web-content">
+      <div class="cloud-behind-text">
+        <div class="cloud-layer1"></div>
+        <div class="cloud-layer2"></div>
+        <div class="cloud-layer3"></div>
+      </div> 
+      <div class="web-information">
+        <h1 class="title">Build your <br><span class="gradient-text">dream</span>.</h1>
+        <p class="description">
+          DreamLab allows you to unlock your creativity and enhance your living space at a click of a button. 
+        </p>
+        <a class="btn" routerLink="/plan">Get Started</a>
+      </div>
+      <div class="web-image">
+        <img src="assets/img/room2.png" alt="Hero Image" />
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section about-section">
+    <div class="section-content">
+      <h1>About DreamLab</h1>
+      <h2>
+        We help you visualize and create your perfect living space through
+        innovative 3D room planning.
+      </h2>
+      <div class="features">
+        <div class="feature-card">
+          <div class="icon-wrapper">
+            <fa-icon [icon]="faCube"></fa-icon>
+          </div>
+          <h3>3D Visualization</h3>
+          <p>See your room come to life in stunning 3D detail</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-wrapper">
+            <fa-icon [icon]="faPencilRuler"></fa-icon>
+          </div>
+          <h3>Easy Planning</h3>
+          <p>Intuitive tools to design your space effortlessly</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-wrapper">
+            <fa-icon [icon]="faClock"></fa-icon>
+          </div>
+          <h3>Real-time Updates</h3>
+          <p>Watch your changes update instantly</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section contact-section">
+    <div class="section-content">
+      <h1>Get in Touch</h1>
+      <h2>Have questions? We'd love to hear from you.</h2>
+      <div class="contact-form">
+        <input type="text" placeholder="Your Name" />
+        <input type="email" placeholder="Your Email" />
+        <textarea placeholder="Your Message"></textarea>
+        <button class="btn">Send Message</button>
+      </div>
+    </div>
+  </section>
 </div>
