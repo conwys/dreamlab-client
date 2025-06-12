@@ -2,7 +2,10 @@ import * as THREE from 'three';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
 export class RoomObject {
-  private _object: THREE.Object3D;
+  private _object: THREE.Mesh;
+  private _colour?: string;
+
+  private defaultColour = 'rgb(255,255,255)';
 
   private height: number; // Y-axis
   private length: number; // X-axis
@@ -12,26 +15,43 @@ export class RoomObject {
   public displayedInScene: boolean = false;
 
   constructor(
-    mesh: THREE.Object3D,
+    mesh: THREE.Mesh,
     length: number,
     height: number,
     width: number,
-    filePath?: string,
+    filePath?: string
   ) {
     this._object = mesh;
+
     this.length = length;
     this.height = height;
     this.width = width;
 
     this.filePath = filePath ? filePath : undefined;
+
+    this.colour = this.defaultColour;
   }
 
-  get object(): THREE.Object3D {
+  get object(): THREE.Mesh {
     return this._object;
   }
 
   get position(): THREE.Vector3 {
     return this.object.position;
+  }
+
+  get colour(): string {
+    return this._colour || this.defaultColour;
+  }
+
+  set colour(newColor: string) {
+    this._colour = newColor;
+
+    if (Array.isArray(this.object.material)) {
+      (this.object.material[0] as THREE.MeshStandardMaterial).color = new THREE.Color(newColor);
+    } else {
+      (this.object.material as THREE.MeshStandardMaterial).color = new THREE.Color(newColor);
+    }
   }
 
   public addToScene(
