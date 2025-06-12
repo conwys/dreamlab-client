@@ -328,3 +328,34 @@
     }
   }
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+
+  .pagination-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--primary-color);
+    transition: opacity 0.2s;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      opacity: 0.8;
+    }
+  }
+
+  .page-info {
+    font-size: 0.9rem;
+    color: var(--text-color);
+  }
+}
