@@ -1,3 +1,6 @@
 @use "./colours";
 
-$styled-gradient: linear-gradient(45deg, colours.$lilac, colours.$sky-blue);
+$styled-gradient: linear-gradient(-35deg, colours.$dark-lilac 0%, colours.$dark-blue 50%, colours.$white 100%);
+$gradient-shadow: linear-gradient(0deg, #156EB6 0%, #156eb600 50%);
+$gradient-ease: linear-gradient(0deg, #ffffff00 0%, #ffffff 50%);
+$text-gradient: linear-gradient(-35deg, colours.$lilac, colours.$sky-blue);
