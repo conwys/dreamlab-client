@@ -118,12 +118,7 @@
 
   a.btn {
     display: inline-block;
-    background: variables.$text-gradient;
-    color: colours.$white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    padding: 1rem 3rem;
-    @include variables.button-base;
+    @include variables.button-base(variables.$text-gradient, colours.$white);
   }
 
   .title {
@@ -162,6 +157,7 @@
   background: colours.$white;
   margin-top: 4rem;
   text-align: center;
+  
   .section-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -170,19 +166,11 @@
   }
 
   h1 {
-    color: colours.$very-dark-grey;
-    font-size: 4rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
+    @include variables.section-heading;
   }
+  
   h2 {
-    font-size: 1.5rem;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 3rem;
-    color: colours.$dark-grey;
-    font-weight: 500;
-    line-height: 1.4;
+    @include variables.section-subheading;
   }
 
   .features {
@@ -190,18 +178,16 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 4rem;
-  }
-  .feature-card {
+  }  .feature-card {
     padding: 2rem;
     background: colours.$white;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     text-align: center;
-
+    
     &:hover {
       transform: translateY(-5px);
-
       .icon-wrapper {
         background: variables.$text-gradient;
         
@@ -256,20 +242,11 @@
     text-align: center;
 
     h1 {
-      font-size: 4rem;
-      font-weight: 800;
-      margin-bottom: 1.5rem;
-      color: colours.$white;
+      @include variables.section-heading(colours.$white);
     }    
     
     h2 {
-      font-size: 1.5rem;
-      text-align: center;
-      max-width: 600px;
-      margin: 0 auto 3rem;
-      color: colours.$white;
-      font-weight: 500;
-      line-height: 1.4;
+      @include variables.section-subheading(colours.$white);
     }
   }
 
@@ -278,7 +255,7 @@
     flex-direction: column;
     gap: 1.5rem;
     margin-top: 3rem;
-
+    
     input,
     textarea {
       padding: 1rem;
@@ -299,9 +276,7 @@
     }
 
     .btn {
-      background: colours.$white;
-      color: colours.$very-dark-grey;
-      @include variables.button-base;
+      @include variables.button-base();
     }
   }
 }
