@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { RoomObject } from '../../models/room-object';
 import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { BackendServiceService } from '../../services/backend-service.service';
 
 @Component({
   selector: 'app-object-selection-pane',
@@ -21,10 +22,19 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
 
   objectsCurrentlyInRoom: RoomObject[] = [];
 
+  constructor( 
+    private backendService: BackendServiceService
+  ) {}
+
   async ngAfterViewInit(): Promise<void> {
     await import('@google/model-viewer');
 
-    this.loadObjectFromFile('assets/img/white_mesh.glb');
+    const fetchedModels = await this.backendService.getSessionModels();
+
+    fetchedModels.forEach(url => {
+      this.loadObjectFromFile(url);
+    });
+    //this.loadObjectFromFile('assets/img/white_mesh.glb');
   }
 
   private loadObjectFromFile(fileUrl: string): void {
