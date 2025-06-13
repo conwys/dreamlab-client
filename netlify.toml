@@ -1,0 +1,3 @@
+[build]
+  publish = "dist/dreamlab/browser"
+  command = "npm run build"
