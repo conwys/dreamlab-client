@@ -134,36 +134,41 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const y = this.roomHeight;
     const z = this.roomWidth;
 
+    // Materials for the walls and floor
     const wallMaterial = new THREE.MeshPhongMaterial({
       color: new THREE.Color('Cornsilk'),
-      side: THREE.DoubleSide,
     });
 
     const floorMaterial = new THREE.MeshPhongMaterial({
       color: new THREE.Color('Sienna'),
-      side: THREE.DoubleSide,
     });
 
-    const xyPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, y), wallMaterial);
-    xyPlane.translateX(x / 2).translateY(y / 2);
-    this.scene?.add(xyPlane);
+    // Wall thickness
+    const wallThickness = 0.2;
 
-    const zyPlane = new THREE.Mesh(new THREE.PlaneGeometry(z, y), wallMaterial);
-    zyPlane
-      .translateZ(z / 2)
-      .translateY(y / 2)
-      .rotateY(this.degToRad(90));
-    this.scene?.add(zyPlane);
+    // Back wall (xy plane)
+    const backWall = new THREE.Mesh(
+      new THREE.BoxGeometry(x, y, wallThickness),
+      wallMaterial
+    );
+    backWall.translateX(x / 2).translateY(y / 2);
+    this.scene?.add(backWall);
 
-    const xzPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(x, z),
+    // Side wall (zy plane)
+    const sideWall = new THREE.Mesh(
+      new THREE.BoxGeometry(wallThickness, y, z),
+      wallMaterial
+    );
+    sideWall.translateY(y / 2).translateZ(z / 2);
+    this.scene?.add(sideWall);
+
+    // Floor (xz plane)
+    const floor = new THREE.Mesh(
+      new THREE.BoxGeometry(x, wallThickness, z),
       floorMaterial
     );
-    xzPlane
-      .translateX(x / 2)
-      .translateZ(z / 2)
-      .rotateX(this.degToRad(90));
-    this.scene?.add(xzPlane);
+    floor.translateX(x / 2).translateZ(z / 2);
+    this.scene?.add(floor);
   }
 
   private setUpOrbitControls(): void {
@@ -175,6 +180,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.orbitControls.maxPolarAngle = Math.PI / 2;
     this.orbitControls.maxAzimuthAngle = Math.PI / 2;
     this.orbitControls.minAzimuthAngle = 0;
+    this.orbitControls.enableDamping = true;
+    this.orbitControls.dampingFactor = 0.5;
+    this.orbitControls.rotateSpeed = 0.3;
     this.orbitControls.update();
   }
 
