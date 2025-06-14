@@ -57,3 +57,5 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0f49feec-85b0-4fa5-91de-67fa9365b2ae/deploy-status)](https://app.netlify.com/projects/dreamlabmku/deploys)
