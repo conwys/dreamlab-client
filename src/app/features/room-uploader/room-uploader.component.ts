@@ -12,7 +12,8 @@ import {
   faChevronDown, 
   faChevronUp,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 interface ObjectUpload {
@@ -33,6 +34,9 @@ const IMAGE_LABELS = ['Front', 'Left', 'Right', 'Back'];
   standalone: true,
 })
 export class RoomUploaderComponent {
+  isLoading = false;
+  errorMessage: string | null = null;
+  
   faPlus = faPlus;
   faTrash = faTrash;
   faImage = faImage;
@@ -41,6 +45,7 @@ export class RoomUploaderComponent {
   faChevronUp = faChevronUp;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
+  faExclamationCircle = faExclamationCircle;
 
   imageLabels = IMAGE_LABELS;
   objects: ObjectUpload[] = [{ 
@@ -148,6 +153,10 @@ export class RoomUploaderComponent {
     object.thumbnails[imageIndex] = null;
   }
 
+  dismissError(): void {
+    this.errorMessage = null;
+  }
+
   async onUpload(): Promise<void> {
     const isValid = this.objects.every(obj => 
       obj.images[0] !== null && obj.caption.trim().length > 0
@@ -159,6 +168,7 @@ export class RoomUploaderComponent {
     }
 
     try {
+      this.isLoading = true;
       // Call processFurnitureImages for each object
       await Promise.all(this.objects.map(obj => {
         const images = {
@@ -170,9 +180,10 @@ export class RoomUploaderComponent {
         return this.backendService.processFurnitureImages(images, obj.caption);
       }));
       console.log('Objects uploaded:', this.objects);
-      this.router.navigate(['/edit']);
-    } catch (error) {
-      alert('Error uploading objects: ' + error);
+      this.router.navigate(['/edit']);    } catch (error) {
+      this.errorMessage = 'Error uploading objects: ' + (error instanceof Error ? error.message : String(error));
+    } finally {
+      this.isLoading = false;
     }
   }
 }

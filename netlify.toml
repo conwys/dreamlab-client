@@ -2,6 +2,11 @@
   command = "ng build --configuration production"
   publish = "dist/dreamlab"
 
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [build.environment]
   NODE_VERSION = "20"
 
