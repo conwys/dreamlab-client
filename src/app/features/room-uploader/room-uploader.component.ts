@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { BackendServiceService } from '../../services/backend-service.service'
 import { 
   faPlus, 
   faTrash, 
@@ -54,7 +55,10 @@ export class RoomUploaderComponent {
   currentPage = 1;
   itemsPerPage = 4;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private backendService: BackendServiceService
+  ) {}
 
   get totalPages(): number {
     return Math.ceil(this.objects.length / this.itemsPerPage);
@@ -144,7 +148,7 @@ export class RoomUploaderComponent {
     object.thumbnails[imageIndex] = null;
   }
 
-  onUpload(): void {
+  async onUpload(): Promise<void> {
     const isValid = this.objects.every(obj => 
       obj.images[0] !== null && obj.caption.trim().length > 0
     );
@@ -154,8 +158,21 @@ export class RoomUploaderComponent {
       return;
     }
 
-    console.log('Objects ready for upload:', this.objects);
-
-    this.router.navigate(['/edit']);
+    try {
+      // Call processFurnitureImages for each object
+      await Promise.all(this.objects.map(obj => {
+        const images = {
+          front: obj.images[0] || undefined,
+          left: obj.images[1] || undefined,
+          right: obj.images[2] || undefined,
+          back: obj.images[3] || undefined
+        };
+        return this.backendService.processFurnitureImages(images, obj.caption);
+      }));
+      console.log('Objects uploaded:', this.objects);
+      this.router.navigate(['/edit']);
+    } catch (error) {
+      alert('Error uploading objects: ' + error);
+    }
   }
 }
