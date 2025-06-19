@@ -1,10 +1,9 @@
 {
   "name": "dreamlab",
-  "version": "0.0.0",
-  "scripts": {
+  "version": "0.0.0",  "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:dreamlab": "node dist/dreamlab/server/server.mjs"
@@ -24,7 +23,9 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@google/model-viewer": "^4.1.0",
+    "@netlify/angular-runtime": "^2.4.0",
     "express": "^4.18.2",
+    "ngx-color-picker": "^14.0.0",
     "rxjs": "~7.8.0",
     "three": "^0.172.0",
     "tslib": "^2.3.0",

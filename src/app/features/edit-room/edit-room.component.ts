@@ -44,6 +44,8 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     side: THREE.DoubleSide,
   });
 
+  private wallThickness = 0.2;
+
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
   }
@@ -161,45 +163,32 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const y = this.roomHeight;
     const z = this.roomWidth;
 
-    this.xyPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(x, y),
-      this.wallMaterial
-    );
-    this.xyPlane.translateX(x / 2).translateY(y / 2);
+    const xyPlane = new THREE.Mesh(new THREE.BoxGeometry(x, y, this.wallThickness), this.wallMaterial);
+    xyPlane.translateX(x / 2).translateY(y / 2);
+    this.scene?.add(xyPlane);
 
-    this.zyPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(z, y),
-      this.wallMaterial
-    );
-    this.zyPlane
+    const zyPlane = new THREE.Mesh(new THREE.BoxGeometry(this.wallThickness, y, z), this.wallMaterial);
+    zyPlane
       .translateZ(z / 2)
       .translateY(y / 2)
-      .rotateY(this.degToRad(90));
+    this.scene?.add(zyPlane);
 
-    this.xzPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(x, z),
+    const xzPlane = new THREE.Mesh(
+      new THREE.BoxGeometry(x, this.wallThickness, z),
       this.floorMaterial
     );
-    this.xzPlane
+    xzPlane
       .translateX(x / 2)
       .translateZ(z / 2)
-      .rotateX(this.degToRad(90));
-
-    this.scene?.add(this.xyPlane as THREE.Object3D);
-    this.scene?.add(this.zyPlane as THREE.Object3D);
-    this.scene?.add(this.xzPlane as THREE.Object3D);
+    this.scene?.add(xzPlane);
   }
 
   private setUpOrbitControls(): void {
     this.orbitControls = new OrbitControls(this.camera, this.canvas);
     this.orbitControls.target.set(0, 0, 0);
-    // this.orbitControls.enablePan = false;
-    // this.orbitControls.maxDistance = 20;
-    // this.orbitControls.minDistance = 5;
-    // this.orbitControls.maxPolarAngle = Math.PI / 2;
-    // this.orbitControls.minPolarAngle = 0;
-    // this.orbitControls.maxAzimuthAngle = Math.PI / 2;
-    // this.orbitControls.minAzimuthAngle = 0;
+    this.orbitControls.enableDamping = true;
+    this.orbitControls.dampingFactor = 0.5;
+    this.orbitControls.rotateSpeed = 0.3;
     this.orbitControls.update();
   }
 
