@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendServiceService {
   public sessionId: string | null = null;
+
+  api_url = import.meta.env['NG_APP_BASE_API_URL'] || 'http://localhost:5000';
 
   // Constructor generates a session ID.
   constructor() {
@@ -22,7 +23,7 @@ export class BackendServiceService {
   // Generate a session ID for the user when the page loads.
   // Session IDs expire after 1hr.
   async generateSessionId(): Promise<string> {
-    const response = await fetch(`${environment.BASE_API_URL}/api/generate_session_id`, {
+    const response = await fetch(`${this.api_url}/api/generate_session_id`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -56,7 +57,7 @@ export class BackendServiceService {
     if (images.back) formData.append('back_image', images.back);
     if (caption) formData.append('caption', caption);
 
-    const response = await fetch(`${environment.BASE_API_URL}/api/process_furniture_image/${this.sessionId}`, {
+    const response = await fetch(`${this.api_url}/api/process_furniture_image/${this.sessionId}`, {
       method: 'POST',
       body: formData
     });
@@ -74,7 +75,7 @@ export class BackendServiceService {
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
     }
-    const response = await fetch(`${environment.BASE_API_URL}/api/session_models/${this.sessionId}`, {
+    const response = await fetch(`${this.api_url}/api/session_models/${this.sessionId}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -89,7 +90,7 @@ export class BackendServiceService {
     // Convert file names to URLs
     const models = (data.models || []).map(
       (fileName: string) =>
-        `${environment.BASE_API_URL}/sessions/${this.sessionId}/models/${fileName}`
+        `${this.api_url}/sessions/${this.sessionId}/models/${fileName}`
     );
     return models;
   }
