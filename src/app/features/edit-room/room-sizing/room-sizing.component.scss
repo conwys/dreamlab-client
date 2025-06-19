@@ -1,3 +1,5 @@
+@use "../../../../assets/styles/base/colours";
+
 .controls-panel {
   position: absolute;
   top: 0;
@@ -17,4 +19,8 @@
     align-items: center;
     justify-content: center;
   }
+}
+
+label {
+  color: colours.$dark-grey;
 }

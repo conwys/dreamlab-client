@@ -11,10 +11,17 @@ import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { BackendServiceService } from '../../../services/backend-service.service';
+import {
+  faPlus,
+  faTrash,
+  faUpDownLeftRight,
+  faRotate,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-object-selection-pane',
-  imports: [CommonModule, ColorPickerModule],
+  imports: [CommonModule, ColorPickerModule, FontAwesomeModule],
   templateUrl: './object-selection-pane.component.html',
   styleUrl: './object-selection-pane.component.scss',
   standalone: true,
@@ -27,6 +34,11 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   @Output() selectObjectToTransform = new EventEmitter<RoomObject>();
   @Output() rotateObject = new EventEmitter<RoomObject>();
 
+  faPlus = faPlus;
+  faTrash = faTrash;
+  faUpDownLeftRight = faUpDownLeftRight;
+  faRotate = faRotate;
+
   objectsCurrentlyInRoom: RoomObject[] = [];
 
   constructor(private backendService: BackendServiceService) {}
@@ -34,12 +46,13 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     await import('@google/model-viewer');
 
-    const fetchedModels = await this.backendService.getSessionModels();
+    // const fetchedModels = await this.backendService.getSessionModels();
 
-    fetchedModels.forEach((url) => {
-      this.loadObjectFromFile(url);
-    });
-    //this.loadObjectFromFile('assets/img/white_mesh.glb');
+    // fetchedModels.forEach((url) => {
+    //   this.loadObjectFromFile(url);
+    // });
+    this.loadObjectFromFile('assets/img/white_mesh.glb');
+    this.loadObjectFromFile('assets/img/white_mesh.glb');
   }
 
   private loadObjectFromFile(fileUrl: string): void {

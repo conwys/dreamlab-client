@@ -1,29 +1,46 @@
 @use "../../../assets/styles/base/colours";
+@use "src/assets/styles/base/variables";
 
-.edit-area {
-  width: 100%;
-  height: 90vh;
-  margin-top: 30px;
-  display: flex;
-  flex-flow: row;
-  justify-content: start;
-  align-items: stretch;
-  align-content: center;
+.page-container {
+  margin: 0 auto;
+  padding: variables.$spacing-2xl;
 
-  .object-selection-pane {
-    width: 300px;
-    background-color: colours.$dark-grey;
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: variables.$spacing-md;
+    color: colours.$very-dark-grey;
+    font-weight: 600;
+    text-align: center;
   }
 
-  .canvas-container {
-    flex: 1;
-    position: relative;
+  .edit-area {
+    width: 100%;
+    height: 90vh;
+    margin-top: 30px;
+    display: flex;
+    flex-flow: row;
+    gap: variables.$spacing-xl;
+    justify-content: start;
+    align-items: stretch;
+    align-content: center;
 
-    #edit-room-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      background-color: colours.$white;
+    .object-selection-pane {
+      width: 300px;
+      @include variables.flex-column;
+      gap: 1rem;
+    }
+
+    .canvas-container {
+      flex: 1;
+      position: relative;
+
+      #edit-room-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        @include variables.card-base;
+        padding: 0;
+      }
     }
   }
 }

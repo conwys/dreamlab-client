@@ -1,12 +1,10 @@
 @use "../../../../assets/styles/base/colours";
+@use "src/assets/styles/base/variables";
 
 :host {
+  @include variables.card-base;
   padding: 10px;
-  overflow-y: scroll;
-}
-
-p {
-  color: white;
+  overflow-y: auto;
 }
 
 .object-block {
@@ -15,4 +13,34 @@ p {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+
+  .left-buttons {
+    @include variables.flex-column;
+    align-items: center;
+    gap: 0.5rem;
+
+    .transform-button {
+      @include variables.icon-button;
+      color: colours.$dark-lilac;
+      padding: 0.3rem;
+      font-size: 1rem;
+    }
+  }
+
+  .add-remove-button {
+    @include variables.icon-button;
+    color: colours.$dark-lilac;
+    padding: 0.3rem;
+    font-size: 1.5rem;
+  }
+
+  .colour-picker {
+    cursor: pointer;
+  }
+
+  .model {
+    border-radius: variables.$border-radius-lg;
+    transition: variables.$transition-base;
+    background-color: rgba(colours.$sky-blue, 0.1);
+  }
 }
