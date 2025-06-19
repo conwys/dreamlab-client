@@ -3,37 +3,43 @@
   id="{{ object.object.id }}"
   class="object-block"
 >
-  <button
-    class="transform-button"
-    (click)="selectObjectToTransform.emit(object)"
-  >
-    Move
-  </button>
-
+  <div class="left-buttons">
     <button
-    class="transform-button"
-    (click)="rotateObject.emit(object)"
-  >
-    Rotate
-  </button>
+      class="transform-button"
+      (click)="selectObjectToTransform.emit(object)"
+    >
+      <fa-icon [icon]="faUpDownLeftRight"></fa-icon>
+    </button>
 
-  <input [(colorPicker)]="object.colour" [cpOutputFormat]="'rgba'" [style.background]="object.colour" [style.width]="'10px'"/>
+    <button class="transform-button" (click)="rotateObject.emit(object)">
+      <fa-icon [icon]="faRotate"></fa-icon>
+    </button>
 
-  <p *ngIf="!object.filePath">{{ object.object.id }}</p>
-  <model-viewer *ngIf="object.filePath" [src]="object.filePath" camera-controls disable-pan></model-viewer>
+    <input
+      class="colour-picker"
+      [(colorPicker)]="object.colour"
+      [cpOutputFormat]="'rgba'"
+      [style.background]="object.colour"
+      [style.width]="'10px'"
+    />
+  </div>
+
+  <model-viewer
+    class="model"
+    *ngIf="object.filePath"
+    [src]="object.filePath"
+    camera-controls
+    disable-pan
+  ></model-viewer>
 
   <button
-    *ngIf="!object.displayedInScene"
-    class="add-object-button"
-    (click)="addObject.emit(object)"
+    class="add-remove-button"
+    (click)="
+      object.displayedInScene
+        ? removeObject.emit(object.object.id)
+        : addObject.emit(object)
+    "
   >
-    +
-  </button>
-  <button
-    *ngIf="object.displayedInScene"
-    class="remove-object-button"
-    (click)="removeObject.emit(object.object.id)"
-  >
-    -
+    <fa-icon [icon]="object.displayedInScene ? faTrash : faPlus"></fa-icon>
   </button>
 </div>

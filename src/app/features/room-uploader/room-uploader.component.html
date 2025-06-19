@@ -1,4 +1,4 @@
-<div class="plan-container">  
+<div class="plan-container">
   <div class="loading-overlay" *ngIf="isLoading || errorMessage">
     <div class="loading-content" [class.error]="errorMessage">
       <div class="shape-container" *ngIf="!errorMessage">
@@ -7,8 +7,12 @@
       <div class="error-icon" *ngIf="errorMessage">
         <fa-icon [icon]="faExclamationCircle" size="3x"></fa-icon>
       </div>
-      <p>{{errorMessage || 'Processing your images...'}}</p>
-      <button *ngIf="errorMessage" class="btn close-error" (click)="dismissError()">
+      <p>{{ errorMessage || "Processing your images..." }}</p>
+      <button
+        *ngIf="errorMessage"
+        class="btn close-error"
+        (click)="dismissError()"
+      >
         Close
       </button>
     </div>
@@ -16,9 +20,10 @@
   <div class="room-uploader-container">
     <h2>Upload Your Objects</h2>
     <p>
-      Upload photos of each object from different angles. The front view is required,
-      other angles are optional but help improve the 3D model quality.
-    </p>    <div class="objects-container">
+      Upload photos of each object from different angles. The front view is
+      required, other angles are optional but help improve the 3D model quality.
+    </p>
+    <div class="objects-container">
       <div class="object-upload" *ngFor="let object of paginatedObjects">
         <div class="object-header" (click)="toggleObject(object.id)">
           <input
@@ -28,7 +33,7 @@
             class="caption-input"
             (click)="$event.stopPropagation()"
           />
-          <button 
+          <button
             *ngIf="objects.length > 1"
             class="remove-btn"
             (click)="removeObject(object.id); $event.stopPropagation()"
@@ -37,12 +42,17 @@
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
           <button class="toggle-btn" [class.expanded]="object.isExpanded">
-            <fa-icon [icon]="object.isExpanded ? faChevronUp : faChevronDown"></fa-icon>
+            <fa-icon
+              [icon]="object.isExpanded ? faChevronUp : faChevronDown"
+            ></fa-icon>
           </button>
         </div>
 
         <div class="image-upload-grid" *ngIf="object.isExpanded">
-          <div class="image-slot" *ngFor="let label of imageLabels; let i = index">
+          <div
+            class="image-slot"
+            *ngFor="let label of imageLabels; let i = index"
+          >
             <div class="upload-area" *ngIf="!object.thumbnails[i]">
               <input
                 type="file"
@@ -53,18 +63,15 @@
               <label [for]="'upload-' + object.id + '-' + i">
                 <fa-icon [icon]="faImage"></fa-icon>
                 <span>{{ label }} view</span>
-                <small>{{ i === 0 ? 'Required' : 'Optional' }}</small>
+                <small>{{ i === 0 ? "Required" : "Optional" }}</small>
                 <small class="click-hint">Click to upload</small>
               </label>
             </div>
             <div class="image-preview" *ngIf="object.thumbnails[i]">
-              <img
-                [src]="object.thumbnails[i]"
-                [alt]="label + ' view'"
-              />
+              <img [src]="object.thumbnails[i]" [alt]="label + ' view'" />
               <div class="image-label">{{ label }}</div>
-              <button 
-                class="remove-image" 
+              <button
+                class="remove-image"
                 (click)="removeImage(object.id, i)"
                 title="Remove image"
               >
@@ -77,18 +84,18 @@
     </div>
 
     <div class="pagination-controls" *ngIf="totalPages > 1">
-      <button 
-        class="btn pagination-btn" 
-        (click)="previousPage()" 
+      <button
+        class="btn pagination-btn"
+        (click)="previousPage()"
         [disabled]="currentPage === 1"
         title="Previous page"
       >
         <fa-icon [icon]="faChevronLeft"></fa-icon>
       </button>
-      <span class="page-info">Page {{currentPage}} of {{totalPages}}</span>
-      <button 
-        class="btn pagination-btn" 
-        (click)="nextPage()" 
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button
+        class="btn pagination-btn"
+        (click)="nextPage()"
         [disabled]="currentPage === totalPages"
         title="Next page"
       >
