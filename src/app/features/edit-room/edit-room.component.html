@@ -2,6 +2,12 @@
   <h1>Edit Your Room</h1>
   <div class="edit-area">
     <div class="canvas-container">
+      <app-room-sizing
+        [initialValue]="initialValue"
+        (lengthChange)="updateRoomDimension($event, 'length')"
+        (widthChange)="updateRoomDimension($event, 'width')"
+        (heightChange)="updateRoomDimension($event, 'height')"
+      ></app-room-sizing>
       <canvas id="edit-room-canvas"></canvas>
     </div>
     <app-object-selection-pane

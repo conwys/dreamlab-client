@@ -1,10 +1,16 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import * as THREE from 'three';
-import { RoomObject } from '../../models/room-object';
+import { RoomObject } from '../../../models/room-object';
 import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { BackendServiceService } from '../../services/backend-service.service';
+import { BackendServiceService } from '../../../services/backend-service.service';
 
 @Component({
   selector: 'app-object-selection-pane',
@@ -23,16 +29,14 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
 
   objectsCurrentlyInRoom: RoomObject[] = [];
 
-  constructor( 
-    private backendService: BackendServiceService
-  ) {}
+  constructor(private backendService: BackendServiceService) {}
 
   async ngAfterViewInit(): Promise<void> {
     await import('@google/model-viewer');
 
     const fetchedModels = await this.backendService.getSessionModels();
 
-    fetchedModels.forEach(url => {
+    fetchedModels.forEach((url) => {
       this.loadObjectFromFile(url);
     });
     //this.loadObjectFromFile('assets/img/white_mesh.glb');
@@ -51,7 +55,13 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
         new THREE.Box3().setFromObject(newObject).getSize(objectSize);
 
         this.objectsCurrentlyInRoom.push(
-          new RoomObject(newObject as THREE.Mesh, objectSize.x, objectSize.y, objectSize.z, fileUrl)
+          new RoomObject(
+            newObject as THREE.Mesh,
+            objectSize.x,
+            objectSize.y,
+            objectSize.z,
+            fileUrl
+          )
         );
       },
       // called while loading is progressing
