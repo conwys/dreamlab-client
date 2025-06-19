@@ -163,24 +163,26 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const y = this.roomHeight;
     const z = this.roomWidth;
 
-    const xyPlane = new THREE.Mesh(new THREE.BoxGeometry(x, y, this.wallThickness), this.wallMaterial);
-    xyPlane.translateX(x / 2).translateY(y / 2);
-    this.scene?.add(xyPlane);
+    this.xyPlane = new THREE.Mesh(
+      new THREE.BoxGeometry(x, y, this.wallThickness),
+      this.wallMaterial
+    );
+    this.xyPlane.translateX(x / 2).translateY(y / 2);
+    this.scene?.add(this.xyPlane);
 
-    const zyPlane = new THREE.Mesh(new THREE.BoxGeometry(this.wallThickness, y, z), this.wallMaterial);
-    zyPlane
-      .translateZ(z / 2)
-      .translateY(y / 2)
-    this.scene?.add(zyPlane);
+    this.zyPlane = new THREE.Mesh(
+      new THREE.BoxGeometry(this.wallThickness, y, z),
+      this.wallMaterial
+    );
+    this.zyPlane.translateZ(z / 2).translateY(y / 2);
+    this.scene?.add(this.zyPlane);
 
-    const xzPlane = new THREE.Mesh(
+    this.xzPlane = new THREE.Mesh(
       new THREE.BoxGeometry(x, this.wallThickness, z),
       this.floorMaterial
     );
-    xzPlane
-      .translateX(x / 2)
-      .translateZ(z / 2)
-    this.scene?.add(xzPlane);
+    this.xzPlane.translateX(x / 2).translateZ(z / 2);
+    this.scene?.add(this.xzPlane);
   }
 
   private setUpOrbitControls(): void {
