@@ -3,11 +3,12 @@ import * as THREE from 'three';
 import { RoomObject } from '../../models/room-object';
 import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { ColorPickerModule } from 'ngx-color-picker';
 import { BackendServiceService } from '../../services/backend-service.service';
 
 @Component({
   selector: 'app-object-selection-pane',
-  imports: [CommonModule],
+  imports: [CommonModule, ColorPickerModule],
   templateUrl: './object-selection-pane.component.html',
   styleUrl: './object-selection-pane.component.scss',
   standalone: true,
@@ -50,7 +51,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
         new THREE.Box3().setFromObject(newObject).getSize(objectSize);
 
         this.objectsCurrentlyInRoom.push(
-          new RoomObject(newObject, objectSize.x, objectSize.y, objectSize.z, fileUrl)
+          new RoomObject(newObject as THREE.Mesh, objectSize.x, objectSize.y, objectSize.z, fileUrl)
         );
       },
       // called while loading is progressing
