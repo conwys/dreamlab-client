@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { ObjectSelectionPaneComponent } from '../object-selection-pane/object-selection-pane.component';
+import { ObjectSelectionPaneComponent } from './object-selection-pane/object-selection-pane.component';
 import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { RoomSizingComponent } from './room-sizing/room-sizing.component';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent],
+  imports: [ObjectSelectionPaneComponent, RoomSizingComponent],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
@@ -22,10 +23,24 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private roomHeight = 6; // Y-axis
   private roomWidth = 6; // Z-axis
 
+  private xyPlane?: THREE.Mesh;
+  private zyPlane?: THREE.Mesh;
+  private xzPlane?: THREE.Mesh;
+
   private orbitControls?: OrbitControls;
   private transformControls?: TransformControls;
 
   private objectsWithinRoom: RoomObject[] = [];
+
+  private wallMaterial = new THREE.MeshPhongMaterial({
+    color: new THREE.Color('Cornsilk'),
+    side: THREE.DoubleSide,
+  });
+
+  private floorMaterial = new THREE.MeshPhongMaterial({
+    color: new THREE.Color('Sienna'),
+    side: THREE.DoubleSide,
+  });
 
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
@@ -60,6 +75,10 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.scene.add(light);
 
       this.setUpRoomDimensions();
+
+      this.scene?.add(this.xyPlane as THREE.Object3D);
+      this.scene?.add(this.zyPlane as THREE.Object3D);
+      this.scene?.add(this.xzPlane as THREE.Object3D);
 
       this.setUpOrbitControls();
 
@@ -134,44 +153,28 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const y = this.roomHeight;
     const z = this.roomWidth;
 
-    const wallMaterial = new THREE.MeshPhongMaterial({
-      color: new THREE.Color('Cornsilk'),
-      side: THREE.DoubleSide,
-    });
+    this.xyPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, y), this.wallMaterial);
+    this.xyPlane.translateX(x / 2).translateY(y / 2);
 
-    const floorMaterial = new THREE.MeshPhongMaterial({
-      color: new THREE.Color('Sienna'),
-      side: THREE.DoubleSide,
-    });
-
-    const xyPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, y), wallMaterial);
-    xyPlane.translateX(x / 2).translateY(y / 2);
-    this.scene?.add(xyPlane);
-
-    const zyPlane = new THREE.Mesh(new THREE.PlaneGeometry(z, y), wallMaterial);
-    zyPlane
+    this.zyPlane = new THREE.Mesh(new THREE.PlaneGeometry(z, y), this.wallMaterial);
+    this.zyPlane
       .translateZ(z / 2)
       .translateY(y / 2)
       .rotateY(this.degToRad(90));
-    this.scene?.add(zyPlane);
 
-    const xzPlane = new THREE.Mesh(
-      new THREE.PlaneGeometry(x, z),
-      floorMaterial
-    );
-    xzPlane
+    this.xzPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, z), this.floorMaterial);
+    this.xzPlane
       .translateX(x / 2)
       .translateZ(z / 2)
       .rotateX(this.degToRad(90));
-    this.scene?.add(xzPlane);
   }
 
   private setUpOrbitControls(): void {
     this.orbitControls = new OrbitControls(this.camera, this.canvas);
     this.orbitControls.target.set(0, 0, 0);
-    this.orbitControls.enablePan = false;
-    this.orbitControls.maxDistance = 20;
-    this.orbitControls.minDistance = 5;
+    // this.orbitControls.enablePan = false;
+    // this.orbitControls.maxDistance = 20;
+    // this.orbitControls.minDistance = 5;
     this.orbitControls.maxPolarAngle = Math.PI / 2;
     this.orbitControls.maxAzimuthAngle = Math.PI / 2;
     this.orbitControls.minAzimuthAngle = 0;
@@ -202,8 +205,12 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.transformControls.setSize(0.5);
   }
 
-  public attachObjectToTransformControls(roomObject: RoomObject, rotate: boolean = false): void {
-    const isCurrentlyAttached = this.transformControls?.object?.id == roomObject.object.id;
+  public attachObjectToTransformControls(
+    roomObject: RoomObject,
+    rotate: boolean = false
+  ): void {
+    const isCurrentlyAttached =
+      this.transformControls?.object?.id == roomObject.object.id;
 
     if (!isCurrentlyAttached && rotate) {
       return;
@@ -217,7 +224,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     this.setUpTransformControls();
 
-    if (roomObject.displayedInScene && this.transformControls) {      
+    if (roomObject.displayedInScene && this.transformControls) {
       this.transformControls?.attach(roomObject.object);
 
       roomObject.setTransformationLimits(
@@ -233,6 +240,18 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     object.updateDimensionsOnYRotation();
 
     this.attachObjectToTransformControls(object, true);
+  }
+
+  protected updateRoomLength(newLength: number): void {
+    this.roomLength = newLength;
+
+    this.setUpRoomDimensions();
+  }
+
+  protected updateRoomWidth(newWidth: number): void {
+    this.roomWidth = newWidth;
+
+    this.setUpRoomDimensions();
   }
 
   private degToRad(deg: number): number {

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output } from '@angular/core';
 import * as THREE from 'three';
-import { RoomObject } from '../../models/room-object';
+import { RoomObject } from '../../../models/room-object';
 import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 

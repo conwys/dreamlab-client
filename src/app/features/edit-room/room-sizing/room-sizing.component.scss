@@ -1,0 +1,20 @@
+.controls-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+
+  padding: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .control-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
