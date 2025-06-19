@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class BackendServiceService {
   public sessionId: string | null = null;
 
-  api_url = import.meta.env['NG_APP_BASE_API_URL'] || 'http://localhost:5000';
+  api_url = environment.BASE_API_URL;
 
   // Constructor generates a session ID.
   constructor() {
