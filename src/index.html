@@ -3,8 +3,9 @@
   <head>
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.gstatic.com https://www.google.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; media-src 'self' blob: data:; connect-src 'self' http://127.0.0.1:5000 https://dreamlab-backend-nov5.onrender.com; base-uri 'self'; form-action 'self'; object-src 'none';"
+      content="default-src 'self'; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.gstatic.com https://www.google.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://app.netlify.com https://cdn.segment.com https://*.bugsnag.com https://d2wy8f7a9ursnm.cloudfront.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; media-src 'self' blob: data:; connect-src 'self' http://127.0.0.1:5000 https://dreamlab-backend-nov5.onrender.com https://app.netlify.com https://sessions.bugsnag.com https://*.bugsnag.com https://notify.bugsnag.com https://api.segment.io; frame-src 'self' https://app.netlify.com; frame-ancestors 'self' https://app.netlify.com; base-uri 'self'; form-action 'self'; object-src 'none';"
     />
+    <meta name="referrer" content="strict-origin" />
     <meta charset="utf-8" />
     <title>Dreamlab</title>
     <base href="/" />

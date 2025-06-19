@@ -1,0 +1,9 @@
+[build]
+  command = "ng build --configuration production"
+  publish = "dist/dreamlab"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[context.production.environment]
+  ANGULAR_CONFIGURATION = "production"
