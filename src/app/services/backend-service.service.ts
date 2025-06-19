@@ -91,7 +91,7 @@ export class BackendServiceService {
     // Convert file names to URLs
     const models = (data.models || []).map(
       (fileName: string) =>
-        `${this.api_url}/sessions/${this.sessionId}/models/${fileName}`
+        `${this.api_url}/api/sessions/${this.sessionId}/models/${fileName}`
     );
     return models;
   }
