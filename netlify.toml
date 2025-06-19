@@ -1,9 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist/dreamlab/browser"
-
-[context.production.environment]
-  ANGULAR_ENVIRONMENT = "production"
-
-[context.deploy-preview.environment]
-  ANGULAR_ENVIRONMENT = "production"
