@@ -1,4 +1,22 @@
 <div class="plan-container">
+  <div class="loading-overlay" *ngIf="isLoading || errorMessage">
+    <div class="loading-content" [class.error]="errorMessage">
+      <div class="shape-container" *ngIf="!errorMessage">
+        <div class="shape"></div>
+      </div>
+      <div class="error-icon" *ngIf="errorMessage">
+        <fa-icon [icon]="faExclamationCircle" size="3x"></fa-icon>
+      </div>
+      <p>{{ errorMessage || "Processing your images..." }}</p>
+      <button
+        *ngIf="errorMessage"
+        class="btn close-error"
+        (click)="dismissError()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
   <div class="room-uploader-container">
     <h2>Upload Your Objects</h2>
     <p>

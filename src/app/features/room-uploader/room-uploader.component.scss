@@ -359,3 +359,100 @@
     color: var(--text-color);
   }
 }
+
+@keyframes morph {
+  0% {
+    border-radius: 0;
+    transform: rotate(0deg);
+  }
+  33% {
+    border-radius: 0 50% 0 50%;
+    transform: rotate(120deg);
+  }
+  66% {
+    border-radius: 50%;
+    transform: rotate(240deg);
+  }
+  100% {
+    border-radius: 0;
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(colours.$white, 0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transition: variables.$transition-base;
+}
+
+.loading-content {
+  @include variables.flex-column;
+  align-items: center;
+  gap: variables.$spacing-xl;
+  padding: variables.$spacing-2xl;
+  background: colours.$white;
+  border-radius: variables.$border-radius-lg;
+  box-shadow: 0 4px 20px rgba(colours.$black, 0.1);
+  transition: variables.$transition-base;
+
+  &.error {
+    border-left: 4px solid colours.$red;
+    
+    .error-icon {
+      color: colours.$red;
+    }
+
+    p {
+      color: colours.$very-dark-grey;
+      max-width: 400px;
+      text-align: center;
+    }
+  }
+
+  p {
+    color: colours.$lilac;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  .close-error {
+    background: colours.$red;
+    color: colours.$white;
+    border: none;
+    padding: variables.$spacing-sm variables.$spacing-lg;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    font-weight: 500;
+    transition: variables.$transition-base;
+
+    &:hover {
+      background: darken(colours.$red, 10%);
+    }
+  }
+}
+
+.shape-container {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: variables.$transition-base;
+}
+
+.shape {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, colours.$lilac, colours.$dark-lilac);
+  animation: morph 2s infinite ease-in-out;
+  box-shadow: 0 4px 20px rgba(colours.$lilac, 0.3);
+}
