@@ -46,13 +46,12 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     await import('@google/model-viewer');
 
-    // const fetchedModels = await this.backendService.getSessionModels();
+    const fetchedModels = await this.backendService.getSessionModels();
 
-    // fetchedModels.forEach((url) => {
-    //   this.loadObjectFromFile(url);
-    // });
-    this.loadObjectFromFile('assets/img/white_mesh.glb');
-    this.loadObjectFromFile('assets/img/white_mesh.glb');
+    fetchedModels.forEach((url) => {
+      this.loadObjectFromFile(url);
+    });
+    // this.loadObjectFromFile('assets/img/white_mesh.glb');
   }
 
   private loadObjectFromFile(fileUrl: string): void {
