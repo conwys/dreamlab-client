@@ -3,8 +3,10 @@
   <div class="edit-area">
     <div class="canvas-container">
       <app-room-sizing
-        (lengthChange)="updateRoomLength($event)"
-        (widthChange)="updateRoomWidth($event)"
+        [initialValue]="initialValue"
+        (lengthChange)="updateRoomDimension($event, 'length')"
+        (widthChange)="updateRoomDimension($event, 'width')"
+        (heightChange)="updateRoomDimension($event, 'height')"
       ></app-room-sizing>
       <canvas id="edit-room-canvas"></canvas>
     </div>

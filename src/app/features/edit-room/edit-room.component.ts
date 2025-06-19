@@ -19,9 +19,11 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera();
 
-  private roomLength = 6; // X -axis
-  private roomHeight = 6; // Y-axis
-  private roomWidth = 6; // Z-axis
+  protected readonly initialValue = 5;
+
+  private roomLength = this.initialValue; // X -axis
+  private roomHeight = this.initialValue; // Y-axis
+  private roomWidth = this.initialValue; // Z-axis
 
   private xyPlane?: THREE.Mesh;
   private zyPlane?: THREE.Mesh;
@@ -75,10 +77,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.scene.add(light);
 
       this.setUpRoomDimensions();
-
-      this.scene?.add(this.xyPlane as THREE.Object3D);
-      this.scene?.add(this.zyPlane as THREE.Object3D);
-      this.scene?.add(this.xzPlane as THREE.Object3D);
 
       this.setUpOrbitControls();
 
@@ -149,24 +147,47 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   }
 
   private setUpRoomDimensions(): void {
+    if (this.xyPlane) {
+      this.scene?.remove(this.xyPlane);
+    }
+    if (this.zyPlane) {
+      this.scene?.remove(this.zyPlane);
+    }
+    if (this.xzPlane) {
+      this.scene?.remove(this.xzPlane);
+    }
+
     const x = this.roomLength;
     const y = this.roomHeight;
     const z = this.roomWidth;
 
-    this.xyPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, y), this.wallMaterial);
+    this.xyPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(x, y),
+      this.wallMaterial
+    );
     this.xyPlane.translateX(x / 2).translateY(y / 2);
 
-    this.zyPlane = new THREE.Mesh(new THREE.PlaneGeometry(z, y), this.wallMaterial);
+    this.zyPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(z, y),
+      this.wallMaterial
+    );
     this.zyPlane
       .translateZ(z / 2)
       .translateY(y / 2)
       .rotateY(this.degToRad(90));
 
-    this.xzPlane = new THREE.Mesh(new THREE.PlaneGeometry(x, z), this.floorMaterial);
+    this.xzPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(x, z),
+      this.floorMaterial
+    );
     this.xzPlane
       .translateX(x / 2)
       .translateZ(z / 2)
       .rotateX(this.degToRad(90));
+
+    this.scene?.add(this.xyPlane as THREE.Object3D);
+    this.scene?.add(this.zyPlane as THREE.Object3D);
+    this.scene?.add(this.xzPlane as THREE.Object3D);
   }
 
   private setUpOrbitControls(): void {
@@ -175,9 +196,10 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     // this.orbitControls.enablePan = false;
     // this.orbitControls.maxDistance = 20;
     // this.orbitControls.minDistance = 5;
-    this.orbitControls.maxPolarAngle = Math.PI / 2;
-    this.orbitControls.maxAzimuthAngle = Math.PI / 2;
-    this.orbitControls.minAzimuthAngle = 0;
+    // this.orbitControls.maxPolarAngle = Math.PI / 2;
+    // this.orbitControls.minPolarAngle = 0;
+    // this.orbitControls.maxAzimuthAngle = Math.PI / 2;
+    // this.orbitControls.minAzimuthAngle = 0;
     this.orbitControls.update();
   }
 
@@ -242,19 +264,32 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.attachObjectToTransformControls(object, true);
   }
 
-  protected updateRoomLength(newLength: number): void {
-    this.roomLength = newLength;
+  protected updateRoomDimension(
+    newDimension: number,
+    dimension: Dimensions
+  ): void {
+    switch (dimension) {
+      case 'length':
+        this.roomLength = newDimension;
+        break;
+      case 'width':
+        this.roomWidth = newDimension;
+        break;
+      case 'height':
+        this.roomHeight = newDimension;
+        break;
+    }
 
     this.setUpRoomDimensions();
-  }
 
-  protected updateRoomWidth(newWidth: number): void {
-    this.roomWidth = newWidth;
-
-    this.setUpRoomDimensions();
+    if (this.transformControls?.object) {
+      this.transformControls.detach();
+    }
   }
 
   private degToRad(deg: number): number {
     return deg * (Math.PI / 180.0);
   }
 }
+
+type Dimensions = 'length' | 'width' | 'height';

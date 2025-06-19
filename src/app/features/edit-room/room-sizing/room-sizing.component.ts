@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-room-sizing',
@@ -8,10 +14,11 @@ import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
   standalone: true,
 })
 export class RoomSizingComponent implements AfterViewInit {
+  @Input() initialValue?: number;
+
   @Output() lengthChange = new EventEmitter<number>();
   @Output() widthChange = new EventEmitter<number>();
-
-  protected initialValue = 5;
+  @Output() heightChange = new EventEmitter<number>();
 
   ngAfterViewInit() {
     this.setUpEventListeners();
@@ -30,6 +37,13 @@ export class RoomSizingComponent implements AfterViewInit {
       ?.addEventListener('input', (event) => {
         const value = parseInt((event.target as HTMLInputElement).value);
         this.widthChange.emit(value);
+      });
+
+    document
+      .querySelector('#height-control')
+      ?.addEventListener('input', (event) => {
+        const value = parseInt((event.target as HTMLInputElement).value);
+        this.heightChange.emit(value);
       });
   }
 }
