@@ -34,24 +34,24 @@ $disabled-button: #444;
   --contact-gradient: linear-gradient(180deg, #fff 10%, #be9df4 80%, #a0cafb 100%);
   --navbar-gradient-ease: linear-gradient(0deg, #ffffff00 0%, #ffffff 40%);
   --styled-gradient: linear-gradient(-35deg, #5808db66 0%, #0478ff66 50%, #fff 100%);
-  --gradient-shadow: linear-gradient(0deg, #156EB6 0%, #156eb600 50%);
+  --gradient-shadow: linear-gradient(0deg, #156eb6 0%, #156eb600 50%);
 }
 
 // Dark theme
 .dark-theme {
-  --background-color: #2F2839;
+  --background-color: #2f2839;
   --text-color: #{$white};
   --h2-text-color: #{$dark-grey};
   --placeholder-text-color: #{$dark-grey};
-  --navbar-bg: #2F283990;
-  --card-bg: #2F2839;
+  --navbar-bg: #2f283990;
+  --card-bg: #2f2839;
   --upload-bg: #{$white, 1};
   --edit-room-canvas: #{$white};
   --border-color: #{rgba($white, 0.1)};
   --hover-color: #{$lilac};
   --background-gradient: linear-gradient(135deg, #be9df4 0%, #a0cafb 100%);
-  --contact-gradient: linear-gradient(180deg, #2F2839 10%, #be9df4 80%, #a0cafb 100%);
-  --navbar-gradient-ease: linear-gradient(0deg, rgb(24, 24, 24, 0) 0%, #2F2839 40%);
-  --styled-gradient: linear-gradient(-35deg, #be9df4 0%, #a0cafb 50%, #2F2839 100%);
-  --gradient-shadow: linear-gradient(0deg, #2F2839 0%, #2F283900 50%);
+  --contact-gradient: linear-gradient(180deg, #2f2839 10%, #be9df4 80%, #a0cafb 100%);
+  --navbar-gradient-ease: linear-gradient(0deg, rgb(24, 24, 24, 0) 0%, #2f2839 40%);
+  --styled-gradient: linear-gradient(-35deg, #be9df4 0%, #a0cafb 50%, #2f2839 100%);
+  --gradient-shadow: linear-gradient(0deg, #2f2839 0%, #2f283900 50%);
 }

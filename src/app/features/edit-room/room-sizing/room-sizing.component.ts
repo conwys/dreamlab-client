@@ -33,29 +33,23 @@ export class RoomSizingComponent implements AfterViewInit {
   }
 
   private setUpEventListeners(): void {
-    document
-      .querySelector('#length-control')
-      ?.addEventListener('input', (event) => {
-        const value = parseInt((event.target as HTMLInputElement).value);
-        this.lengthValue = value;
-        this.lengthChange.emit(value);
-      });
+    document.querySelector('#length-control')?.addEventListener('input', (event) => {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      this.lengthValue = value;
+      this.lengthChange.emit(value);
+    });
 
-    document
-      .querySelector('#width-control')
-      ?.addEventListener('input', (event) => {
-        const value = parseInt((event.target as HTMLInputElement).value);
-        this.widthValue = value;
-        this.widthChange.emit(value);
-      });
+    document.querySelector('#width-control')?.addEventListener('input', (event) => {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      this.widthValue = value;
+      this.widthChange.emit(value);
+    });
 
-    document
-      .querySelector('#height-control')
-      ?.addEventListener('input', (event) => {
-        const value = parseInt((event.target as HTMLInputElement).value);
-        this.heightValue = value;
-        this.heightChange.emit(value);
-      });
+    document.querySelector('#height-control')?.addEventListener('input', (event) => {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      this.heightValue = value;
+      this.heightChange.emit(value);
+    });
   }
 
   onLengthInput(event: Event) {

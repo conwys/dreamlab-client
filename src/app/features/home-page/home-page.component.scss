@@ -116,7 +116,9 @@
   justify-content: center;
   width: 90%;
   gap: 15%;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .web-information {
@@ -414,5 +416,4 @@
   .web-image {
     display: none;
   }
-
 }

@@ -21,7 +21,9 @@ nav {
   text-decoration: none;
   z-index: 1000;
   background: var(--navbar-bg);
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 
   &.scrolled {
     background: var(--navbar-bg);
@@ -96,7 +98,7 @@ nav {
       transition: variables.$transition-base;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       letter-spacing: 0.02em;
-      white-space: nowrap;;
+      white-space: nowrap;
 
       fa-icon {
         font-size: 1.2rem;
@@ -326,7 +328,7 @@ main {
 
 // Overlay for sidebar
 .nav-links.open::before {
-  content: "";
+  content: '';
   position: fixed;
   top: 0;
   left: 0;

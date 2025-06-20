@@ -13,7 +13,8 @@ import { ThemeService } from './services/theme.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {  title = 'dreamlab';
+export class AppComponent {
+  title = 'dreamlab';
   isScrolled = false;
 
   faInfo = faInfoCircle;
@@ -26,8 +27,11 @@ export class AppComponent {  title = 'dreamlab';
 
   sidebarOpen = false;
 
-  constructor(private router: Router, private themeService: ThemeService) {
-    this.router.events.subscribe(event => {
+  constructor(
+    private router: Router,
+    private themeService: ThemeService,
+  ) {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);
       }

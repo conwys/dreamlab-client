@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import "https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;600&display=swap";
-@import "./assets/styles/base/colours";
-@import "./assets/styles/globals/theme";
+@import 'https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;600&display=swap';
+@import './assets/styles/base/colours';
+@import './assets/styles/globals/theme';
 
 * {
   font-family: 'Albert Sans', sans-serif;
@@ -9,5 +9,7 @@
 
 body {
   margin: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
