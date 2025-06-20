@@ -2,6 +2,16 @@
 @use 'src/assets/styles/base/variables';
 @use 'src/assets/styles/globals/globals';
 
+.plan-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
 .room-uploader-container {
   max-width: 60vw;
   margin: 0 auto;
@@ -9,12 +19,19 @@
   @include variables.flex-column;
   align-items: center;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  h2 {
-    font-size: 2.5rem;
+  h1 {
+    font-size: 3.5rem;
     margin-bottom: variables.$spacing-md;
-    color: colours.$very-dark-grey;
-    font-weight: 600;
+    color: var(--text-color);
+    font-weight: 700;
     text-align: center;
   }
 
@@ -31,7 +48,9 @@
 }
 
 .objects-container {
-  @include variables.flex-column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: variables.$spacing-lg;
@@ -41,11 +60,13 @@
 
 .object-upload {
   @include variables.card-base;
-  background: rgba(colours.$white, 0.8);
+  background: var(--navbar-bg);
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  min-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 0;
 }
 
 .object-header {
@@ -82,7 +103,7 @@
       &:not(:placeholder-shown) {
         font-weight: 600;
         font-size: 1.2rem;
-        color: colours.$very-dark-grey;
+        color: var(--text-color);
       }
     }
 
@@ -160,14 +181,14 @@
     overflow: hidden;
     position: relative;
     transition: variables.$transition-base;
-    background: rgba(colours.$lilac, 0.05);
+    background: var(--upload-bg);
 
     &:hover {
       border-color: colours.$lilac;
       background: rgba(colours.$lilac, 0.08);
 
       label {
-        color: colours.$lilac;
+        color: var(--hover-color);
       }
     }
 
@@ -192,7 +213,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: colours.$dark-grey;
+      color: var(--text-color);
       transition: variables.$transition-base;
       z-index: 1;
       gap: variables.$spacing-xs;
@@ -210,7 +231,7 @@
       span {
         font-size: 1.1rem;
         font-weight: 600;
-        color: colours.$very-dark-grey;
+        color: var(--text-color);
       }
 
       small {
@@ -305,7 +326,7 @@
     gap: variables.$spacing-sm;
 
     &.add-object {
-      background: colours.$white;
+      background: var(--background-color);
       color: colours.$lilac;
       border: 2px solid colours.$lilac;
       padding: 0.875rem variables.$spacing-xl;
@@ -322,7 +343,7 @@
       box-shadow: 0 4px 12px rgba(colours.$lilac, 0.3);
 
       &:hover {
-        background: darken(colours.$lilac, 5%);
+        filter: brightness(0.95);
         transform: translateY(-2px);
       }
     }
@@ -435,7 +456,7 @@
     transition: variables.$transition-base;
 
     &:hover {
-      background: darken(colours.$red, 10%);
+      filter: brightness(0.8);
     }
   }
 }
@@ -455,4 +476,40 @@
   background: linear-gradient(135deg, colours.$lilac, colours.$dark-lilac);
   animation: morph 2s infinite ease-in-out;
   box-shadow: 0 4px 20px rgba(colours.$lilac, 0.3);
+}
+
+@media (max-width: 1100px) {
+  .room-uploader-container {
+    max-width: 90vw;
+    padding: variables.$spacing-xl;
+  }
+  .object-upload {
+    max-width: 98vw;
+  }
+  .image-upload-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 98vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .room-uploader-container {
+    max-width: 100vw;
+    padding: variables.$spacing-lg;
+  }
+  .object-upload {
+    max-width: 100vw;
+    padding: variables.$spacing-md;
+  }
+  .object-header {
+    flex-direction: column;
+    gap: variables.$spacing-xs;
+    align-items: stretch;
+    max-width: 100vw;
+  }
+  .image-upload-grid {
+    grid-template-columns: 1fr;
+    gap: variables.$spacing-lg;
+    max-width: 100vw;
+  }
 }

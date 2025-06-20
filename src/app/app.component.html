@@ -11,19 +11,25 @@
             ><img src="logo-final.svg" alt="DreamLab Logo"
           /></a>
         </div>
-        <div class="nav-links">
-          <a (click)="scrollToSection('about')" class="nav-link">
+        <button class="hamburger" (click)="sidebarOpen = !sidebarOpen" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" [class.open]="sidebarOpen">
+          <a (click)="scrollToSection('about'); sidebarOpen = false" class="nav-link">
             <fa-icon [icon]="faInfo"></fa-icon>
             <span>About</span>
           </a>
-          <a routerLink="/plan" routerLinkActive="active" class="nav-link">
+          <a routerLink="/plan" routerLinkActive="active" class="nav-link" (click)="sidebarOpen = false">
             <fa-icon [icon]="faTools"></fa-icon>
             <span>Plan your room</span>
           </a>
-          <a (click)="scrollToSection('contact')" class="nav-link">
+          <a (click)="scrollToSection('contact'); sidebarOpen = false" class="nav-link">
             <fa-icon [icon]="faEnvelope"></fa-icon>
             <span>Contact</span>
           </a>
+          <button class="theme-toggle nav-link" (click)="toggleTheme(); sidebarOpen = false">
+            <fa-icon [icon]="(isDarkTheme$ | async) ? faSun : faMoon"></fa-icon>
+          </button>
         </div>
       </div>
     </nav>

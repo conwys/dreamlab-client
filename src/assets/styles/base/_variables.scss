@@ -50,7 +50,7 @@ $transition-base: all 0.3s ease;
 }
 
 @mixin card-base {
-  background: colours.$white;
+  background: var(--background-color);
   border-radius: $border-radius-lg;
   padding: $spacing-xl;
   box-shadow: $shadow-md;
