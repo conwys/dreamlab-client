@@ -60,15 +60,23 @@
 
 .cloud-behind-text {
   position: absolute;
-  @include variables.flex-column;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 0;
+  width: clamp(350px, 60vw, 900px);
+  min-width: 350px;
+  max-width: 900px;
+  aspect-ratio: 3/1;
+  height: auto;
+  min-height: 120px;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  top: 10vh;
-  left: 1vw;
-  width: 100%;
-  max-width: 50vw;
-  height: 40vh;
   z-index: 0;
   pointer-events: none;
+  overflow: visible;
 
   .cloud-layer1,
   .cloud-layer2,
@@ -82,16 +90,19 @@
   .cloud-layer1 {
     width: 75%;
     height: 40%;
+    min-height: 40px;
   }
 
   .cloud-layer2 {
     width: 90%;
     height: 40%;
+    min-height: 40px;
   }
 
   .cloud-layer3 {
     width: 100%;
     height: 55%;
+    min-height: 50px;
     border-radius: 140px;
     margin-bottom: 0;
   }
@@ -103,8 +114,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  gap: 10%;
+  width: 90%;
+  gap: 15%;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -124,14 +135,21 @@
   a.btn {
     display: inline-block;
     @include globals.button-base(variables.$text-gradient, var(--background-color));
+    font-size: 1.5rem;
   }
 
   .title {
-    font-size: 12rem;
+    position: relative;
+    z-index: 1;
+    font-size: 11rem;
+    background: #fff;
+    padding: 5rem;
+    border-radius: 100px 100px 100px 10px;
     color: var(--text-color);
     margin-bottom: variables.$spacing-xl;
     text-align: left;
     line-height: 90%;
+    white-space: nowrap;
 
     .gradient-text {
       background: variables.$text-gradient;
@@ -297,4 +315,105 @@
       color: var(--background-color);
     }
   }
+}
+
+@media (max-width: 1920px) {
+  .web-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 12rem;
+    text-align: left;
+    padding: 0 2rem;
+  }
+  .web-information {
+    .title {
+      font-size: 9rem;
+      line-height: 1.05;
+      text-align: left;
+      white-space: nowrap;
+    }
+  }
+}
+
+@media (max-width: 1500px) {
+  .web-image {
+    display: none !important;
+  }
+}
+
+// Responsive hero section for home page
+@media (max-width: 1100px) {
+  .web-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  .web-information {
+    .title {
+      font-size: 8rem;
+      line-height: 1.05;
+      text-align: center;
+      word-break: break-word;
+      white-space: nowrap;
+    }
+    p.description {
+      font-size: 2rem;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    a.btn {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      width: fit-content;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      font-size: 2rem;
+    }
+  }
+  .web-image {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .web-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.2rem;
+    padding: 0 0.5rem;
+    text-align: center;
+  }
+  .web-information {
+    .title {
+      font-size: 6rem;
+      line-height: 1.1;
+      text-align: center;
+      word-break: break-word;
+      white-space: nowrap;
+    }
+    p.description {
+      font-size: 1.5rem;
+      padding: 0 0.5rem;
+      text-align: center;
+    }
+    a.btn {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      width: fit-content;
+      padding-left: 1.2rem;
+      padding-right: 1.2rem;
+      font-size: 1.5rem;
+    }
+  }
+  .web-image {
+    display: none;
+  }
+
 }

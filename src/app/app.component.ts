@@ -24,6 +24,8 @@ export class AppComponent {  title = 'dreamlab';
 
   isDarkTheme$ = inject(ThemeService).isDarkTheme$;
 
+  sidebarOpen = false;
+
   constructor(private router: Router, private themeService: ThemeService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
