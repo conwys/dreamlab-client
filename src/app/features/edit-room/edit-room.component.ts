@@ -64,12 +64,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
         alpha: true,
       });
 
-      this.camera = new THREE.PerspectiveCamera(
-        75,
-        this.canvas.clientWidth / this.canvas.clientHeight,
-        0.1,
-        1000
-      );
+      this.camera = new THREE.PerspectiveCamera(75, this.canvas.clientWidth / this.canvas.clientHeight, 0.1, 1000);
 
       this.camera.position.set(10, 6, 10);
 
@@ -163,24 +158,15 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const y = this.roomHeight;
     const z = this.roomWidth;
 
-    this.xyPlane = new THREE.Mesh(
-      new THREE.BoxGeometry(x, y, this.wallThickness),
-      this.wallMaterial
-    );
+    this.xyPlane = new THREE.Mesh(new THREE.BoxGeometry(x, y, this.wallThickness), this.wallMaterial);
     this.xyPlane.translateX(x / 2).translateY(y / 2);
     this.scene?.add(this.xyPlane);
 
-    this.zyPlane = new THREE.Mesh(
-      new THREE.BoxGeometry(this.wallThickness, y, z),
-      this.wallMaterial
-    );
+    this.zyPlane = new THREE.Mesh(new THREE.BoxGeometry(this.wallThickness, y, z), this.wallMaterial);
     this.zyPlane.translateZ(z / 2).translateY(y / 2);
     this.scene?.add(this.zyPlane);
 
-    this.xzPlane = new THREE.Mesh(
-      new THREE.BoxGeometry(x, this.wallThickness, z),
-      this.floorMaterial
-    );
+    this.xzPlane = new THREE.Mesh(new THREE.BoxGeometry(x, this.wallThickness, z), this.floorMaterial);
     this.xzPlane.translateX(x / 2).translateZ(z / 2);
     this.scene?.add(this.xzPlane);
   }
@@ -195,10 +181,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   }
 
   private setUpTransformControls(): void {
-    this.transformControls = new TransformControls(
-      this.camera,
-      this.renderer.domElement
-    );
+    this.transformControls = new TransformControls(this.camera, this.renderer.domElement);
 
     this.scene.add(this.transformControls.getHelper());
 
@@ -218,12 +201,8 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.transformControls.setSize(0.5);
   }
 
-  public attachObjectToTransformControls(
-    roomObject: RoomObject,
-    rotate: boolean = false
-  ): void {
-    const isCurrentlyAttached =
-      this.transformControls?.object?.id == roomObject.object.id;
+  public attachObjectToTransformControls(roomObject: RoomObject, rotate = false): void {
+    const isCurrentlyAttached = this.transformControls?.object?.id == roomObject.object.id;
 
     if (!isCurrentlyAttached && rotate) {
       return;
@@ -240,11 +219,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     if (roomObject.displayedInScene && this.transformControls) {
       this.transformControls?.attach(roomObject.object);
 
-      roomObject.setTransformationLimits(
-        this.transformControls,
-        this.roomLength,
-        this.roomWidth
-      );
+      roomObject.setTransformationLimits(this.transformControls, this.roomLength, this.roomWidth);
     }
   }
 
@@ -255,10 +230,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.attachObjectToTransformControls(object, true);
   }
 
-  protected updateRoomDimension(
-    newDimension: number,
-    dimension: Dimensions
-  ): void {
+  protected updateRoomDimension(newDimension: number, dimension: Dimensions): void {
     switch (dimension) {
       case 'length':
         this.roomLength = newDimension;

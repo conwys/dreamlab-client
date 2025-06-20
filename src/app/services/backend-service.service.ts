@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BackendServiceService {
   public sessionId: string | null = null;
@@ -19,7 +19,6 @@ export class BackendServiceService {
       }
     })();
   }
-  
 
   // Generate a session ID for the user when the page loads.
   // Session IDs expire after 1hr.
@@ -27,8 +26,8 @@ export class BackendServiceService {
     const response = await fetch(`${this.api_url}/api/generate_session_id`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json'
-      }
+        Accept: 'application/json',
+      },
     });
     if (!response.ok) {
       throw new Error('Failed to generate session ID');
@@ -38,12 +37,11 @@ export class BackendServiceService {
     return data.session_id;
   }
 
-
   // Send 1-4 images to the backend for processing.
   // At least a 'front' image is always required.
   async processFurnitureImages(
     images: { front?: File; left?: File; right?: File; back?: File },
-    caption?: string
+    caption?: string,
   ): Promise<{ message: string; session_id: string; filename: string; model_url?: string }> {
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
@@ -60,7 +58,7 @@ export class BackendServiceService {
 
     const response = await fetch(`${this.api_url}/api/process_furniture_image/${this.sessionId}`, {
       method: 'POST',
-      body: formData
+      body: formData,
     });
 
     if (!response.ok) {
@@ -70,7 +68,6 @@ export class BackendServiceService {
     return await response.json();
   }
 
-
   // Service to get list of model file names as URLs.
   async getSessionModels(): Promise<string[]> {
     if (!this.sessionId) {
@@ -79,8 +76,8 @@ export class BackendServiceService {
     const response = await fetch(`${this.api_url}/api/session_models/${this.sessionId}`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json'
-      }
+        Accept: 'application/json',
+      },
     });
 
     if (!response.ok) {
@@ -90,8 +87,7 @@ export class BackendServiceService {
     const data = await response.json();
     // Convert file names to URLs
     const models = (data.models || []).map(
-      (fileName: string) =>
-        `${this.api_url}/api/sessions/${this.sessionId}/models/${fileName}`
+      (fileName: string) => `${this.api_url}/api/sessions/${this.sessionId}/models/${fileName}`,
     );
     return models;
   }

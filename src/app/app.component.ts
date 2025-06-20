@@ -10,7 +10,7 @@ import { faInfoCircle, faWrench, faEnvelope } from '@fortawesome/free-solid-svg-
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, FontAwesomeModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'dreamlab';

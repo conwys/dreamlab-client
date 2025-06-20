@@ -8,9 +8,8 @@ describe('ObjectSelectionPaneComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ObjectSelectionPaneComponent]
-    })
-    .compileComponents();
+      imports: [ObjectSelectionPaneComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ObjectSelectionPaneComponent);
     component = fixture.componentInstance;

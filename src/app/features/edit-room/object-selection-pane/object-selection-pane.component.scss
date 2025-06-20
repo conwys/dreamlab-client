@@ -1,5 +1,5 @@
-@use "../../../../assets/styles/base/colours";
-@use "src/assets/styles/base/variables";
+@use '../../../../assets/styles/base/colours';
+@use 'src/assets/styles/base/variables';
 
 :host {
   @include variables.card-base;

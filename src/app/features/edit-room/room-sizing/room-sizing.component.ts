@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-room-sizing',
@@ -25,25 +19,19 @@ export class RoomSizingComponent implements AfterViewInit {
   }
 
   private setUpEventListeners(): void {
-    document
-      .querySelector('#length-control')
-      ?.addEventListener('input', (event) => {
-        const value = parseInt((event.target as HTMLInputElement).value);
-        this.lengthChange.emit(value);
-      });
+    document.querySelector('#length-control')?.addEventListener('input', (event) => {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      this.lengthChange.emit(value);
+    });
 
-    document
-      .querySelector('#width-control')
-      ?.addEventListener('input', (event) => {
-        const value = parseInt((event.target as HTMLInputElement).value);
-        this.widthChange.emit(value);
-      });
+    document.querySelector('#width-control')?.addEventListener('input', (event) => {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      this.widthChange.emit(value);
+    });
 
-    document
-      .querySelector('#height-control')
-      ?.addEventListener('input', (event) => {
-        const value = parseInt((event.target as HTMLInputElement).value);
-        this.heightChange.emit(value);
-      });
+    document.querySelector('#height-control')?.addEventListener('input', (event) => {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      this.heightChange.emit(value);
+    });
   }
 }
