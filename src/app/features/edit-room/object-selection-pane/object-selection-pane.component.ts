@@ -1,22 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output } from '@angular/core';
 import * as THREE from 'three';
 import { RoomObject } from '../../../models/room-object';
 import { CommonModule } from '@angular/common';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { BackendServiceService } from '../../../services/backend-service.service';
-import {
-  faPlus,
-  faTrash,
-  faUpDownLeftRight,
-  faRotate,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faUpDownLeftRight, faRotate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
@@ -67,13 +56,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
         new THREE.Box3().setFromObject(newObject).getSize(objectSize);
 
         this.objectsCurrentlyInRoom.push(
-          new RoomObject(
-            newObject as THREE.Mesh,
-            objectSize.x,
-            objectSize.y,
-            objectSize.z,
-            fileUrl
-          )
+          new RoomObject(newObject as THREE.Mesh, objectSize.x, objectSize.y, objectSize.z, fileUrl),
         );
       },
       // called while loading is progressing
@@ -81,7 +64,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
       // called when loading has errors
       function (error) {
         console.log('An error occured loading the model');
-      }
+      },
     );
   }
 }

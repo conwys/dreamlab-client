@@ -1,13 +1,6 @@
-<div
-  *ngFor="let object of objectsCurrentlyInRoom"
-  id="{{ object.object.id }}"
-  class="object-block"
->
+<div *ngFor="let object of objectsCurrentlyInRoom" id="{{ object.object.id }}" class="object-block">
   <div class="left-buttons">
-    <button
-      class="transform-button"
-      (click)="selectObjectToTransform.emit(object)"
-    >
+    <button class="transform-button" (click)="selectObjectToTransform.emit(object)">
       <fa-icon [icon]="faUpDownLeftRight"></fa-icon>
     </button>
 
@@ -34,11 +27,7 @@
 
   <button
     class="add-remove-button"
-    (click)="
-      object.displayedInScene
-        ? removeObject.emit(object.object.id)
-        : addObject.emit(object)
-    "
+    (click)="object.displayedInScene ? removeObject.emit(object.object.id) : addObject.emit(object)"
   >
     <fa-icon [icon]="object.displayedInScene ? faTrash : faPlus"></fa-icon>
   </button>

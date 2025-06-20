@@ -1,0 +1,24 @@
+# Dependency directories
+/node_modules
+/dist
+/coverage
+/e2e/
+.angular/
+
+# Build artifacts
+.env
+.git/
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Other generated files
+*.lock
+*.map
+*.tsbuildinfo
+package-lock.json

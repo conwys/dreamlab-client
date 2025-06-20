@@ -1,7 +1,7 @@
-@use "./colours";
+@use './colours';
 
 $styled-gradient: linear-gradient(-35deg, colours.$dark-lilac 0%, colours.$dark-blue 50%, colours.$white 100%);
-$gradient-shadow: linear-gradient(0deg, #156EB6 0%, #156eb600 50%);
+$gradient-shadow: linear-gradient(0deg, #156eb6 0%, #156eb600 50%);
 $gradient-ease: linear-gradient(0deg, #ffffff00 0%, #ffffff 50%);
 $text-gradient: linear-gradient(-35deg, colours.$lilac, colours.$sky-blue);
 $gradient-transparent: linear-gradient(-35deg, colours.$lilac-transparent colours.$sky-blue-transparent);
@@ -73,7 +73,7 @@ $transition-base: all 0.3s ease;
   border-radius: $border-radius-md;
   font-size: 1.1rem;
   transition: $transition-base;
-  
+
   &:focus {
     outline: none;
   }
