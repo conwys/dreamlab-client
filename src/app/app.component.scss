@@ -337,13 +337,11 @@ main {
   z-index: -1;
 }
 
-// Ensure nav links and theme toggle are white only when the hamburger menu/sidebar is open.
 .nav-links.open a.nav-link,
 .nav-links.open .theme-toggle {
   color: #fff !important;
 }
 
-// Responsive Typography & Layout
 @media (max-width: 900px) {
   main {
     padding-top: 7vh;
