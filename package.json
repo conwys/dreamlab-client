@@ -7,7 +7,11 @@
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:dreamlab": "node dist/dreamlab/server/server.mjs"
+    "serve:ssr:dreamlab": "node dist/dreamlab/server/server.mjs",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "lint": "ng lint --fix",
+    "check-lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -43,12 +47,16 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "@types/three": "^0.172.0",
+    "angular-eslint": "20.1.1",
+    "eslint": "^9.29.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.7.2"
+    "prettier": "^3.5.3",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "8.34.1"
   }
 }

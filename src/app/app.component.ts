@@ -11,7 +11,7 @@ import { ThemeService } from './services/theme.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, FontAwesomeModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {  title = 'dreamlab';
   isScrolled = false;

@@ -12,15 +12,9 @@ export class RoomObject {
   private width: number; // Z-axis
 
   public filePath?: string;
-  public displayedInScene: boolean = false;
+  public displayedInScene = false;
 
-  constructor(
-    mesh: THREE.Mesh,
-    length: number,
-    height: number,
-    width: number,
-    filePath?: string
-  ) {
+  constructor(mesh: THREE.Mesh, length: number, height: number, width: number, filePath?: string) {
     this._object = mesh;
 
     this.length = length;
@@ -54,10 +48,7 @@ export class RoomObject {
     }
   }
 
-  public addToScene(
-    startPosition: { x: number; z: number },
-    scene: THREE.Scene
-  ): void {
+  public addToScene(startPosition: { x: number; z: number }, scene: THREE.Scene): void {
     this.object.position.set(startPosition.x, this.height / 2, startPosition.z);
 
     scene.add(this.object);
@@ -66,11 +57,7 @@ export class RoomObject {
     this.object.visible = true;
   }
 
-  public setTransformationLimits(
-    controls: TransformControls,
-    floorLength: number,
-    floorWidth: number
-  ): void {
+  public setTransformationLimits(controls: TransformControls, floorLength: number, floorWidth: number): void {
     const minX = 0 + this.length / 2;
     const maxX = floorLength - this.length / 2;
     const minZ = 0 + this.width / 2;

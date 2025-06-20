@@ -1,5 +1,5 @@
-@use "../base/colours";
-@use "../base/variables";
+@use '../base/colours';
+@use '../base/variables';
 
 @mixin button-base($background: colours.$white, $color: colours.$very-dark-grey) {
   border: none;
@@ -63,4 +63,3 @@
     @include gradient-section-content;
   }
 }
-

@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { BackendServiceService } from '../../services/backend-service.service'
-import { 
-  faPlus, 
-  faTrash, 
-  faImage, 
-  faArrowRight, 
-  faChevronDown, 
+import { BackendServiceService } from '../../services/backend-service.service';
+import {
+  faPlus,
+  faTrash,
+  faImage,
+  faArrowRight,
+  faChevronDown,
   faChevronUp,
   faChevronLeft,
   faChevronRight,
-  faExclamationCircle
+  faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface ObjectUpload {
@@ -36,7 +36,7 @@ const IMAGE_LABELS = ['Front', 'Left', 'Right', 'Back'];
 export class RoomUploaderComponent {
   isLoading = false;
   errorMessage: string | null = null;
-  
+
   faPlus = faPlus;
   faTrash = faTrash;
   faImage = faImage;
@@ -48,13 +48,15 @@ export class RoomUploaderComponent {
   faExclamationCircle = faExclamationCircle;
 
   imageLabels = IMAGE_LABELS;
-  objects: ObjectUpload[] = [{ 
-    id: 0, 
-    caption: '', 
-    images: [null, null, null, null], 
-    thumbnails: [null, null, null, null],
-    isExpanded: true 
-  }];
+  objects: ObjectUpload[] = [
+    {
+      id: 0,
+      caption: '',
+      images: [null, null, null, null],
+      thumbnails: [null, null, null, null],
+      isExpanded: true,
+    },
+  ];
   lastId = 0;
 
   currentPage = 1;
@@ -62,7 +64,7 @@ export class RoomUploaderComponent {
 
   constructor(
     private router: Router,
-    private backendService: BackendServiceService
+    private backendService: BackendServiceService,
   ) {}
 
   get totalPages(): number {
@@ -94,8 +96,8 @@ export class RoomUploaderComponent {
 
   onFileSelected(event: Event, objectId: number, imageIndex: number): void {
     const input = event.target as HTMLInputElement;
-    const object = this.objects.find(o => o.id === objectId);
-    
+    const object = this.objects.find((o) => o.id === objectId);
+
     if (!object || !input.files) return;
 
     const file = input.files[0];
@@ -110,15 +112,15 @@ export class RoomUploaderComponent {
     reader.readAsDataURL(file);
   }
   addNewObject(): void {
-    this.objects.forEach(obj => obj.isExpanded = false);
-    
+    this.objects.forEach((obj) => (obj.isExpanded = false));
+
     this.lastId++;
-    this.objects.push({ 
-      id: this.lastId, 
-      caption: '', 
-      images: [null, null, null, null], 
+    this.objects.push({
+      id: this.lastId,
+      caption: '',
+      images: [null, null, null, null],
       thumbnails: [null, null, null, null],
-      isExpanded: true 
+      isExpanded: true,
     });
 
     const newTotalPages = Math.ceil(this.objects.length / this.itemsPerPage);
@@ -128,7 +130,7 @@ export class RoomUploaderComponent {
   }
 
   toggleObject(id: number): void {
-    const object = this.objects.find(o => o.id === id);
+    const object = this.objects.find((o) => o.id === id);
     if (object) {
       object.isExpanded = !object.isExpanded;
     }
@@ -136,8 +138,8 @@ export class RoomUploaderComponent {
   removeObject(id: number): void {
     const currentPageObjects = this.paginatedObjects;
 
-    this.objects = this.objects.filter(o => o.id !== id);
-    
+    this.objects = this.objects.filter((o) => o.id !== id);
+
     if (currentPageObjects.length === 1 && this.currentPage > 1) {
       this.currentPage--;
     } else if (this.currentPage > this.totalPages) {
@@ -146,7 +148,7 @@ export class RoomUploaderComponent {
   }
 
   removeImage(objectId: number, imageIndex: number): void {
-    const object = this.objects.find(o => o.id === objectId);
+    const object = this.objects.find((o) => o.id === objectId);
     if (!object) return;
 
     object.images[imageIndex] = null;
@@ -158,9 +160,7 @@ export class RoomUploaderComponent {
   }
 
   async onUpload(): Promise<void> {
-    const isValid = this.objects.every(obj => 
-      obj.images[0] !== null && obj.caption.trim().length > 0
-    );
+    const isValid = this.objects.every((obj) => obj.images[0] !== null && obj.caption.trim().length > 0);
 
     if (!isValid) {
       alert('Please ensure each object has at least a front image and a caption');
@@ -170,17 +170,20 @@ export class RoomUploaderComponent {
     try {
       this.isLoading = true;
       // Call processFurnitureImages for each object
-      await Promise.all(this.objects.map(obj => {
-        const images = {
-          front: obj.images[0] || undefined,
-          left: obj.images[1] || undefined,
-          right: obj.images[2] || undefined,
-          back: obj.images[3] || undefined
-        };
-        return this.backendService.processFurnitureImages(images, obj.caption);
-      }));
+      await Promise.all(
+        this.objects.map((obj) => {
+          const images = {
+            front: obj.images[0] || undefined,
+            left: obj.images[1] || undefined,
+            right: obj.images[2] || undefined,
+            back: obj.images[3] || undefined,
+          };
+          return this.backendService.processFurnitureImages(images, obj.caption);
+        }),
+      );
       console.log('Objects uploaded:', this.objects);
-      this.router.navigate(['/edit']);    } catch (error) {
+      this.router.navigate(['/edit']);
+    } catch (error) {
       this.errorMessage = 'Error uploading objects: ' + (error instanceof Error ? error.message : String(error));
     } finally {
       this.isLoading = false;

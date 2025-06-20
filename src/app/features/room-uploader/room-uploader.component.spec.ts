@@ -8,9 +8,8 @@ describe('RoomUploaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RoomUploaderComponent]
-    })
-    .compileComponents();
+      imports: [RoomUploaderComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RoomUploaderComponent);
     component = fixture.componentInstance;
