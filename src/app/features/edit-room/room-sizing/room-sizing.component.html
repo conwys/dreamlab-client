@@ -7,7 +7,9 @@
       min="5"
       max="20"
       step="1"
-      [(value)]="initialValue"
+      [value]="lengthValue"
+      (input)="onLengthInput($event)"
+      [style.--slider-progress]="lengthProgress"
     />
   </ng-container>
 
@@ -19,7 +21,9 @@
       min="5"
       max="20"
       step="1"
-      [(value)]="initialValue"
+      [value]="widthValue"
+      (input)="onWidthInput($event)"
+      [style.--slider-progress]="widthProgress"
     />
   </ng-container>
 
@@ -31,7 +35,9 @@
       min="5"
       max="20"
       step="1"
-      [(value)]="initialValue"
+      [value]="heightValue"
+      (input)="onHeightInput($event)"
+      [style.--slider-progress]="heightProgress"
     />
   </ng-container>
 </div>

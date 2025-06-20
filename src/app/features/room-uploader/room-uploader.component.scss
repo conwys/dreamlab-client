@@ -10,11 +10,11 @@
   align-items: center;
   justify-content: center;
 
-  h2 {
-    font-size: 2.5rem;
+  h1 {
+    font-size: 3.5rem;
     margin-bottom: variables.$spacing-md;
-    color: colours.$very-dark-grey;
-    font-weight: 600;
+    color: var(--text-color);
+    font-weight: 700;
     text-align: center;
   }
 
@@ -41,7 +41,7 @@
 
 .object-upload {
   @include variables.card-base;
-  background: rgba(colours.$white, 0.8);
+  background: var(--navbar-bg);
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
@@ -82,7 +82,7 @@
       &:not(:placeholder-shown) {
         font-weight: 600;
         font-size: 1.2rem;
-        color: colours.$very-dark-grey;
+        color: var(--text-color);
       }
     }
 
@@ -160,14 +160,14 @@
     overflow: hidden;
     position: relative;
     transition: variables.$transition-base;
-    background: rgba(colours.$lilac, 0.05);
+    background: var(--upload-bg);
 
     &:hover {
       border-color: colours.$lilac;
       background: rgba(colours.$lilac, 0.08);
 
       label {
-        color: colours.$lilac;
+        color: var(--hover-color);
       }
     }
 
@@ -192,7 +192,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: colours.$dark-grey;
+      color: var(--text-color);
       transition: variables.$transition-base;
       z-index: 1;
       gap: variables.$spacing-xs;
@@ -210,7 +210,7 @@
       span {
         font-size: 1.1rem;
         font-weight: 600;
-        color: colours.$very-dark-grey;
+        color: var(--text-color);
       }
 
       small {
@@ -305,7 +305,7 @@
     gap: variables.$spacing-sm;
 
     &.add-object {
-      background: colours.$white;
+      background: var(--background-color);
       color: colours.$lilac;
       border: 2px solid colours.$lilac;
       padding: 0.875rem variables.$spacing-xl;
@@ -322,7 +322,7 @@
       box-shadow: 0 4px 12px rgba(colours.$lilac, 0.3);
 
       &:hover {
-        background: darken(colours.$lilac, 5%);
+        filter: brightness(0.95);
         transform: translateY(-2px);
       }
     }
@@ -435,7 +435,7 @@
     transition: variables.$transition-base;
 
     &:hover {
-      background: darken(colours.$red, 10%);
+      filter: brightness(0.80);
     }
   }
 }

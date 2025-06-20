@@ -24,6 +24,9 @@
             <fa-icon [icon]="faEnvelope"></fa-icon>
             <span>Contact</span>
           </a>
+          <button class="theme-toggle nav-link" (click)="toggleTheme()">
+            <fa-icon [icon]="(isDarkTheme$ | async) ? faSun : faMoon"></fa-icon>
+          </button>
         </div>
       </div>
     </nav>

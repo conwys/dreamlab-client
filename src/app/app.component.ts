@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faInfoCircle, faWrench, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faWrench, faEnvelope, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +13,24 @@ import { faInfoCircle, faWrench, faEnvelope } from '@fortawesome/free-solid-svg-
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'dreamlab';
+export class AppComponent {  title = 'dreamlab';
   isScrolled = false;
 
   faInfo = faInfoCircle;
   faTools = faWrench;
+  faMoon = faMoon;
+  faSun = faSun;
   faEnvelope = faEnvelope;
 
-  constructor(private router: Router) {}
+  isDarkTheme$ = inject(ThemeService).isDarkTheme$;
+
+  constructor(private router: Router, private themeService: ThemeService) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
+    });
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -50,5 +60,9 @@ export class AppComponent {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 }

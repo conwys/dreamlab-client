@@ -1,0 +1,39 @@
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar {
+  background-color: var(--navbar-bg);
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+a:hover {
+  color: var(--hover-color);
+}
+
+// Theme toggle button styles
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--hover-color);
+  }
+
+  fa-icon {
+    font-size: 1.2rem;
+  }
+}

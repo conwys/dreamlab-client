@@ -16,3 +16,42 @@ $dark-lilac: rgba(88, 8, 219, 0.4);
 $dark-blue: rgba(4, 120, 255, 0.4);
 
 $disabled-button: #444;
+
+// Theme Colors
+:root {
+  // Light theme (default)
+  --background-color: #{$white};
+  --text-color: #{$black};
+  --h2-text-color: #{$dark-grey};
+  --placeholder-text-color: #{$dark-grey};
+  --navbar-bg: #{rgba($white, 0.6)};
+  --card-bg: #{$white};
+  --upload-bg: #{$lilac, 0.05};
+  --edit-room-canvas: #{$white};
+  --border-color: #{rgba($black, 0.1)};
+  --hover-color: #{$sky-blue};
+  --background-gradient: linear-gradient(-35deg, #be9df4 #a0cafb91);
+  --contact-gradient: linear-gradient(180deg, #fff 10%, #be9df4 80%, #a0cafb 100%);
+  --navbar-gradient-ease: linear-gradient(0deg, #ffffff00 0%, #ffffff 40%);
+  --styled-gradient: linear-gradient(-35deg, #5808db66 0%, #0478ff66 50%, #fff 100%);
+  --gradient-shadow: linear-gradient(0deg, #156EB6 0%, #156eb600 50%);
+}
+
+// Dark theme
+.dark-theme {
+  --background-color: #2F2839;
+  --text-color: #{$white};
+  --h2-text-color: #{$dark-grey};
+  --placeholder-text-color: #{$dark-grey};
+  --navbar-bg: #2F283990;
+  --card-bg: #2F2839;
+  --upload-bg: #{$white, 1};
+  --edit-room-canvas: #{$white};
+  --border-color: #{rgba($white, 0.1)};
+  --hover-color: #{$lilac};
+  --background-gradient: linear-gradient(135deg, #be9df4 0%, #a0cafb 100%);
+  --contact-gradient: linear-gradient(180deg, #2F2839 10%, #be9df4 80%, #a0cafb 100%);
+  --navbar-gradient-ease: linear-gradient(0deg, rgb(24, 24, 24, 0) 0%, #2F2839 40%);
+  --styled-gradient: linear-gradient(-35deg, #be9df4 0%, #a0cafb 50%, #2F2839 100%);
+  --gradient-shadow: linear-gradient(0deg, #2F2839 0%, #2F283900 50%);
+}

@@ -58,7 +58,7 @@ export class RoomUploaderComponent {
   lastId = 0;
 
   currentPage = 1;
-  itemsPerPage = 4;
+  itemsPerPage = 3;
 
   constructor(
     private router: Router,
