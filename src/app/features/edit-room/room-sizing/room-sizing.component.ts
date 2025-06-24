@@ -14,7 +14,7 @@ export class RoomSizingComponent implements AfterViewInit {
   lengthValue = this.baseValue;
   widthValue = this.baseValue;
   heightValue = this.baseValue;
-  scaleValue = 1; // Start at 1
+  scaleValue = 1;
 
   get lengthProgress() {
     return `${((this.lengthValue - this.baseValue) / (20 - this.baseValue)) * 100}%`;

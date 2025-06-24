@@ -148,7 +148,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       z: this.roomWidth / 2,
     };
 
-    // Enhance object material appearance before adding to scene
     if (roomObject.object instanceof THREE.Mesh) {
       const mesh = roomObject.object as THREE.Mesh;
       if (Array.isArray(mesh.material)) {
@@ -165,7 +164,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.objectsWithinRoom.push(roomObject);
   }
 
-  // Add this helper method to enhance material appearance
   private enhanceMaterial(material: THREE.Material) {
     if ((material as any).isMeshPhongMaterial) {
       const phong = material as THREE.MeshPhongMaterial;
@@ -179,8 +177,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       standard.roughness = 0.3;
       standard.needsUpdate = true;
     }
-    // Optionally, you can set color encoding if needed
-    // material.color.convertSRGBToLinear?.();
   }
 
   removeObjectFromRoom(id: number): void {
@@ -240,7 +236,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     // Update floor texture tiling based on room size
     if (this.floorTexture) {
-      // You can adjust the divisor (e.g., 1 or 2) to control tile size
       this.floorTexture.repeat.set(this.roomLength, this.roomWidth);
       this.floorTexture.needsUpdate = true;
     }
