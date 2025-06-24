@@ -36,7 +36,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
     await import('@google/model-viewer');
 
     const fetchedModels = await this.backendService.getSessionModels();
-
+    console.log('Fetched models:', fetchedModels);
     fetchedModels.forEach((url) => {
       this.loadObjectFromFile(url);
     });

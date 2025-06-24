@@ -39,12 +39,52 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     side: THREE.DoubleSide,
   });
 
-  private floorMaterial = new THREE.MeshPhongMaterial({
-    color: new THREE.Color('Sienna'),
-    side: THREE.DoubleSide,
-  });
+  private floorMaterial: THREE.MeshPhongMaterial;
+  private floorTextureMaterial: THREE.MeshPhongMaterial;
+  private wallTextureMaterial: THREE.MeshPhongMaterial;
+
+  private floorTexture?: THREE.Texture;
 
   private wallThickness = 0.2;
+
+  constructor() {
+    // Load the floor texture
+    const textureLoader = new THREE.TextureLoader();
+    const floorTexture = textureLoader.load('assets/img/floor_texture.webp');
+    floorTexture.wrapS = THREE.RepeatWrapping;
+    floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(4, 4);
+
+    this.floorTexture = floorTexture;
+
+    // Load the wall texture
+    const wallTexture = textureLoader.load('assets/img/wall_texture.jpeg');
+    wallTexture.wrapS = THREE.RepeatWrapping;
+    wallTexture.wrapT = THREE.RepeatWrapping;
+    wallTexture.repeat.set(2, 2);
+
+    this.wallTextureMaterial = new THREE.MeshPhongMaterial({
+      map: wallTexture,
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+    });
+
+    this.wallMaterial = new THREE.MeshPhongMaterial({
+      color: new THREE.Color('Cornsilk'),
+      side: THREE.DoubleSide,
+    });
+
+    this.floorTextureMaterial = new THREE.MeshPhongMaterial({
+      map: floorTexture,
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+    });
+
+    this.floorMaterial = new THREE.MeshPhongMaterial({
+      color: new THREE.Color('Sienna'),
+      side: THREE.DoubleSide,
+    });
+  }
 
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
@@ -65,17 +105,26 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       });
 
       this.camera = new THREE.PerspectiveCamera(75, this.canvas.clientWidth / this.canvas.clientHeight, 0.1, 1000);
+ 
+      const center = {
+        x: this.roomLength / 2,
+        y: 0,
+        z: this.roomWidth / 2,
+      };
+      this.camera.position.set(center.x + 5, center.y + 4, center.z + 5);
 
-      this.camera.position.set(10, 6, 10);
-
-      // Create a light
-      const light = new THREE.DirectionalLight(new THREE.Color(), 3);
+      // Create a directional light
+      const light = new THREE.DirectionalLight(0xffffff, 3);
       light.position.set(6, 10, 10);
       this.scene.add(light);
 
+      // Add ambient light for more even illumination
+      const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+      this.scene.add(ambient);
+
       this.setUpRoomDimensions();
 
-      this.setUpOrbitControls();
+      this.setUpOrbitControls(center);
 
       this.renderer.setAnimationLoop(() => {
         if (this.renderer && this.camera && this.scene) {
@@ -99,9 +148,39 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       z: this.roomWidth / 2,
     };
 
+    // Enhance object material appearance before adding to scene
+    if (roomObject.object instanceof THREE.Mesh) {
+      const mesh = roomObject.object as THREE.Mesh;
+      if (Array.isArray(mesh.material)) {
+        mesh.material.forEach(mat => {
+          this.enhanceMaterial(mat);
+        });
+      } else {
+        this.enhanceMaterial(mesh.material);
+      }
+    }
+
     roomObject.addToScene(floorCentre, this.scene);
 
     this.objectsWithinRoom.push(roomObject);
+  }
+
+  // Add this helper method to enhance material appearance
+  private enhanceMaterial(material: THREE.Material) {
+    if ((material as any).isMeshPhongMaterial) {
+      const phong = material as THREE.MeshPhongMaterial;
+      phong.shininess = 80;
+      phong.specular = new THREE.Color(0xffffff);
+      phong.needsUpdate = true;
+    }
+    if ((material as any).isMeshStandardMaterial) {
+      const standard = material as THREE.MeshStandardMaterial;
+      standard.metalness = 0.3;
+      standard.roughness = 0.3;
+      standard.needsUpdate = true;
+    }
+    // Optionally, you can set color encoding if needed
+    // material.color.convertSRGBToLinear?.();
   }
 
   removeObjectFromRoom(id: number): void {
@@ -157,23 +236,35 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     const x = this.roomLength;
     const y = this.roomHeight;
     const z = this.roomWidth;
+    const t = this.wallThickness;
 
-    this.xyPlane = new THREE.Mesh(new THREE.BoxGeometry(x, y, this.wallThickness), this.wallMaterial);
-    this.xyPlane.translateX(x / 2).translateY(y / 2);
+    // Update floor texture tiling based on room size
+    if (this.floorTexture) {
+      // You can adjust the divisor (e.g., 1 or 2) to control tile size
+      this.floorTexture.repeat.set(this.roomLength, this.roomWidth);
+      this.floorTexture.needsUpdate = true;
+    }
+
+    this.xzPlane = new THREE.Mesh(new THREE.BoxGeometry(x, t, z), this.floorTextureMaterial);
+    this.xzPlane.position.set(x / 2, t / 2, z / 2);
+    this.scene?.add(this.xzPlane);
+
+    this.xyPlane = new THREE.Mesh(new THREE.BoxGeometry(x, y, t), this.wallTextureMaterial);
+    this.xyPlane.position.set(x / 2, t + y / 2, t / 2);
     this.scene?.add(this.xyPlane);
 
-    this.zyPlane = new THREE.Mesh(new THREE.BoxGeometry(this.wallThickness, y, z), this.wallMaterial);
-    this.zyPlane.translateZ(z / 2).translateY(y / 2);
+    this.zyPlane = new THREE.Mesh(new THREE.BoxGeometry(t, y, z), this.wallTextureMaterial);
+    this.zyPlane.position.set(t / 2, t + y / 2, z / 2);
     this.scene?.add(this.zyPlane);
-
-    this.xzPlane = new THREE.Mesh(new THREE.BoxGeometry(x, this.wallThickness, z), this.floorMaterial);
-    this.xzPlane.translateX(x / 2).translateZ(z / 2);
-    this.scene?.add(this.xzPlane);
   }
 
-  private setUpOrbitControls(): void {
+  private setUpOrbitControls(center?: { x: number; y: number; z: number }): void {
     this.orbitControls = new OrbitControls(this.camera, this.canvas);
-    this.orbitControls.target.set(0, 0, 0);
+    if (center) {
+      this.orbitControls.target.set(center.x, center.y, center.z);
+    } else {
+      this.orbitControls.target.set(this.roomLength / 2, 0, this.roomWidth / 2);
+    }
     this.orbitControls.enableDamping = true;
     this.orbitControls.dampingFactor = 0.5;
     this.orbitControls.rotateSpeed = 0.3;
@@ -244,6 +335,15 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
 
     this.setUpRoomDimensions();
+
+    if (this.orbitControls) {
+      this.orbitControls.target.set(
+        this.roomLength / 2,
+        0,
+        this.roomWidth / 2
+      );
+      this.orbitControls.update();
+    }
 
     if (this.transformControls?.object) {
       this.transformControls.detach();
