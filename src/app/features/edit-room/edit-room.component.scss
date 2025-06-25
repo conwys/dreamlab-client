@@ -106,15 +106,37 @@
       }
 
       .screenshot-btn {
-        @include variables.icon-button;
-        font-size: 2rem;
-
         position: absolute;
-        bottom: 0;
-        right: 0;
+        bottom: variables.$spacing-lg;
+        right: variables.$spacing-lg;
         z-index: 5;
-
-        margin-right: 0.6rem;
+        
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: variables.$border-radius-circle;
+        border: none;
+        background: colours.$lilac;
+        color: colours.$white;
+        cursor: pointer;
+        transition: variables.$transition-base;
+        @include variables.flex-center;
+        font-size: 1.25rem;
+        box-shadow: 0 6px 20px rgba(colours.$lilac, 0.3);
+        backdrop-filter: blur(10px);
+        
+        &:hover {
+          transform: translateY(-2px);
+          background: darken(colours.$lilac, 5%);
+          box-shadow: 0 8px 25px rgba(colours.$lilac, 0.4);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+        
+        fa-icon {
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        }
       }
     }
   }
