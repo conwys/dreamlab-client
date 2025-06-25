@@ -23,8 +23,8 @@
 
       <div class="objects-container">
         <p class="instruction-text">
-          Upload photos of each object from different angles. The front view is required, other angles are optional but help
-          improve the 3D model quality.
+          Upload photos of each object from different angles. The front view is required, other angles are optional but
+          help improve the 3D model quality.
         </p>
 
         <div class="object-upload" *ngFor="let object of paginatedObjects">
@@ -78,11 +78,21 @@
       </div>
 
       <div class="pagination-controls" *ngIf="totalPages > 1">
-        <button class="btn pagination-btn" (click)="previousPage()" [disabled]="currentPage === 1" title="Previous page">
+        <button
+          class="btn pagination-btn"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          title="Previous page"
+        >
           <fa-icon [icon]="faChevronLeft"></fa-icon>
         </button>
         <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-        <button class="btn pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages" title="Next page">
+        <button
+          class="btn pagination-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          title="Next page"
+        >
           <fa-icon [icon]="faChevronRight"></fa-icon>
         </button>
       </div>

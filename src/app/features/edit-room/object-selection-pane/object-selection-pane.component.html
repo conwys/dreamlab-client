@@ -32,7 +32,8 @@
   <button
     class="add-remove-button"
     (click)="object.displayedInScene ? removeObject.emit(object.object.id) : addObject.emit(object)"
-  >"
+  >
+    "
     <fa-icon [icon]="object.displayedInScene ? faTrash : faPlus"></fa-icon>
   </button>
 </div>

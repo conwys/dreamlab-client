@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-export type Texture = {
+export interface Texture {
   src: string;
   alt: string;
   wall: THREE.Texture;
   floor: THREE.Texture;
-};
+}

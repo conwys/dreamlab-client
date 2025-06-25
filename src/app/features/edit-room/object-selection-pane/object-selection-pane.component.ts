@@ -41,7 +41,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
     const fetchedModels = await this.backendService.getSessionModels();
     fetchedModels.forEach((url) => {
       // Check if this model is already loaded to avoid duplicates
-      const existingObject = this.objectsCurrentlyInRoom.find(obj => obj.filePath === url);
+      const existingObject = this.objectsCurrentlyInRoom.find((obj) => obj.filePath === url);
       if (!existingObject) {
         this.loadObjectFromFile(url);
       }
@@ -51,7 +51,7 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   async refreshAvailableObjects(): Promise<void> {
     // Clear all objects from the UI
     this.objectsCurrentlyInRoom = [];
-    
+
     // Load fresh list from backend
     await this.loadAvailableObjects();
   }

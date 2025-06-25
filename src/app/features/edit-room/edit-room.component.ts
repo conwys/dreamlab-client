@@ -12,10 +12,15 @@ import { RoomTexturesComponent } from './room-textures/room-textures.component';
 import { Texture } from '../../models/texture';
 import { BackendServiceService } from '../../services/backend-service.service';
 
-
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, AddObjectsModalComponent, RoomTexturesComponent, FontAwesomeModule],
+  imports: [
+    ObjectSelectionPaneComponent,
+    RoomSizingComponent,
+    AddObjectsModalComponent,
+    RoomTexturesComponent,
+    FontAwesomeModule,
+  ],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
@@ -431,7 +436,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   async onObjectsAdded(): Promise<void> {
     console.log('New objects have been added and processed');
-    
+
     // Refresh the object selection pane to show newly uploaded objects
     if (this.objectSelectionPane) {
       await this.objectSelectionPane.refreshAvailableObjects();
@@ -442,29 +447,29 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     try {
       // Show confirmation dialog
       const confirmed = confirm('Are you sure you want to delete all objects? This action cannot be undone.');
-      
+
       if (!confirmed) {
         return;
       }
 
       console.log('Clearing all objects from session...');
-      
+
       // Call backend to delete all models
       await this.backendService.deleteAllModels();
-      
+
       // Clear all objects from the 3D scene
-      this.objectsWithinRoom.forEach(roomObject => {
+      this.objectsWithinRoom.forEach((roomObject) => {
         if (roomObject.object) {
           this.scene.remove(roomObject.object);
         }
       });
       this.objectsWithinRoom = [];
-      
+
       // Refresh the object selection pane to reflect the cleared state
       if (this.objectSelectionPane) {
         await this.objectSelectionPane.refreshAvailableObjects();
       }
-      
+
       console.log('All objects cleared successfully');
     } catch (error) {
       console.error('Error clearing all objects:', error);

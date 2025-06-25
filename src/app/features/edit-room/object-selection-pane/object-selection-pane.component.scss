@@ -29,7 +29,7 @@
       height: 32px;
       @include variables.flex-center;
       border-radius: 8px;
-      
+
       &:hover {
         transform: scale(1.05);
         background-color: rgba(colours.$lilac, 0.1);
@@ -49,44 +49,44 @@
     height: 32px !important;
     border-radius: 50%;
     border: 3px solid colours.$white;
-    box-shadow: 
+    box-shadow:
       0 0 0 1px rgba(colours.$dark-grey, 0.2),
       0 2px 8px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
-    
+
     // Prevent text input behavior
     pointer-events: auto;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    
+
     // Hide text cursor and input functionality
     caret-color: transparent;
     color: transparent;
     text-indent: -9999px;
-    
+
     &:hover {
       transform: scale(1.1);
-      box-shadow: 
+      box-shadow:
         0 0 0 1px rgba(colours.$dark-grey, 0.3),
         0 4px 12px rgba(0, 0, 0, 0.25);
     }
-    
+
     &:active {
       transform: scale(0.95);
     }
-    
+
     &:focus {
       outline: none;
-      box-shadow: 
+      box-shadow:
         0 0 0 1px rgba(colours.$lilac, 0.5),
         0 4px 12px rgba(colours.$lilac, 0.3);
     }
-    
+
     // Style the color picker trigger
     &::before {
       content: '';
@@ -99,13 +99,13 @@
       background: inherit;
       pointer-events: none;
     }
-    
+
     // Hide the default input appearance
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     outline: none;
-    
+
     // Add a subtle inner shadow for depth
     &::after {
       content: '';

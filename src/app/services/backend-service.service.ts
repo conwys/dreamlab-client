@@ -111,12 +111,12 @@ export class BackendServiceService {
   ): Promise<{ message: string; session_id: string; filename: string; model_url?: string }> {
     // Refresh session if needed before making API call
     await this.refreshSessionIfNeeded();
-    
+
     if (!this.sessionId || !this.isSessionValid()) {
       // Try to get a fresh session
       this.sessionId = await this.getOrCreateSession();
     }
-    
+
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
     }
@@ -146,12 +146,12 @@ export class BackendServiceService {
   async getSessionModels(): Promise<string[]> {
     // Refresh session if needed before making API call
     await this.refreshSessionIfNeeded();
-    
+
     if (!this.sessionId || !this.isSessionValid()) {
       // Try to get a fresh session
       this.sessionId = await this.getOrCreateSession();
     }
-    
+
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
     }
@@ -187,7 +187,7 @@ export class BackendServiceService {
     return {
       sessionId: this.sessionId,
       expiresAt: storedExpiry ? new Date(parseInt(storedExpiry, 10)) : null,
-      isValid: this.isSessionValid()
+      isValid: this.isSessionValid(),
     };
   }
 
@@ -196,16 +196,16 @@ export class BackendServiceService {
       fetch(`${this.api_url}/api/delete_all_models/${this.sessionId}`, {
         method: 'DELETE',
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error('Failed to delete all models');
           }
           resolve();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error deleting all models:', error);
           reject(error);
         });
     });
-  } 
+  }
 }
