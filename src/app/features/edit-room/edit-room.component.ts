@@ -6,6 +6,7 @@ import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
 import { RoomTexturesComponent } from './room-textures/room-textures.component';
+import { Texture } from '../../models/texture';
 
 @Component({
   selector: 'app-edit-room',
@@ -21,7 +22,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private camera = new THREE.PerspectiveCamera();
 
   protected readonly initialValue = 5;
-
+  
   private roomLength = this.initialValue; // X -axis
   private roomHeight = this.initialValue; // Y-axis
   private roomWidth = this.initialValue; // Z-axis
@@ -35,56 +36,13 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   private objectsWithinRoom: RoomObject[] = [];
 
-  private wallMaterial = new THREE.MeshPhongMaterial({
-    color: new THREE.Color('Cornsilk'),
-    side: THREE.DoubleSide,
-  });
-
-  private floorMaterial: THREE.MeshPhongMaterial;
-  private floorTextureMaterial: THREE.MeshPhongMaterial;
-  private wallTextureMaterial: THREE.MeshPhongMaterial;
+  private floorTextureMaterial?: THREE.MeshPhongMaterial;
+  private wallTextureMaterial?: THREE.MeshPhongMaterial;
 
   private floorTexture?: THREE.Texture;
 
   private wallThickness = 0.2;
-
-  constructor() {
-    // Load the floor texture
-    const textureLoader = new THREE.TextureLoader();
-    const floorTexture = textureLoader.load('assets/img/wood.jpg');
-    floorTexture.wrapS = THREE.RepeatWrapping;
-    floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(4, 4);
-
-    this.floorTexture = floorTexture;
-
-    // Load the wall texture
-    const wallTexture = textureLoader.load('assets/img/wallpaper.jpg');
-    wallTexture.wrapS = THREE.RepeatWrapping;
-    wallTexture.wrapT = THREE.RepeatWrapping;
-
-    this.wallTextureMaterial = new THREE.MeshPhongMaterial({
-      map: wallTexture,
-      color: 0xffffff,
-      side: THREE.DoubleSide,
-    });
-
-    this.wallMaterial = new THREE.MeshPhongMaterial({
-      color: new THREE.Color('Cornsilk'),
-      side: THREE.DoubleSide,
-    });
-
-    this.floorTextureMaterial = new THREE.MeshPhongMaterial({
-      map: floorTexture,
-      color: 0xffffff,
-      side: THREE.DoubleSide,
-    });
-
-    this.floorMaterial = new THREE.MeshPhongMaterial({
-      color: new THREE.Color('Sienna'),
-      side: THREE.DoubleSide,
-    });
-  }
+  private whiteHexColor = '0xffffff';
 
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
@@ -114,17 +72,17 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.camera.position.set(center.x + 5, center.y + 4, center.z + 5);
 
       // Create a directional light
-      const light = new THREE.DirectionalLight(0xffffff, 3);
+      const light = new THREE.DirectionalLight(this.whiteHexColor, 3);
       light.position.set(6, 10, 10);
       this.scene.add(light);
 
       // Add ambient light for more even illumination
-      const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+      const ambient = new THREE.AmbientLight(this.whiteHexColor, 1.2);
       this.scene.add(ambient);
-
+      this.setupTextures();
       this.setUpRoomDimensions();
 
-      this.setUpOrbitControls(center);
+      this.setUpOrbitControls();
 
       this.renderer.setAnimationLoop(() => {
         if (this.renderer && this.camera && this.scene) {
@@ -241,7 +199,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
 
     // Update wall texture tiling based on wall size
-    if (this.wallTextureMaterial.map) {
+    if (this.wallTextureMaterial?.map) {
       this.wallTextureMaterial.map.repeat.set(this.roomLength, this.roomHeight);
       this.wallTextureMaterial.map.needsUpdate = true;
     }
@@ -254,7 +212,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.xyPlane.position.set(x / 2, t + y / 2, t / 2);
     this.scene?.add(this.xyPlane);
 
-    if (this.wallTextureMaterial.map) {
+    if (this.wallTextureMaterial?.map) {
       this.wallTextureMaterial.map.repeat.set(this.roomWidth/4, this.roomHeight/4);
       this.wallTextureMaterial.map.needsUpdate = true;
     }
@@ -263,13 +221,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.scene?.add(this.zyPlane);
   }
 
-  private setUpOrbitControls(center?: { x: number; y: number; z: number }): void {
+  private setUpOrbitControls(): void {
     this.orbitControls = new OrbitControls(this.camera, this.canvas);
-    if (center) {
-      this.orbitControls.target.set(center.x, center.y, center.z);
-    } else {
-      this.orbitControls.target.set(this.roomLength / 2, 0, this.roomWidth / 2);
-    }
+    this.orbitControls.target.set(this.roomLength / 2, 0, this.roomWidth / 2);
     this.orbitControls.enableDamping = true;
     this.orbitControls.dampingFactor = 0.5;
     this.orbitControls.rotateSpeed = 0.3;
@@ -295,6 +249,34 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     this.transformControls.showY = false;
     this.transformControls.setSize(0.5);
+  }
+
+    private setupTextures(): void {
+    // Load the floor texture
+    const textureLoader = new THREE.TextureLoader();
+    const floorTexture = textureLoader.load('assets/img/wood.jpg');
+    floorTexture.wrapS = THREE.RepeatWrapping;
+    floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(4, 4);
+
+    this.floorTexture = floorTexture;
+
+    // Load the wall texture
+    const wallTexture = textureLoader.load('assets/img/wallpaper.jpg');
+    wallTexture.wrapS = THREE.RepeatWrapping;
+    wallTexture.wrapT = THREE.RepeatWrapping;
+
+    this.wallTextureMaterial = new THREE.MeshPhongMaterial({
+      map: wallTexture,
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+    });
+
+    this.floorTextureMaterial = new THREE.MeshPhongMaterial({
+      map: floorTexture,
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+    });
   }
 
   public attachObjectToTransformControls(roomObject: RoomObject, rotate = false): void {
@@ -359,30 +341,22 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     return deg * (Math.PI / 180.0);
   }
 
-  onTextureSelected(texture: string) {
+  onTextureSelected(texture: Texture) {
     const textureLoader = new THREE.TextureLoader();
     let floorTexture: THREE.Texture | undefined;
     let wallTexture: THREE.Texture | undefined;
 
-    if (texture === 'texture1') {
-      floorTexture = textureLoader.load('assets/img/carpet.jpg');
-      wallTexture = textureLoader.load('assets/img/paint.jpeg');
-    } else if (texture === 'texture2') {
-      floorTexture = textureLoader.load('assets/img/stone.jpg');
-      wallTexture = textureLoader.load('assets/img/brick.jpg');
-    } else if (texture === 'texture3') {
-      floorTexture = textureLoader.load('assets/img/wood.jpg');
-      wallTexture = textureLoader.load('assets/img/wallpaper.jpg');
-    }
+      floorTexture = textureLoader.load(texture.floor);
+      wallTexture = textureLoader.load(texture.wall);
 
-    if (floorTexture) {
+    if (floorTexture && this.floorTextureMaterial) {
       floorTexture.wrapS = THREE.RepeatWrapping;
       floorTexture.wrapT = THREE.RepeatWrapping;
       this.floorTexture = floorTexture;
       this.floorTextureMaterial.map = floorTexture;
       this.floorTextureMaterial.needsUpdate = true;
     }
-    if (wallTexture) {
+    if (wallTexture && this.wallTextureMaterial) {
       wallTexture.wrapS = THREE.RepeatWrapping;
       wallTexture.wrapT = THREE.RepeatWrapping;
       this.wallTextureMaterial.map = wallTexture;
