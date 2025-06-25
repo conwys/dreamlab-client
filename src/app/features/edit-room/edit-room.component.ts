@@ -351,11 +351,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     this.setUpRoomDimensions();
 
-    if (this.orbitControls) {
-      this.orbitControls.target.set(this.roomLength / 2, 0, this.roomWidth / 2);
-      this.orbitControls.update();
-    }
-
     if (this.transformControls?.object) {
       this.transformControls.detach();
     }

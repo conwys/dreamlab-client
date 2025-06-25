@@ -30,7 +30,6 @@ export class RoomSizingComponent implements AfterViewInit {
   @Output() lengthChange = new EventEmitter<number>();
   @Output() widthChange = new EventEmitter<number>();
   @Output() heightChange = new EventEmitter<number>();
-  @Output() scaleChange = new EventEmitter<number>();
 
   ngAfterViewInit() {
     this.setUpEventListeners();
@@ -58,7 +57,6 @@ export class RoomSizingComponent implements AfterViewInit {
       this.lengthChange.emit(this.lengthValue);
       this.widthChange.emit(this.widthValue);
       this.heightChange.emit(this.heightValue);
-      this.scaleChange.emit(this.scaleValue);
     });
   }
 
@@ -81,6 +79,5 @@ export class RoomSizingComponent implements AfterViewInit {
     this.lengthChange.emit(this.lengthValue);
     this.widthChange.emit(this.widthValue);
     this.heightChange.emit(this.heightValue);
-    this.scaleChange.emit(this.scaleValue);
   }
 }
