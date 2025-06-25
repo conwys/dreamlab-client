@@ -9,6 +9,7 @@
       ></app-room-sizing>
       <app-room-textures
         class="room-textures"
+        [textures]="textures"
         (textureSelected)="onTextureSelected($event)"
       ></app-room-textures>
       <canvas id="edit-room-canvas"></canvas>
