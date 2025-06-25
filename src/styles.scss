@@ -13,3 +13,76 @@ body {
     background-color 0.3s ease,
     color 0.3s ease;
 }
+
+/* Global color picker styling */
+.color-picker {
+  position: fixed !important;
+  z-index: 9999 !important;
+  
+  .color-picker-wrapper {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(colours.$dark-grey, 0.2) !important;
+    overflow: hidden !important;
+    background: colours.$white !important;
+  }
+  
+  .saturation-lightness {
+    border-radius: 8px !important;
+  }
+  
+  .hue-slider, .alpha-slider {
+    border-radius: 6px !important;
+  }
+  
+  .color-picker-input-wrapper {
+    input {
+      border-radius: 6px !important;
+      border: 1px solid rgba(colours.$dark-grey, 0.3) !important;
+      font-family: 'Albert Sans', sans-serif !important;
+      
+      &:focus {
+        border-color: colours.$lilac !important;
+        box-shadow: 0 0 0 2px rgba(colours.$lilac, 0.2) !important;
+        outline: none !important;
+      }
+    }
+  }
+  
+  .color-picker-button {
+    background: colours.$lilac !important;
+    border-radius: 6px !important;
+    border: none !important;
+    color: colours.$white !important;
+    font-family: 'Albert Sans', sans-serif !important;
+    font-weight: 600 !important;
+    
+    &:hover {
+      filter: brightness(0.95) !important;
+    }
+  }
+}
+
+/* Angular color picker specific styling */
+color-picker {
+  position: fixed !important;
+  z-index: 9999 !important;
+  
+  .color-picker-container {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(colours.$dark-grey, 0.2) !important;
+    overflow: hidden !important;
+    background: colours.$white !important;
+  }
+}
+
+/* Ensure color picker overlay doesn't affect layout */
+.cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.cp-overlay {
+  position: fixed !important;
+  z-index: 9999 !important;
+}

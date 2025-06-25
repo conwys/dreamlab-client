@@ -10,10 +10,14 @@
 
     <input
       class="colour-picker"
+      type="text"
+      readonly
       [(colorPicker)]="object.colour"
       [cpOutputFormat]="'rgba'"
       [style.background]="object.colour"
-      [style.width]="'10px'"
+      [cpPosition]="'bottom'"
+      [cpPositionOffset]="'0%'"
+      [cpPositionRelativeToArrow]="true"
     />
   </div>
 
