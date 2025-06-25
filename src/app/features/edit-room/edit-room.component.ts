@@ -5,10 +5,11 @@ import { ObjectSelectionPaneComponent } from './object-selection-pane/object-sel
 import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
+import { RoomTexturesComponent } from './room-textures/room-textures.component';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent, RoomSizingComponent],
+  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, RoomTexturesComponent],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
@@ -50,7 +51,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   constructor() {
     // Load the floor texture
     const textureLoader = new THREE.TextureLoader();
-    const floorTexture = textureLoader.load('assets/img/floor_texture.webp');
+    const floorTexture = textureLoader.load('assets/img/wood.jpg');
     floorTexture.wrapS = THREE.RepeatWrapping;
     floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set(4, 4);
@@ -58,10 +59,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.floorTexture = floorTexture;
 
     // Load the wall texture
-    const wallTexture = textureLoader.load('assets/img/wall_texture.jpeg');
+    const wallTexture = textureLoader.load('assets/img/wallpaper.jpg');
     wallTexture.wrapS = THREE.RepeatWrapping;
     wallTexture.wrapT = THREE.RepeatWrapping;
-    wallTexture.repeat.set(2, 2);
 
     this.wallTextureMaterial = new THREE.MeshPhongMaterial({
       map: wallTexture,
@@ -240,6 +240,12 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.floorTexture.needsUpdate = true;
     }
 
+    // Update wall texture tiling based on wall size
+    if (this.wallTextureMaterial.map) {
+      this.wallTextureMaterial.map.repeat.set(this.roomLength, this.roomHeight);
+      this.wallTextureMaterial.map.needsUpdate = true;
+    }
+
     this.xzPlane = new THREE.Mesh(new THREE.BoxGeometry(x, t, z), this.floorTextureMaterial);
     this.xzPlane.position.set(x / 2, t / 2, z / 2);
     this.scene?.add(this.xzPlane);
@@ -248,6 +254,10 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.xyPlane.position.set(x / 2, t + y / 2, t / 2);
     this.scene?.add(this.xyPlane);
 
+    if (this.wallTextureMaterial.map) {
+      this.wallTextureMaterial.map.repeat.set(this.roomWidth/4, this.roomHeight/4);
+      this.wallTextureMaterial.map.needsUpdate = true;
+    }
     this.zyPlane = new THREE.Mesh(new THREE.BoxGeometry(t, y, z), this.wallTextureMaterial);
     this.zyPlane.position.set(t / 2, t + y / 2, z / 2);
     this.scene?.add(this.zyPlane);
@@ -347,6 +357,38 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   private degToRad(deg: number): number {
     return deg * (Math.PI / 180.0);
+  }
+
+  onTextureSelected(texture: string) {
+    const textureLoader = new THREE.TextureLoader();
+    let floorTexture: THREE.Texture | undefined;
+    let wallTexture: THREE.Texture | undefined;
+
+    if (texture === 'texture1') {
+      floorTexture = textureLoader.load('assets/img/carpet.jpg');
+      wallTexture = textureLoader.load('assets/img/paint.jpeg');
+    } else if (texture === 'texture2') {
+      floorTexture = textureLoader.load('assets/img/stone.jpg');
+      wallTexture = textureLoader.load('assets/img/brick.jpg');
+    } else if (texture === 'texture3') {
+      floorTexture = textureLoader.load('assets/img/wood.jpg');
+      wallTexture = textureLoader.load('assets/img/wallpaper.jpg');
+    }
+
+    if (floorTexture) {
+      floorTexture.wrapS = THREE.RepeatWrapping;
+      floorTexture.wrapT = THREE.RepeatWrapping;
+      this.floorTexture = floorTexture;
+      this.floorTextureMaterial.map = floorTexture;
+      this.floorTextureMaterial.needsUpdate = true;
+    }
+    if (wallTexture) {
+      wallTexture.wrapS = THREE.RepeatWrapping;
+      wallTexture.wrapT = THREE.RepeatWrapping;
+      this.wallTextureMaterial.map = wallTexture;
+      this.wallTextureMaterial.needsUpdate = true;
+    }
+    this.setUpRoomDimensions();
   }
 }
 

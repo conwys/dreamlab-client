@@ -7,6 +7,10 @@
         (widthChange)="updateRoomDimension($event, 'width')"
         (heightChange)="updateRoomDimension($event, 'height')"
       ></app-room-sizing>
+      <app-room-textures
+        class="room-textures"
+        (textureSelected)="onTextureSelected($event)"
+      ></app-room-textures>
       <canvas id="edit-room-canvas"></canvas>
     </div>
     <app-object-selection-pane
