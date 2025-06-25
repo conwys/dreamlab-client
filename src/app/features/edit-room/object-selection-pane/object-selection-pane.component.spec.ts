@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ObjectSelectionPaneComponent } from './object-selection-pane.component';
 
 describe('ObjectSelectionPaneComponent', () => {

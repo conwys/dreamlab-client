@@ -38,7 +38,27 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   private objectsWithinRoom: RoomObject[] = [];
 
-  protected textures: Texture[] = [];
+  private textureLoader = new THREE.TextureLoader();
+  protected textures: Texture[] = [
+    {
+      src: 'assets/img/texture1.png',
+      alt: 'Theme 1',
+      wall: this.textureLoader.load('assets/img/paint.jpeg'),
+      floor: this.textureLoader.load('assets/img/carpet.jpg'),
+    },
+    {
+      src: 'assets/img/texture2.png',
+      alt: 'Theme 2',
+      wall: this.textureLoader.load('assets/img/brick.jpg'),
+      floor: this.textureLoader.load('assets/img/stone.jpg'),
+    },
+    {
+      src: 'assets/img/texture3.png',
+      alt: 'Theme 3',
+      wall: this.textureLoader.load('assets/img/wallpaper.jpg'),
+      floor: this.textureLoader.load('assets/img/wood.jpg'),
+    },
+  ];
 
   private floorTextureMaterial?: THREE.MeshPhongMaterial;
   private wallTextureMaterial?: THREE.MeshPhongMaterial;
@@ -259,29 +279,6 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   private setupTextures(): void {
     // Load the floor texture
-    const textureLoader = new THREE.TextureLoader();
-
-    this.textures = [
-      {
-        src: 'assets/img/texture1.png',
-        alt: 'Theme 1',
-        wall: textureLoader.load('assets/img/paint.jpeg'),
-        floor: textureLoader.load('assets/img/carpet.jpg'),
-      },
-      {
-        src: 'assets/img/texture2.png',
-        alt: 'Theme 2',
-        wall: textureLoader.load('assets/img/brick.jpg'),
-        floor: textureLoader.load('assets/img/stone.jpg'),
-      },
-      {
-        src: 'assets/img/texture3.png',
-        alt: 'Theme 3',
-        wall: textureLoader.load('assets/img/wallpaper.jpg'),
-        floor: textureLoader.load('assets/img/wood.jpg'),
-      },
-    ];
-
     const floorTexture = this.textures[2].floor;
     floorTexture.wrapS = THREE.RepeatWrapping;
     floorTexture.wrapT = THREE.RepeatWrapping;
