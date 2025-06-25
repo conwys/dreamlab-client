@@ -17,12 +17,26 @@
         <fa-icon [icon]="faCamera"></fa-icon>
       </button>
     </div>
-    <app-object-selection-pane
-      class="object-selection-pane"
-      (addObject)="addObjectToRoom($event)"
-      (removeObject)="removeObjectFromRoom($event)"
-      (selectObjectToTransform)="attachObjectToTransformControls($event)"
-      (rotateObject)="rotateObjectInRoom($event)"
-    ></app-object-selection-pane>
+    <div class="sidebar">
+      <app-object-selection-pane
+        class="object-selection-pane"
+        (addObject)="addObjectToRoom($event)"
+        (removeObject)="removeObjectFromRoom($event)"
+        (selectObjectToTransform)="attachObjectToTransformControls($event)"
+        (rotateObject)="rotateObjectInRoom($event)"
+      ></app-object-selection-pane>
+      <div class="sidebar-footer">
+        <button class="btn add-objects-btn" (click)="openAddObjectsModal()">
+          <fa-icon [icon]="faPlus"></fa-icon>
+          Add Objects
+        </button>
+      </div>
+    </div>
   </div>
+
+  <app-add-objects-modal
+    [isOpen]="isAddObjectsModalOpen"
+    (closeModal)="closeAddObjectsModal()"
+    (objectsAdded)="onObjectsAdded()"
+  ></app-add-objects-modal>
 </div>

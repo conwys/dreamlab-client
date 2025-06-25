@@ -5,14 +5,15 @@ import { ObjectSelectionPaneComponent } from './object-selection-pane/object-sel
 import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
+import { AddObjectsModalComponent } from './add-objects-modal/add-objects-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { RoomTexturesComponent } from './room-textures/room-textures.component';
 import { Texture } from '../../models/texture';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, RoomTexturesComponent, FontAwesomeModule],
+  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, AddObjectsModalComponent, RoomTexturesComponent, FontAwesomeModule],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
@@ -50,6 +51,10 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   private whiteHexColor = '0xffffff';
 
   faCamera = faCamera;
+
+  // Modal state
+  isAddObjectsModalOpen = false;
+  faPlus = faPlus;
 
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
@@ -401,6 +406,19 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
 
     this.setUpRoomDimensions();
+  }
+
+  openAddObjectsModal(): void {
+    this.isAddObjectsModalOpen = true;
+  }
+
+  closeAddObjectsModal(): void {
+    this.isAddObjectsModalOpen = false;
+  }
+
+  onObjectsAdded(): void {
+    console.log('New objects have been added and processed');
+    // TODO: Implement logic to refresh available objects in the object selection pane
   }
 }
 

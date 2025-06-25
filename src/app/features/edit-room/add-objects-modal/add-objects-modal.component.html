@@ -1,0 +1,105 @@
+<div class="modal-overlay" *ngIf="isOpen" [class.closing]="isClosing" (click)="onModalBackdropClick($event)">
+  <div class="modal-container" [class.closing]="isClosing">
+    <div class="modal-header">
+      <h2>Add Objects</h2>
+      <button class="close-btn" (click)="close()" title="Close">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+
+    <div class="modal-content">
+      <div class="loading-overlay" *ngIf="isLoading || errorMessage">
+        <div class="loading-content" [class.error]="errorMessage">
+          <div class="shape-container" *ngIf="!errorMessage">
+            <div class="shape"></div>
+          </div>
+          <div class="error-icon" *ngIf="errorMessage">
+            <fa-icon [icon]="faExclamationCircle" size="3x"></fa-icon>
+          </div>
+          <p>{{ errorMessage || 'Processing your images...' }}</p>
+          <button *ngIf="errorMessage" class="btn close-error" (click)="dismissError()">Close</button>
+        </div>
+      </div>
+
+      <div class="objects-container">
+        <p class="instruction-text">
+          Upload photos of each object from different angles. The front view is required, other angles are optional but help
+          improve the 3D model quality.
+        </p>
+
+        <div class="object-upload" *ngFor="let object of paginatedObjects">
+          <div class="object-header" (click)="toggleObject(object.id)">
+            <input
+              type="text"
+              placeholder="Object description (e.g., wooden table, modern chair)"
+              [(ngModel)]="object.caption"
+              class="caption-input"
+              (click)="$event.stopPropagation()"
+            />
+            <button
+              *ngIf="objects.length > 1"
+              class="remove-btn"
+              (click)="removeObject(object.id); $event.stopPropagation()"
+              title="Remove object"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+            <button class="toggle-btn" [class.expanded]="object.isExpanded">
+              <fa-icon [icon]="object.isExpanded ? faChevronUp : faChevronDown"></fa-icon>
+            </button>
+          </div>
+
+          <div class="image-upload-grid" *ngIf="object.isExpanded">
+            <div class="image-slot" *ngFor="let label of imageLabels; let i = index">
+              <div class="upload-area" *ngIf="!object.thumbnails[i]">
+                <input
+                  type="file"
+                  accept="image/*"
+                  (change)="onFileSelected($event, object.id, i)"
+                  [id]="'upload-' + object.id + '-' + i"
+                />
+                <label [for]="'upload-' + object.id + '-' + i">
+                  <fa-icon [icon]="faImage"></fa-icon>
+                  <span>{{ label }} view</span>
+                  <small>{{ i === 0 ? 'Required' : 'Optional' }}</small>
+                  <small class="click-hint">Click to upload</small>
+                </label>
+              </div>
+              <div class="image-preview" *ngIf="object.thumbnails[i]">
+                <img [src]="object.thumbnails[i]" [alt]="label + ' view'" />
+                <div class="image-label">{{ label }}</div>
+                <button class="remove-image" (click)="removeImage(object.id, i)" title="Remove image">
+                  <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-controls" *ngIf="totalPages > 1">
+        <button class="btn pagination-btn" (click)="previousPage()" [disabled]="currentPage === 1" title="Previous page">
+          <fa-icon [icon]="faChevronLeft"></fa-icon>
+        </button>
+        <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button class="btn pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages" title="Next page">
+          <fa-icon [icon]="faChevronRight"></fa-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn add-object" (click)="addNewObject()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Add Another Object
+      </button>
+      <div class="footer-actions">
+        <button class="btn cancel" (click)="close()">Cancel</button>
+        <button class="btn add-to-room" (click)="onAddObjects()">
+          Add to Room
+          <fa-icon [icon]="faArrowRight"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

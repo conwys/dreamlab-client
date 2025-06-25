@@ -18,11 +18,47 @@
     align-items: stretch;
     align-content: center;
 
-    .object-selection-pane {
+    .sidebar {
       width: 300px;
       @include variables.flex-column;
-      gap: 1rem;
-      background: var(--edit-room-canvas);
+      gap: variables.$spacing-lg;
+
+      .sidebar-footer {
+        display: flex;
+        justify-content: center;
+
+        .add-objects-btn {
+          min-width: 150px;
+          padding: variables.$spacing-md variables.$spacing-lg;
+          border: none;
+          border-radius: variables.$border-radius-lg;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: variables.$transition-base;
+          @include variables.flex-center;
+          background: colours.$lilac;
+          color: colours.$white;
+          box-shadow: 0 4px 12px rgba(colours.$lilac, 0.3);
+          width: 100%;
+          gap: variables.$spacing-sm;
+
+          fa-icon {
+            margin-right: variables.$spacing-xs;
+          }
+
+          &:hover {
+            filter: brightness(0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(colours.$lilac, 0.3);
+          }
+        }
+      }
+
+      .object-selection-pane {
+        flex: 1;
+        background: var(--edit-room-canvas);
+      }
     }
 
     .canvas-container {
