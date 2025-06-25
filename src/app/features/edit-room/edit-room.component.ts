@@ -5,24 +5,26 @@ import { ObjectSelectionPaneComponent } from './object-selection-pane/object-sel
 import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import { RoomTexturesComponent } from './room-textures/room-textures.component';
 import { Texture } from '../../models/texture';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, RoomTexturesComponent],
+  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, RoomTexturesComponent, FontAwesomeModule],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
 })
 export class EditRoomComponent implements AfterViewInit, OnDestroy {
-  private canvas?: HTMLElement | null;
+  private canvas?: HTMLCanvasElement | null;
   private renderer = new THREE.WebGLRenderer();
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera();
 
   protected readonly initialValue = 5;
-  
+
   private roomLength = this.initialValue; // X -axis
   private roomHeight = this.initialValue; // Y-axis
   private roomWidth = this.initialValue; // Z-axis
@@ -36,13 +38,18 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   private objectsWithinRoom: RoomObject[] = [];
 
+  protected textures: Texture[] = [];
+
   private floorTextureMaterial?: THREE.MeshPhongMaterial;
   private wallTextureMaterial?: THREE.MeshPhongMaterial;
 
   private floorTexture?: THREE.Texture;
 
   private wallThickness = 0.2;
+
   private whiteHexColor = '0xffffff';
+
+  faCamera = faCamera;
 
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
@@ -50,7 +57,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (typeof document !== 'undefined') {
-      this.canvas = document.getElementById('edit-room-canvas');
+      this.canvas = document.getElementById('edit-room-canvas') as HTMLCanvasElement;
     }
 
     if (this.canvas) {
@@ -63,7 +70,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       });
 
       this.camera = new THREE.PerspectiveCamera(75, this.canvas.clientWidth / this.canvas.clientHeight, 0.1, 1000);
- 
+
       const center = {
         x: this.roomLength / 2,
         y: 0,
@@ -85,18 +92,22 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.setUpOrbitControls();
 
       this.renderer.setAnimationLoop(() => {
-        if (this.renderer && this.camera && this.scene) {
-          // Maintain the aspect ratio of the view when canvas is resized
-          if (this.resizeRendererToDisplaySize()) {
-            const canvas = this.renderer.domElement;
-
-            this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            this.camera.updateProjectionMatrix();
-          }
-
-          this.renderer.render(this.scene, this.camera);
-        }
+        this.render();
       });
+    }
+  }
+
+  private render(): void {
+    if (this.renderer && this.camera && this.scene) {
+      // Maintain the aspect ratio of the view when canvas is resized
+      if (this.resizeRendererToDisplaySize()) {
+        const canvas = this.renderer.domElement;
+
+        this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        this.camera.updateProjectionMatrix();
+      }
+
+      this.renderer.render(this.scene, this.camera);
     }
   }
 
@@ -109,7 +120,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     if (roomObject.object instanceof THREE.Mesh) {
       const mesh = roomObject.object as THREE.Mesh;
       if (Array.isArray(mesh.material)) {
-        mesh.material.forEach(mat => {
+        mesh.material.forEach((mat) => {
           this.enhanceMaterial(mat);
         });
       } else {
@@ -200,25 +211,20 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
     // Update wall texture tiling based on wall size
     if (this.wallTextureMaterial?.map) {
-      this.wallTextureMaterial.map.repeat.set(this.roomLength, this.roomHeight);
+      this.wallTextureMaterial.map.repeat.set(this.roomWidth / 4, this.roomHeight / 4);
       this.wallTextureMaterial.map.needsUpdate = true;
     }
 
     this.xzPlane = new THREE.Mesh(new THREE.BoxGeometry(x, t, z), this.floorTextureMaterial);
     this.xzPlane.position.set(x / 2, t / 2, z / 2);
-    this.scene?.add(this.xzPlane);
 
     this.xyPlane = new THREE.Mesh(new THREE.BoxGeometry(x, y, t), this.wallTextureMaterial);
     this.xyPlane.position.set(x / 2, t + y / 2, t / 2);
-    this.scene?.add(this.xyPlane);
 
-    if (this.wallTextureMaterial?.map) {
-      this.wallTextureMaterial.map.repeat.set(this.roomWidth/4, this.roomHeight/4);
-      this.wallTextureMaterial.map.needsUpdate = true;
-    }
     this.zyPlane = new THREE.Mesh(new THREE.BoxGeometry(t, y, z), this.wallTextureMaterial);
     this.zyPlane.position.set(t / 2, t + y / 2, z / 2);
-    this.scene?.add(this.zyPlane);
+
+    this.scene?.add(this.xzPlane, this.xyPlane, this.zyPlane);
   }
 
   private setUpOrbitControls(): void {
@@ -251,10 +257,32 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.transformControls.setSize(0.5);
   }
 
-    private setupTextures(): void {
+  private setupTextures(): void {
     // Load the floor texture
     const textureLoader = new THREE.TextureLoader();
-    const floorTexture = textureLoader.load('assets/img/wood.jpg');
+
+    this.textures = [
+      {
+        src: 'assets/img/texture1.png',
+        alt: 'Theme 1',
+        wall: textureLoader.load('assets/img/paint.jpeg'),
+        floor: textureLoader.load('assets/img/carpet.jpg'),
+      },
+      {
+        src: 'assets/img/texture2.png',
+        alt: 'Theme 2',
+        wall: textureLoader.load('assets/img/brick.jpg'),
+        floor: textureLoader.load('assets/img/stone.jpg'),
+      },
+      {
+        src: 'assets/img/texture3.png',
+        alt: 'Theme 3',
+        wall: textureLoader.load('assets/img/wallpaper.jpg'),
+        floor: textureLoader.load('assets/img/wood.jpg'),
+      },
+    ];
+
+    const floorTexture = this.textures[2].floor;
     floorTexture.wrapS = THREE.RepeatWrapping;
     floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set(4, 4);
@@ -262,7 +290,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.floorTexture = floorTexture;
 
     // Load the wall texture
-    const wallTexture = textureLoader.load('assets/img/wallpaper.jpg');
+    const wallTexture = this.textures[2].wall;
     wallTexture.wrapS = THREE.RepeatWrapping;
     wallTexture.wrapT = THREE.RepeatWrapping;
 
@@ -324,11 +352,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.setUpRoomDimensions();
 
     if (this.orbitControls) {
-      this.orbitControls.target.set(
-        this.roomLength / 2,
-        0,
-        this.roomWidth / 2
-      );
+      this.orbitControls.target.set(this.roomLength / 2, 0, this.roomWidth / 2);
       this.orbitControls.update();
     }
 
@@ -337,17 +361,30 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  protected captureScreenshot(): void {
+    this.render();
+    this.canvas?.toBlob((blob) => {
+      this.saveBlob(blob as Blob, 'dreamlab-screencapture.png');
+    });
+  }
+
+  private saveBlob(blob: Blob, fileName: string) {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style.display = 'none';
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+  }
+
   private degToRad(deg: number): number {
     return deg * (Math.PI / 180.0);
   }
 
-  onTextureSelected(texture: Texture) {
-    const textureLoader = new THREE.TextureLoader();
-    let floorTexture: THREE.Texture | undefined;
-    let wallTexture: THREE.Texture | undefined;
-
-      floorTexture = textureLoader.load(texture.floor);
-      wallTexture = textureLoader.load(texture.wall);
+  onTextureSelected(i: number) {
+    const floorTexture = this.textures[i].floor;
+    const wallTexture = this.textures[i].wall;
 
     if (floorTexture && this.floorTextureMaterial) {
       floorTexture.wrapS = THREE.RepeatWrapping;
@@ -362,6 +399,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.wallTextureMaterial.map = wallTexture;
       this.wallTextureMaterial.needsUpdate = true;
     }
+
     this.setUpRoomDimensions();
   }
 }
