@@ -6,18 +6,84 @@ import { environment } from '../../environments/environment';
 })
 export class BackendServiceService {
   public sessionId: string | null = null;
+  private readonly SESSION_STORAGE_KEY = 'dreamlab_session';
+  private readonly SESSION_EXPIRY_KEY = 'dreamlab_session_expiry';
+  private readonly SESSION_DURATION_MS = 60 * 60 * 1000;
 
   api_url = environment.BASE_API_URL;
 
-  // Constructor generates a session ID.
+  // Constructor gets or generates a session ID
   constructor() {
     (async () => {
       try {
-        this.sessionId = await this.generateSessionId();
+        this.sessionId = await this.getOrCreateSession();
       } catch (err) {
+        console.error('Failed to initialize session:', err);
         this.sessionId = null;
       }
     })();
+  }
+
+  private async getOrCreateSession(): Promise<string> {
+    const storedSessionId = localStorage.getItem(this.SESSION_STORAGE_KEY);
+    const storedExpiry = localStorage.getItem(this.SESSION_EXPIRY_KEY);
+
+    // Check if we have a valid session that hasn't expired
+    if (storedSessionId && storedExpiry) {
+      const expiryTime = parseInt(storedExpiry, 10);
+      const currentTime = Date.now();
+
+      if (currentTime < expiryTime) {
+        console.log('Using existing session ID:', storedSessionId);
+        return storedSessionId;
+      } else {
+        console.log('Session expired, generating new one');
+        this.clearStoredSession();
+      }
+    }
+
+    const newSessionId = await this.generateSessionId();
+    this.storeSession(newSessionId);
+    return newSessionId;
+  }
+
+  // Store session ID and expiry time in localStorage
+  private storeSession(sessionId: string): void {
+    const expiryTime = Date.now() + this.SESSION_DURATION_MS;
+    localStorage.setItem(this.SESSION_STORAGE_KEY, sessionId);
+    localStorage.setItem(this.SESSION_EXPIRY_KEY, expiryTime.toString());
+    console.log('Session stored. Expires at:', new Date(expiryTime).toLocaleString());
+  }
+
+  // Clear stored session data
+  private clearStoredSession(): void {
+    localStorage.removeItem(this.SESSION_STORAGE_KEY);
+    localStorage.removeItem(this.SESSION_EXPIRY_KEY);
+  }
+
+  // Check if current session is still valid
+  public isSessionValid(): boolean {
+    const storedExpiry = localStorage.getItem(this.SESSION_EXPIRY_KEY);
+    if (!storedExpiry || !this.sessionId) {
+      return false;
+    }
+    return Date.now() < parseInt(storedExpiry, 10);
+  }
+
+  // Refresh session if it's about to expire (within 5 minutes)
+  public async refreshSessionIfNeeded(): Promise<void> {
+    const storedExpiry = localStorage.getItem(this.SESSION_EXPIRY_KEY);
+    if (!storedExpiry) return;
+
+    const expiryTime = parseInt(storedExpiry, 10);
+    const currentTime = Date.now();
+    const fiveMinutesMs = 5 * 60 * 1000;
+
+    // If session expires in less than 5 minutes, refresh it
+    if (expiryTime - currentTime < fiveMinutesMs) {
+      console.log('Session expiring soon, refreshing...');
+      this.sessionId = await this.getOrCreateSession();
+    }
   }
 
   // Generate a session ID for the user when the page loads.
@@ -43,6 +109,14 @@ export class BackendServiceService {
     images: { front?: File; left?: File; right?: File; back?: File },
     caption?: string,
   ): Promise<{ message: string; session_id: string; filename: string; model_url?: string }> {
+    // Refresh session if needed before making API call
+    await this.refreshSessionIfNeeded();
+    
+    if (!this.sessionId || !this.isSessionValid()) {
+      // Try to get a fresh session
+      this.sessionId = await this.getOrCreateSession();
+    }
+    
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
     }
@@ -70,6 +144,14 @@ export class BackendServiceService {
 
   // Service to get list of model file names as URLs.
   async getSessionModels(): Promise<string[]> {
+    // Refresh session if needed before making API call
+    await this.refreshSessionIfNeeded();
+    
+    if (!this.sessionId || !this.isSessionValid()) {
+      // Try to get a fresh session
+      this.sessionId = await this.getOrCreateSession();
+    }
+    
     if (!this.sessionId) {
       throw new Error('Session ID not set.');
     }
@@ -90,5 +172,22 @@ export class BackendServiceService {
       (fileName: string) => `${this.api_url}/api/sessions/${this.sessionId}/models/${fileName}`,
     );
     return models;
+  }
+
+  // Manually clear session (useful for logout or error handling)
+  public clearSession(): void {
+    this.sessionId = null;
+    this.clearStoredSession();
+    console.log('Session cleared');
+  }
+
+  // Get session expiry info for debugging
+  public getSessionInfo(): { sessionId: string | null; expiresAt: Date | null; isValid: boolean } {
+    const storedExpiry = localStorage.getItem(this.SESSION_EXPIRY_KEY);
+    return {
+      sessionId: this.sessionId,
+      expiresAt: storedExpiry ? new Date(parseInt(storedExpiry, 10)) : null,
+      isValid: this.isSessionValid()
+    };
   }
 }

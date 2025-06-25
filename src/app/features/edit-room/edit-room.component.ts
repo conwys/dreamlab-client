@@ -10,6 +10,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCamera, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { RoomTexturesComponent } from './room-textures/room-textures.component';
 import { Texture } from '../../models/texture';
+import { BackendServiceService } from '../../services/backend-service.service';
+
 
 @Component({
   selector: 'app-edit-room',
@@ -58,11 +60,19 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   isAddObjectsModalOpen = false;
   faPlus = faPlus;
 
+  constructor(private backendService: BackendServiceService) {}
+
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+    // Log session info for debugging
+    if (this.backendService) {
+      const sessionInfo = this.backendService.getSessionInfo();
+      console.log('Edit room session info:', sessionInfo);
+    }
+
     if (typeof document !== 'undefined') {
       this.canvas = document.getElementById('edit-room-canvas') as HTMLCanvasElement;
     }
