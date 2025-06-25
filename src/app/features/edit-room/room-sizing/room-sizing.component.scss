@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../../../assets/styles/base/colours';
 @use '../../../../assets/styles/base/variables';
 
@@ -74,7 +75,7 @@ input[type='range'] {
 
   &:hover::-webkit-slider-thumb {
     transform: scale(1.05);
-    border-color: darken(colours.$lilac, 10%);
+    border-color: color.adjust(colours.$lilac, $lightness: -10%);
     box-shadow: 0 3px 8px rgba(colours.$lilac, 0.35);
   }
 

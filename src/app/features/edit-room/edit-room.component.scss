@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../../assets/styles/base/colours';
 @use '../../../assets/styles/base/variables';
 
@@ -126,7 +127,7 @@
 
         &:hover {
           transform: translateY(-2px);
-          background: darken(colours.$lilac, 5%);
+          background: color.adjust(colours.$lilac, $lightness: -5%);
           box-shadow: 0 8px 25px rgba(colours.$lilac, 0.4);
         }
 
