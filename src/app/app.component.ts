@@ -5,6 +5,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faInfoCircle, faWrench, faEnvelope, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ThemeService } from './services/theme.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,6 @@ export class AppComponent {
   faMoon = faMoon;
   faSun = faSun;
   faEnvelope = faEnvelope;
-
-  isDarkTheme$ = inject(ThemeService).isDarkTheme$;
 
   sidebarOpen = false;
 
@@ -70,5 +69,9 @@ export class AppComponent {
 
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  isDarkTheme(): Observable<boolean> {
+    return this.themeService.isDarkTheme$;
   }
 }
