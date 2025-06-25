@@ -1,5 +1,5 @@
 @use '../../../assets/styles/base/colours';
-@use 'src/assets/styles/base/variables';
+@use '../../../assets/styles/base/variables';
 
 .page-container {
   margin: 0 auto;
@@ -36,6 +36,18 @@
         @include variables.card-base;
         background: var(--edit-room-canvas);
         padding: 0;
+      }
+
+      .screenshot-btn {
+        @include variables.icon-button;
+        font-size: 3rem;
+
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 5;
+
+        margin-right: 0.6rem;
       }
     }
   }

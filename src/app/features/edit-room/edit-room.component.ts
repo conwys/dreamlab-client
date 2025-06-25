@@ -5,16 +5,18 @@ import { ObjectSelectionPaneComponent } from './object-selection-pane/object-sel
 import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent, RoomSizingComponent],
+  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, FontAwesomeModule],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
 })
 export class EditRoomComponent implements AfterViewInit, OnDestroy {
-  private canvas?: HTMLElement | null;
+  private canvas?: HTMLCanvasElement | null;
   private renderer = new THREE.WebGLRenderer();
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera();
@@ -46,13 +48,15 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   private wallThickness = 0.2;
 
+  faCamera = faCamera;
+
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
   }
 
   ngAfterViewInit(): void {
     if (typeof document !== 'undefined') {
-      this.canvas = document.getElementById('edit-room-canvas');
+      this.canvas = document.getElementById('edit-room-canvas') as HTMLCanvasElement;
     }
 
     if (this.canvas) {
@@ -78,18 +82,22 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
       this.setUpOrbitControls();
 
       this.renderer.setAnimationLoop(() => {
-        if (this.renderer && this.camera && this.scene) {
-          // Maintain the aspect ratio of the view when canvas is resized
-          if (this.resizeRendererToDisplaySize()) {
-            const canvas = this.renderer.domElement;
-
-            this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            this.camera.updateProjectionMatrix();
-          }
-
-          this.renderer.render(this.scene, this.camera);
-        }
+        this.render();
       });
+    }
+  }
+
+  private render(): void {
+    if (this.renderer && this.camera && this.scene) {
+      // Maintain the aspect ratio of the view when canvas is resized
+      if (this.resizeRendererToDisplaySize()) {
+        const canvas = this.renderer.domElement;
+
+        this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        this.camera.updateProjectionMatrix();
+      }
+
+      this.renderer.render(this.scene, this.camera);
     }
   }
 
@@ -248,6 +256,23 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     if (this.transformControls?.object) {
       this.transformControls.detach();
     }
+  }
+
+  protected captureScreenshot(): void {
+    this.render();
+    this.canvas?.toBlob((blob) => {
+      this.saveBlob(blob as Blob, 'dreamlab-screencapture.png');
+    });
+  }
+
+  private saveBlob(blob: Blob, fileName: string) {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style.display = 'none';
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
   }
 
   private degToRad(deg: number): number {

@@ -8,6 +8,9 @@
         (heightChange)="updateRoomDimension($event, 'height')"
       ></app-room-sizing>
       <canvas id="edit-room-canvas"></canvas>
+      <button class="screenshot-btn" (click)="captureScreenshot()">
+        <fa-icon [icon]="faCamera"></fa-icon>
+      </button>
     </div>
     <app-object-selection-pane
       class="object-selection-pane"
