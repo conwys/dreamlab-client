@@ -49,8 +49,8 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   }
 
   async refreshAvailableObjects(): Promise<void> {
-    // Clear existing objects that are not currently in the room
-    this.objectsCurrentlyInRoom = this.objectsCurrentlyInRoom.filter(obj => obj.displayedInScene);
+    // Clear all objects from the UI
+    this.objectsCurrentlyInRoom = [];
     
     // Load fresh list from backend
     await this.loadAvailableObjects();
