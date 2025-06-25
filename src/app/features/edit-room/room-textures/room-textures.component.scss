@@ -1,60 +1,70 @@
 @use '../../../../assets/styles/base/colours';
+@use '../../../../assets/styles/base/variables';
 
 .theme-panel {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: variables.$spacing-lg;
+  left: variables.$spacing-lg;
   z-index: 5;
-  padding-left: 1rem;
+  padding: variables.$spacing-lg;
   display: flex;
   flex-direction: row;
-  align-items: space-between;
-  justify-content: center;
-  
+  align-items: center;
+  gap: variables.$spacing-lg;
+  background: var(--background-color);
+  border-radius: variables.$border-radius-lg;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .theme-panel h2 {
-  color: colours.$dark-grey;
-  font-family: "Albert Sans", sans-serif;
-  font-weight: 300;
-  font-size: 1.2rem;
-  margin-right: 1.5vw;
+  color: var(--text-primary);
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .theme-buttons {
   display: flex;
   flex-direction: row;
-  gap: 1.5vw;
-  transition: 0.5s;
+  gap: variables.$spacing-md;
+  transition: variables.$transition-base;
 }
 
 .theme-buttons button {
   width: 3rem;
   height: 3rem;
-  border-radius: 50%;
-  border: 0;
-  background: var(--edit-room-canvas);
+  border-radius: variables.$border-radius-circle;
+  border: 2px solid transparent;
+  background: colours.$white;
   overflow: hidden;
   padding: 0;
   cursor: pointer;
-  transition: 0.5s;
-}
-.theme-buttons button :hover{
-  scale: 1.5;
-  transition: 0.5s;
-}
+  transition: variables.$transition-base;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 
-.theme-buttons button:hover {
-  border-color: var(--hover-color);
-  box-shadow: 0 4px 16px rgba(186, 157, 244, 0.15);
+  &:hover {
+    transform: translateY(-2px);
+    border-color: colours.$lilac;
+    box-shadow: 0 8px 25px rgba(colours.$lilac, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .theme-buttons img {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   object-fit: cover;
-  border-radius: 50%;
-  padding: 0;
-  margin: 0;
-  transition: 0.5s;
+  border-radius: variables.$border-radius-circle;
+  transition: variables.$transition-base;
 }

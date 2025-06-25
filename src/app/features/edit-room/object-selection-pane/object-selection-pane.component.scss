@@ -18,12 +18,22 @@
     @include variables.flex-column;
     align-items: center;
     gap: 0.5rem;
+    min-width: 40px;
 
     .transform-button {
       @include variables.icon-button;
       color: colours.$dark-lilac;
-      padding: 0.3rem;
+      padding: 0.4rem;
       font-size: 1rem;
+      width: 32px;
+      height: 32px;
+      @include variables.flex-center;
+      border-radius: 8px;
+
+      &:hover {
+        transform: scale(1.05);
+        background-color: rgba(colours.$lilac, 0.1);
+      }
     }
   }
 
@@ -35,7 +45,79 @@
   }
 
   .colour-picker {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50%;
+    border: 3px solid colours.$white;
+    box-shadow:
+      0 0 0 1px rgba(colours.$dark-grey, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.15);
     cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+
+    // Prevent text input behavior
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+    // Hide text cursor and input functionality
+    caret-color: transparent;
+    color: transparent;
+    text-indent: -9999px;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow:
+        0 0 0 1px rgba(colours.$dark-grey, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow:
+        0 0 0 1px rgba(colours.$lilac, 0.5),
+        0 4px 12px rgba(colours.$lilac, 0.3);
+    }
+
+    // Style the color picker trigger
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      background: inherit;
+      pointer-events: none;
+    }
+
+    // Hide the default input appearance
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+
+    // Add a subtle inner shadow for depth
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      border-radius: 50%;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+    }
   }
 
   .model {

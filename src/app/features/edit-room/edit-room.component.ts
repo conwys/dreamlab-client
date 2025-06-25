@@ -1,23 +1,33 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ObjectSelectionPaneComponent } from './object-selection-pane/object-selection-pane.component';
 import { RoomObject } from '../../models/room-object';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
+import { AddObjectsModalComponent } from './add-objects-modal/add-objects-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { RoomTexturesComponent } from './room-textures/room-textures.component';
 import { Texture } from '../../models/texture';
+import { BackendServiceService } from '../../services/backend-service.service';
 
 @Component({
   selector: 'app-edit-room',
-  imports: [ObjectSelectionPaneComponent, RoomSizingComponent, RoomTexturesComponent, FontAwesomeModule],
+  imports: [
+    ObjectSelectionPaneComponent,
+    RoomSizingComponent,
+    AddObjectsModalComponent,
+    RoomTexturesComponent,
+    FontAwesomeModule,
+  ],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss',
   standalone: true,
 })
 export class EditRoomComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(ObjectSelectionPaneComponent) objectSelectionPane!: ObjectSelectionPaneComponent;
+
   private canvas?: HTMLCanvasElement | null;
   private renderer = new THREE.WebGLRenderer();
   private scene = new THREE.Scene();
@@ -51,11 +61,24 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
   faCamera = faCamera;
 
+  // Modal state
+  isAddObjectsModalOpen = false;
+  faPlus = faPlus;
+  faTrash = faTrash;
+
+  constructor(private backendService: BackendServiceService) {}
+
   ngOnDestroy(): void {
     this.renderer?.setAnimationLoop(null);
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+    // Log session info for debugging
+    if (this.backendService) {
+      const sessionInfo = this.backendService.getSessionInfo();
+      console.log('Edit room session info:', sessionInfo);
+    }
+
     if (typeof document !== 'undefined') {
       this.canvas = document.getElementById('edit-room-canvas') as HTMLCanvasElement;
     }
@@ -396,6 +419,57 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     }
 
     this.setUpRoomDimensions();
+  }
+
+  openAddObjectsModal(): void {
+    this.isAddObjectsModalOpen = true;
+  }
+
+  closeAddObjectsModal(): void {
+    this.isAddObjectsModalOpen = false;
+  }
+
+  async onObjectsAdded(): Promise<void> {
+    console.log('New objects have been added and processed');
+
+    // Refresh the object selection pane to show newly uploaded objects
+    if (this.objectSelectionPane) {
+      await this.objectSelectionPane.refreshAvailableObjects();
+    }
+  }
+
+  async clearAllObjects(): Promise<void> {
+    try {
+      // Show confirmation dialog
+      const confirmed = confirm('Are you sure you want to delete all objects? This action cannot be undone.');
+
+      if (!confirmed) {
+        return;
+      }
+
+      console.log('Clearing all objects from session...');
+
+      // Call backend to delete all models
+      await this.backendService.deleteAllModels();
+
+      // Clear all objects from the 3D scene
+      this.objectsWithinRoom.forEach((roomObject) => {
+        if (roomObject.object) {
+          this.scene.remove(roomObject.object);
+        }
+      });
+      this.objectsWithinRoom = [];
+
+      // Refresh the object selection pane to reflect the cleared state
+      if (this.objectSelectionPane) {
+        await this.objectSelectionPane.refreshAvailableObjects();
+      }
+
+      console.log('All objects cleared successfully');
+    } catch (error) {
+      console.error('Error clearing all objects:', error);
+      alert('Failed to clear all objects. Please try again.');
+    }
   }
 }
 

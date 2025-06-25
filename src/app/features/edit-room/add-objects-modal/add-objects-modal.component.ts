@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { BackendServiceService } from '../../services/backend-service.service';
+import { BackendServiceService } from '../../../services/backend-service.service';
 import {
   faPlus,
   faTrash,
@@ -14,6 +13,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faExclamationCircle,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface ObjectUpload {
@@ -27,15 +27,20 @@ interface ObjectUpload {
 const IMAGE_LABELS = ['Front', 'Left', 'Right', 'Back'];
 
 @Component({
-  selector: 'app-room-uploader',
+  selector: 'app-add-objects-modal',
   imports: [CommonModule, FontAwesomeModule, FormsModule],
-  templateUrl: './room-uploader.component.html',
-  styleUrl: './room-uploader.component.scss',
+  templateUrl: './add-objects-modal.component.html',
+  styleUrl: './add-objects-modal.component.scss',
   standalone: true,
 })
-export class RoomUploaderComponent {
+export class AddObjectsModalComponent {
+  @Input() isOpen = false;
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() objectsAdded = new EventEmitter<void>();
+
   isLoading = false;
   errorMessage: string | null = null;
+  isClosing = false;
 
   faPlus = faPlus;
   faTrash = faTrash;
@@ -46,6 +51,7 @@ export class RoomUploaderComponent {
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
   faExclamationCircle = faExclamationCircle;
+  faTimes = faTimes;
 
   imageLabels = IMAGE_LABELS;
   objects: ObjectUpload[] = [
@@ -60,12 +66,9 @@ export class RoomUploaderComponent {
   lastId = 0;
 
   currentPage = 1;
-  itemsPerPage = 3;
+  itemsPerPage = 2;
 
-  constructor(
-    private router: Router,
-    private backendService: BackendServiceService,
-  ) {}
+  constructor(private backendService: BackendServiceService) {}
 
   get totalPages(): number {
     return Math.ceil(this.objects.length / this.itemsPerPage);
@@ -136,6 +139,7 @@ export class RoomUploaderComponent {
       object.isExpanded = !object.isExpanded;
     }
   }
+
   removeObject(id: number): void {
     const currentPageObjects = this.paginatedObjects;
 
@@ -160,7 +164,21 @@ export class RoomUploaderComponent {
     this.errorMessage = null;
   }
 
-  async onUpload(): Promise<void> {
+  close(): void {
+    this.isClosing = true;
+    setTimeout(() => {
+      this.isClosing = false;
+      this.closeModal.emit();
+    }, 200);
+  }
+
+  onModalBackdropClick(event: Event): void {
+    if (event.target === event.currentTarget) {
+      this.close();
+    }
+  }
+
+  async onAddObjects(): Promise<void> {
     const isValid = this.objects.every((obj) => obj.images[0] !== null && obj.caption.trim().length > 0);
 
     if (!isValid) {
@@ -170,7 +188,6 @@ export class RoomUploaderComponent {
 
     try {
       this.isLoading = true;
-      // Call processFurnitureImages for each object
       await Promise.all(
         this.objects.map((obj) => {
           const images = {
@@ -183,11 +200,29 @@ export class RoomUploaderComponent {
         }),
       );
       console.log('Objects uploaded:', this.objects);
-      this.router.navigate(['/edit']);
+      this.objectsAdded.emit();
+      this.resetModal();
+      this.close();
     } catch (error) {
       this.errorMessage = 'Error uploading objects: ' + (error instanceof Error ? error.message : String(error));
     } finally {
       this.isLoading = false;
     }
+  }
+
+  resetModal(): void {
+    this.objects = [
+      {
+        id: 0,
+        caption: '',
+        images: [null, null, null, null],
+        thumbnails: [null, null, null, null],
+        isExpanded: true,
+      },
+    ];
+    this.lastId = 0;
+    this.currentPage = 1;
+    this.errorMessage = null;
+    this.isLoading = false;
   }
 }
