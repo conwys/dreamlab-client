@@ -34,11 +34,26 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     await import('@google/model-viewer');
+    await this.loadAvailableObjects();
+  }
 
+  async loadAvailableObjects(): Promise<void> {
     const fetchedModels = await this.backendService.getSessionModels();
     fetchedModels.forEach((url) => {
-      this.loadObjectFromFile(url);
+      // Check if this model is already loaded to avoid duplicates
+      const existingObject = this.objectsCurrentlyInRoom.find(obj => obj.filePath === url);
+      if (!existingObject) {
+        this.loadObjectFromFile(url);
+      }
     });
+  }
+
+  async refreshAvailableObjects(): Promise<void> {
+    // Clear existing objects that are not currently in the room
+    this.objectsCurrentlyInRoom = this.objectsCurrentlyInRoom.filter(obj => obj.displayedInScene);
+    
+    // Load fresh list from backend
+    await this.loadAvailableObjects();
   }
 
   private loadObjectFromFile(fileUrl: string): void {

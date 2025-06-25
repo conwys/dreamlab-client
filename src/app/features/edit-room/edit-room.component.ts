@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ObjectSelectionPaneComponent } from './object-selection-pane/object-selection-pane.component';
@@ -19,6 +19,8 @@ import { Texture } from '../../models/texture';
   standalone: true,
 })
 export class EditRoomComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(ObjectSelectionPaneComponent) objectSelectionPane!: ObjectSelectionPaneComponent;
+
   private canvas?: HTMLCanvasElement | null;
   private renderer = new THREE.WebGLRenderer();
   private scene = new THREE.Scene();
@@ -416,9 +418,13 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     this.isAddObjectsModalOpen = false;
   }
 
-  onObjectsAdded(): void {
+  async onObjectsAdded(): Promise<void> {
     console.log('New objects have been added and processed');
-    // TODO: Implement logic to refresh available objects in the object selection pane
+    
+    // Refresh the object selection pane to show newly uploaded objects
+    if (this.objectSelectionPane) {
+      await this.objectSelectionPane.refreshAvailableObjects();
+    }
   }
 }
 
