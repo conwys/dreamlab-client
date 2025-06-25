@@ -1,0 +1,8 @@
+<div class="theme-panel">
+  <h2>Themes</h2>
+  <div class="theme-buttons">
+    <button *ngFor="let texture of textures" type="button" (click)="textureSelected.emit(texture)">
+      <img src="{{ texture.src }}" alt="{{ texture.alt }}" />
+    </button>
+  </div>
+</div>
