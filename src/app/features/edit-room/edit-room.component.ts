@@ -7,7 +7,7 @@ import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomSizingComponent } from './room-sizing/room-sizing.component';
 import { AddObjectsModalComponent } from './add-objects-modal/add-objects-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCamera, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { RoomTexturesComponent } from './room-textures/room-textures.component';
 import { Texture } from '../../models/texture';
 import { BackendServiceService } from '../../services/backend-service.service';
@@ -59,6 +59,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
   // Modal state
   isAddObjectsModalOpen = false;
   faPlus = faPlus;
+  faTrash = faTrash;
 
   constructor(private backendService: BackendServiceService) {}
 
@@ -434,6 +435,40 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     // Refresh the object selection pane to show newly uploaded objects
     if (this.objectSelectionPane) {
       await this.objectSelectionPane.refreshAvailableObjects();
+    }
+  }
+
+  async clearAllObjects(): Promise<void> {
+    try {
+      // Show confirmation dialog
+      const confirmed = confirm('Are you sure you want to delete all objects? This action cannot be undone.');
+      
+      if (!confirmed) {
+        return;
+      }
+
+      console.log('Clearing all objects from session...');
+      
+      // Call backend to delete all models
+      await this.backendService.deleteAllModels();
+      
+      // Clear all objects from the 3D scene
+      this.objectsWithinRoom.forEach(roomObject => {
+        if (roomObject.object) {
+          this.scene.remove(roomObject.object);
+        }
+      });
+      this.objectsWithinRoom = [];
+      
+      // Refresh the object selection pane to reflect the cleared state
+      if (this.objectSelectionPane) {
+        await this.objectSelectionPane.refreshAvailableObjects();
+      }
+      
+      console.log('All objects cleared successfully');
+    } catch (error) {
+      console.error('Error clearing all objects:', error);
+      alert('Failed to clear all objects. Please try again.');
     }
   }
 }

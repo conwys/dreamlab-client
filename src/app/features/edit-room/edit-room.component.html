@@ -26,6 +26,10 @@
         (rotateObject)="rotateObjectInRoom($event)"
       ></app-object-selection-pane>
       <div class="sidebar-footer">
+        <button class="btn clear-objects-btn" (click)="clearAllObjects()">
+          <fa-icon [icon]="faTrash"></fa-icon>
+          Clear All Objects
+        </button>
         <button class="btn add-objects-btn" (click)="openAddObjectsModal()">
           <fa-icon [icon]="faPlus"></fa-icon>
           Add Objects

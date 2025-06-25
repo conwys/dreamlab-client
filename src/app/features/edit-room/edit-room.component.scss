@@ -25,7 +25,35 @@
 
       .sidebar-footer {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        gap: variables.$spacing-md;
+
+        .clear-objects-btn {
+          min-width: 150px;
+          padding: variables.$spacing-md variables.$spacing-lg;
+          border: 2px solid #dc3545;
+          border-radius: variables.$border-radius-lg;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: variables.$transition-base;
+          @include variables.flex-center;
+          background: transparent;
+          color: #dc3545;
+          width: 100%;
+          gap: variables.$spacing-sm;
+
+          fa-icon {
+            margin-right: variables.$spacing-xs;
+          }
+
+          &:hover {
+            background: #dc3545;
+            color: colours.$white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+          }
+        }
 
         .add-objects-btn {
           min-width: 150px;

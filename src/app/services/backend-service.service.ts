@@ -190,4 +190,22 @@ export class BackendServiceService {
       isValid: this.isSessionValid()
     };
   }
+
+  public deleteAllModels(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      fetch(`${this.api_url}/api/delete_all_models/${this.sessionId}`, {
+        method: 'DELETE',
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to delete all models');
+          }
+          resolve();
+        })
+        .catch(error => {
+          console.error('Error deleting all models:', error);
+          reject(error);
+        });
+    });
+  } 
 }
