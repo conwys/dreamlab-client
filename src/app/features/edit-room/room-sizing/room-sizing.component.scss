@@ -1,104 +1,146 @@
 @use '../../../../assets/styles/base/colours';
+@use '../../../../assets/styles/base/variables';
 
 .controls-panel {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20px;
+  left: 20px;
   z-index: 5;
+  
+  background: var(--background-color);
+  backdrop-filter: blur(12px);
+  border-radius: variables.$border-radius-lg;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 
   padding: 1.5rem;
+  min-width: 260px;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 1.4rem;
 
   .control-bar {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.6rem;
   }
 }
 
 label {
-  color: colours.$dark-grey;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
 }
 
 input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 6px;
   border-radius: 3px;
   background: linear-gradient(
     90deg,
-    #7a5fa3 0%,
-    #7a5fa3 var(--slider-progress, 50%),
-    #be9df4 var(--slider-progress, 50%),
-    #a0cafb 100%
+    colours.$lilac 0%,
+    colours.$lilac var(--slider-progress, 0%),
+    #ddd var(--slider-progress, 0%),
+    #ddd 100%
   );
   outline: none;
-  margin: 1rem 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
 
+  
+  /* Webkit browsers (Chrome, Safari, Edge) */
   &::-webkit-slider-runnable-track {
-    height: 6px;
     border-radius: 3px;
-    background: inherit;
+    background: transparent;
+    border: none;
   }
+  
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #fff;
-    border: 2px solid #be9df4;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background: colours.$white;
+    border: 2px solid colours.$lilac;
+    box-shadow: 0 2px 6px rgba(colours.$lilac, 0.25);
     cursor: pointer;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
   }
-  &:focus::-webkit-slider-thumb {
-    border-color: #a0cafb;
+  
+  &:hover::-webkit-slider-thumb {
+    transform: scale(1.05);
+    border-color: darken(colours.$lilac, 10%);
+    box-shadow: 0 3px 8px rgba(colours.$lilac, 0.35);
+  }
+  
+  &:active::-webkit-slider-thumb {
+    transform: scale(0.98);
   }
 
+  /* Firefox */
   &::-moz-range-track {
     height: 6px;
     border-radius: 3px;
-    background: inherit;
+    background: transparent;
+    border: none;
   }
+  
   &::-moz-range-thumb {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #fff;
-    border: 2px solid #be9df4;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background: colours.$white;
+    border: 2px solid colours.$lilac;
+    box-shadow: 0 2px 6px rgba(colours.$lilac, 0.25);
     cursor: pointer;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
+    -moz-appearance: none;
   }
-  &:focus::-moz-range-thumb {
-    border-color: #a0cafb;
+  
+  &:hover::-moz-range-thumb {
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(colours.$lilac, 0.35);
   }
 
+  /* Internet Explorer/Edge */
+  &::-ms-track {
+    height: 6px;
+    border-radius: 3px;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  
   &::-ms-fill-lower {
-    background: #7a5fa3;
+    background: colours.$lilac;
     border-radius: 3px;
   }
+  
   &::-ms-fill-upper {
-    background: #a0cafb;
+    background: #ddd;
     border-radius: 3px;
   }
+  
   &::-ms-thumb {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #fff;
-    border: 2px solid #be9df4;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background: colours.$white;
+    border: 2px solid colours.$lilac;
+    box-shadow: 0 2px 6px rgba(colours.$lilac, 0.25);
     cursor: pointer;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
   }
-  &:focus::-ms-thumb {
-    border-color: #a0cafb;
+  
+  &:hover::-ms-thumb {
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(colours.$lilac, 0.35);
   }
 
   &:focus {

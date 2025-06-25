@@ -1,6 +1,6 @@
 <div class="controls-panel">
-  <ng-container class="control-bar">
-    <label for="length-control">Length</label>
+  <div class="control-bar">
+    <label for="length-control">Length: {{lengthValue}}</label>
     <input
       id="length-control"
       type="range"
@@ -11,10 +11,10 @@
       (input)="onLengthInput($event)"
       [style.--slider-progress]="lengthProgress"
     />
-  </ng-container>
+  </div>
 
-  <ng-container class="control-bar">
-    <label for="width-control">Width</label>
+  <div class="control-bar">
+    <label for="width-control">Width: {{widthValue}}</label>
     <input
       id="width-control"
       type="range"
@@ -25,10 +25,10 @@
       (input)="onWidthInput($event)"
       [style.--slider-progress]="widthProgress"
     />
-  </ng-container>
+  </div>
 
   <ng-container class="control-bar">
-    <label for="scale-control">Scale</label>
+    <label for="scale-control">Scale: {{scaleValue}}</label>
     <input
       id="scale-control"
       type="range"
@@ -39,5 +39,5 @@
       (input)="onScaleInput($event)"
       [style.--slider-progress]="scaleProgress"
     />
-  </ng-container>
+  </div>
 </div>
