@@ -1,0 +1,60 @@
+@use '../../../../assets/styles/base/colours';
+
+.theme-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  justify-content: center;
+  
+}
+
+.theme-panel h2 {
+  color: colours.$dark-grey;
+  font-family: "Albert Sans", sans-serif;
+  font-weight: 300;
+  font-size: 1.2rem;
+  margin-right: 1.5vw;
+}
+
+.theme-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5vw;
+  transition: 0.5s;
+}
+
+.theme-buttons button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 0;
+  background: var(--edit-room-canvas);
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.theme-buttons button :hover{
+  scale: 1.5;
+  transition: 0.5s;
+}
+
+.theme-buttons button:hover {
+  border-color: var(--hover-color);
+  box-shadow: 0 4px 16px rgba(186, 157, 244, 0.15);
+}
+
+.theme-buttons img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  transition: 0.5s;
+}

@@ -28,16 +28,16 @@
   </ng-container>
 
   <ng-container class="control-bar">
-    <label for="height-control">Height</label>
+    <label for="scale-control">Scale</label>
     <input
-      id="height-control"
+      id="scale-control"
       type="range"
-      min="5"
-      max="20"
-      step="1"
-      [value]="heightValue"
-      (input)="onHeightInput($event)"
-      [style.--slider-progress]="heightProgress"
+      min="1"
+      max="4"
+      step="0.01"
+      [value]="scaleValue"
+      (input)="onScaleInput($event)"
+      [style.--slider-progress]="scaleProgress"
     />
   </ng-container>
 </div>

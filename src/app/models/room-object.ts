@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
 export class RoomObject {
+  private static WALL_THICKNESS = 0.2;
+
   private _object: THREE.Mesh;
   private _colour?: string;
 
@@ -49,7 +51,7 @@ export class RoomObject {
   }
 
   public addToScene(startPosition: { x: number; z: number }, scene: THREE.Scene): void {
-    this.object.position.set(startPosition.x, this.height / 2, startPosition.z);
+    this.object.position.set(startPosition.x, RoomObject.WALL_THICKNESS + this.height / 2, startPosition.z);
 
     scene.add(this.object);
 
@@ -58,9 +60,9 @@ export class RoomObject {
   }
 
   public setTransformationLimits(controls: TransformControls, floorLength: number, floorWidth: number): void {
-    const minX = 0 + this.length / 2;
+    const minX = RoomObject.WALL_THICKNESS + this.length / 2;
     const maxX = floorLength - this.length / 2;
-    const minZ = 0 + this.width / 2;
+    const minZ = RoomObject.WALL_THICKNESS + this.width / 2;
     const maxZ = floorWidth - this.width / 2;
 
     const object = this.object;
