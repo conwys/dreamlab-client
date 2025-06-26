@@ -49,9 +49,6 @@ export class ObjectSelectionPaneComponent implements AfterViewInit {
   }
 
   async refreshAvailableObjects(): Promise<void> {
-    // Clear all objects from the UI
-    this.objectsCurrentlyInRoom = [];
-
     // Load fresh list from backend
     await this.loadAvailableObjects();
   }
