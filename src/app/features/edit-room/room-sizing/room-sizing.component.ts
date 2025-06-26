@@ -57,9 +57,9 @@ export class RoomSizingComponent implements AfterViewInit {
     document.querySelector('#scale-control')?.addEventListener('input', (event) => {
       const value = parseFloat((event.target as HTMLInputElement).value);
       this.scaleValue = value;
-      this.lengthValue = this.baseValue * value;
-      this.widthValue = this.baseValue * value;
-      this.heightValue = this.baseValue * value;
+      this.lengthValue =  Math.round(this.baseValue * value * 10) / 10;
+      this.widthValue = Math.round(this.baseValue * value * 10) / 10;
+      this.heightValue = Math.round(this.baseValue * value * 10) / 10;
       this.lengthChange.emit(this.lengthValue);
       this.widthChange.emit(this.widthValue);
       this.heightChange.emit(this.heightValue);
@@ -79,9 +79,9 @@ export class RoomSizingComponent implements AfterViewInit {
   onScaleInput(event: Event) {
     const input = event.target as HTMLInputElement;
     this.scaleValue = input.valueAsNumber;
-    this.lengthValue = this.baseValue * this.scaleValue;
-    this.widthValue = this.baseValue * this.scaleValue;
-    this.heightValue = this.baseValue * this.scaleValue;
+    this.lengthValue = Math.round(this.baseValue * this.scaleValue * 10) / 10;
+    this.widthValue = Math.round(this.baseValue * this.scaleValue * 10) / 10;
+    this.heightValue = Math.round(this.baseValue * this.scaleValue * 10) / 10;
     this.lengthChange.emit(this.lengthValue);
     this.widthChange.emit(this.widthValue);
     this.heightChange.emit(this.heightValue);
