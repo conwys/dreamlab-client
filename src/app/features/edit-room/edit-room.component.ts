@@ -368,6 +368,7 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
     a.href = url;
     a.download = fileName;
     a.click();
+    document.body.removeChild(a);
   }
 
   private degToRad(deg: number): number {
