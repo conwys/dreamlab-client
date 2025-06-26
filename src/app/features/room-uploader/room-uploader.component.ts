@@ -15,14 +15,7 @@ import {
   faChevronRight,
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
-
-interface ObjectUpload {
-  id: number;
-  caption: string;
-  images: (File | null)[];
-  thumbnails: (string | null)[];
-  isExpanded: boolean;
-}
+import { ObjectUpload } from '../../models/object-upload';
 
 const IMAGE_LABELS = ['Front', 'Left', 'Right', 'Back'];
 

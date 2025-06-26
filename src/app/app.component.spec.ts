@@ -1,29 +1,42 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { provideRouter } from '@angular/router';
+import { ThemeService } from './services/theme.service';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
+  const mockThemeService = jasmine.createSpyObj(['toggleTheme']);
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: ThemeService,
+          useValue: mockThemeService,
+        },
+      ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have the 'dreamlab' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('dreamlab');
-  });
+  it('should toggle theme on button click', () => {
+    mockThemeService.toggleTheme.calls.reset();
+    const themeButton = fixture.nativeElement.querySelector('.theme-toggle');
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    themeButton.click();
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, dreamlab');
+
+    expect(mockThemeService.toggleTheme).toHaveBeenCalled();
   });
 });
