@@ -32,6 +32,12 @@ export class RoomSizingComponent implements AfterViewInit {
   @Output() heightChange = new EventEmitter<number>();
 
   ngAfterViewInit() {
+    // Initialize values if provided
+    if (this.initialValue) {
+      this.lengthValue = this.initialValue;
+      this.widthValue = this.initialValue;
+      this.heightValue = this.initialValue;
+    }
     this.setUpEventListeners();
   }
 
