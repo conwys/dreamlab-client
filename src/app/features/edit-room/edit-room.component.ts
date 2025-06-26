@@ -460,7 +460,9 @@ export class EditRoomComponent implements AfterViewInit, OnDestroy {
 
       // Refresh the object selection pane to reflect the cleared state
       if (this.objectSelectionPane) {
+        this.objectSelectionPane.objectsCurrentlyInRoom = [];
         await this.objectSelectionPane.refreshAvailableObjects();
+        this.transformControls?.detach();
       }
 
       console.log('All objects cleared successfully');
